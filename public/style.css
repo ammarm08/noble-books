@@ -1,0 +1,17 @@
+body, table {
+  font-family: 'Open Sans', sans-serif;
+}
+
+body {
+  background-color: #f9f9f9; 
+}
+
+#app {
+  margin: 20px auto;
+  width: 90%;
+  background-color: white;
+}
+
+table {
+  border: 4px solid #f2f2f2;
+}
