@@ -1,5 +1,5 @@
 body, table {
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
 body {
@@ -8,10 +8,31 @@ body {
 
 #app {
   margin: 20px auto;
-  width: 90%;
-  background-color: white;
+  width: 75%;
+  /*background-color: white;*/
 }
 
-table {
-  border: 4px solid #f2f2f2;
+.table th, .table td {
+  border-top: none !important;
+  border-bottom: none !important;
+}
+
+th {
+  font-size: 1.1em;
+}
+
+.book_title {
+  width: 30%;
+}
+
+.book_author {
+  color: #a8a4a0;
+}
+
+.book_recommenders {
+  width: 30%;
+}
+
+.img-circle, .img-rounded {
+  width: 10%;
 }
