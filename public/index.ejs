@@ -10,8 +10,61 @@
   crossorigin="anonymous"></script>
 </head>
 <body>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <div class="navbar-brand">thinkbook</div>
+      </div>
+      <div class="collapse navbar-collapse pull-right">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">Books</a></li>
+          <li><a href="#">Collections</a></li>
+          <li><a href="#">Authors</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
 
   <div id="app">
+    <div class="filters">
+      <!-- GENRE -->
+      <div class="filter-by-genre">
+        <div class="btn-group" role="group" aria-label="filter-by-genre">
+          <button type="button" class="btn btn-default"> Culture + Society </button>
+          <button type="button" class="btn btn-default"> Math + Econ </button>
+          <button type="button" class="btn btn-default"> Lit + Arts </button>
+          <button type="button" class="btn btn-default"> Physics + Cosmos </button>
+          <button type="button" class="btn btn-default"> Philosophy </button>
+          <button type="button" class="btn btn-default"> Psych + Neuro </button>
+          <button type="button" class="btn btn-default"> Life Sciences </button>
+        </div>
+      </div>
+
+      <!-- LENGTH -->
+      <div class="filter-by-length">
+        <div class="btn-group" role="group" aria-label="filter-by-length">
+          <button type="button" class="btn btn-default"> Short </button>
+          <button type="button" class="btn btn-default"> Medium </button>
+          <button type="button" class="btn btn-default"> Long </button>
+        </div>
+      </div>
+
+      <!-- AGE -->
+      <div class="filter-by-age">
+        <div class="btn-group" role="group" aria-label="filter-by-age">
+          <button type="button" class="btn btn-default"> &lt 1900 </button>
+          <button type="button" class="btn btn-default"> 1900 </button>
+          <button type="button" class="btn btn-default"> 2000s </button>
+        </div>
+      </div>
+
+      <div class="filter-by-frequency">
+        <div class="btn-group" role="group" aria-label="filter-by-frequency">
+          <button type="button" class="btn btn-default"> Frequently Recommended </button>
+        </div>
+      </div>
+
+    </div>
     <table class="table">
       <thead>
         <tr>
@@ -63,7 +116,7 @@
 
           var $title = $('<td class="book_title"></td>');
           var $author = $('<td class="book_author"></td>');
-          var $genre = $('<td>Culture & Society</td>');
+          var $genre = $('<td>Culture + Society</td>');
           var $length = $('<td>225</td>');
           var $recommenders = $('<td class="book_recommenders"></td>');
           var $rec_thumbnail1 = $('<img class="img-circle" src="https://qph.is.quoracdn.net/main-thumb-148986927-50-fbohjmmcrizbhsijbkiuuxdekhbtppdf.jpeg"/>');

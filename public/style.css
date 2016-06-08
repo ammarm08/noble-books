@@ -9,8 +9,88 @@ body {
 #app {
   margin: 20px auto;
   width: 75%;
-  /*background-color: white;*/
 }
+
+table, .filters {
+  width: 100%;
+  margin: 10px auto;
+}
+
+table {
+  border: 4px solid #f2f2f2;
+  background-color: white;;
+}
+
+/* NAVBAR */
+
+.navbar {
+  background-color: white;
+  box-shadow: 0 1px 0 0 rgba(0,0,0,.05),0 2px 4px 0 rgba(0,0,0,.06);
+}
+
+.navbar .container-fluid {
+  width: 75%;
+}
+
+.navbar .navbar-brand {
+  color: #da552f;
+  cursor: pointer;
+}
+
+.navbar .navbar-brand:hover {
+  color: #da552f;
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+.navbar .active a {
+  background-color: white !important;
+  border-bottom: 2px solid #da552f;
+}
+
+/* FILTERS */
+
+.filters button {
+  border: 1px solid #a8a4a0;
+  color: #a8a4a0;
+}
+
+.filters button:hover {
+  color: white;
+  background-color: #da552f;
+}
+
+.filter-by-genre {
+  width: 100%;
+  margin: 10px auto;
+}
+
+.btn-group {
+  width: 100%;
+}
+
+.filter-by-genre button {
+  width: 14.3%;
+}
+
+.filter-by-length, .filter-by-age, .filter-by-frequency {
+  width: 30%;
+  display: inline-block;
+}
+
+.filter-by-length, .filter-by-age {
+  margin-right: 4.4%;
+}
+
+.filter-by-length button, .filter-by-age button {
+  width: 33.3%;
+}
+
+.filter-by-frequency button {
+  width: 100%;
+}
+
+/* TABLE */
 
 .table th, .table td {
   border-top: none !important;
@@ -29,11 +109,16 @@ th {
   color: #a8a4a0;
 }
 
-.book_recommenders {
-  width: 30%;
+.book_author, .book_recommenders {
+  width: 20%;
 }
 
-.img-circle {
-  width: 10%;
+.book_recommenders .img-circle {
+  width: 15%;
   margin: 0 4px;
+}
+
+.book_recommenders .img-circle:hover {
+  filter: grayscale(100%);
+  -webkit-filter: grayscale(100%);
 }
