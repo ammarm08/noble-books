@@ -66,11 +66,15 @@
           var $genre = $('<td>Culture & Society</td>');
           var $length = $('<td>225</td>');
           var $recommenders = $('<td class="book_recommenders"></td>');
-          var $rec_thumbnail = $('<img class="img-circle" src="https://pbs.twimg.com/profile_images/499742529487523840/IIevX5rR.jpeg"/>');        
+          var $rec_thumbnail1 = $('<img class="img-circle" src="https://qph.is.quoracdn.net/main-thumb-148986927-50-fbohjmmcrizbhsijbkiuuxdekhbtppdf.jpeg"/>');
+          var $rec_thumbnail2 = $('<img class="img-circle" src="http://img2-ak.lst.fm/i/u/64s/25bcf1206e94470aa8525d44f82f635d.png"/>');
+          var $rec_thumbnail3 = $('<img class="img-circle" src="https://pbs.twimg.com/profile_images/429346159870488576/N18OCeAD_normal.jpeg "/>');     
 
           $title.text(book[0]);
           $author.text(book[1]);
-          $recommenders.append($rec_thumbnail);
+          $recommenders.append($rec_thumbnail1);
+          $recommenders.append($rec_thumbnail2);
+          $recommenders.append($rec_thumbnail3);
           // $recommenders.text(book[2].join(', '));
 
           $row.append($title)

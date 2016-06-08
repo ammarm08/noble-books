@@ -33,6 +33,7 @@ th {
   width: 30%;
 }
 
-.img-circle, .img-rounded {
+.img-circle {
   width: 10%;
+  margin: 0 4px;
 }
