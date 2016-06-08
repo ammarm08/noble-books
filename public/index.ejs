@@ -3,7 +3,7 @@
 <head>
   <title></title>
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Montserrat" />
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
   <link rel="stylesheet" type="text/css" href="style.css">
   <script src="https://code.jquery.com/jquery-2.2.4.min.js"   
   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
@@ -13,7 +13,7 @@
   <nav class="navbar navbar-default">
     <div class="container-fluid">
       <div class="navbar-header">
-        <div class="navbar-brand">thinkbook</div>
+        <div class="navbar-brand">Hammock <span id="tagline"> Book recommendations from lofty shelves </span></div>
       </div>
       <div class="collapse navbar-collapse pull-right">
         <ul class="nav navbar-nav">
@@ -26,17 +26,19 @@
   </nav>
 
   <div id="app">
+
     <div class="filters">
       <!-- GENRE -->
       <div class="filter-by-genre">
         <div class="btn-group" role="group" aria-label="filter-by-genre">
-          <button type="button" class="btn btn-default"> Culture + Society </button>
+          <button type="button" class="btn btn-default"> Physics </button>
           <button type="button" class="btn btn-default"> Math + Econ </button>
-          <button type="button" class="btn btn-default"> Lit + Arts </button>
-          <button type="button" class="btn btn-default"> Physics + Cosmos </button>
-          <button type="button" class="btn btn-default"> Philosophy </button>
-          <button type="button" class="btn btn-default"> Psych + Neuro </button>
+          <button type="button" class="btn btn-default"> Psych </button>
           <button type="button" class="btn btn-default"> Life Sciences </button>
+          <button type="button" class="btn btn-default"> Philosophy </button>
+          <button type="button" class="btn btn-default"> Lit + Arts </button>
+          <button type="button" class="btn btn-default"> Culture + Soc </button>
+          <button type="button" class="btn btn-default"> All </button>
         </div>
       </div>
 
@@ -53,7 +55,7 @@
       <div class="filter-by-age">
         <div class="btn-group" role="group" aria-label="filter-by-age">
           <button type="button" class="btn btn-default"> &lt 1900 </button>
-          <button type="button" class="btn btn-default"> 1900 </button>
+          <button type="button" class="btn btn-default"> 1900s </button>
           <button type="button" class="btn btn-default"> 2000s </button>
         </div>
       </div>

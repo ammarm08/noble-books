@@ -1,24 +1,20 @@
 body, table {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
 body {
-  background-color: #f9f9f9; 
+  /*background-color: #fbfbfb; */
+  background-color: white;
 }
 
 #app {
-  margin: 20px auto;
-  width: 75%;
+  margin: 0 auto;
+  width: 60%;
 }
 
 table, .filters {
   width: 100%;
-  margin: 10px auto;
-}
-
-table {
-  border: 4px solid #f2f2f2;
-  background-color: white;;
+  margin: 20px auto;
 }
 
 /* NAVBAR */
@@ -29,23 +25,36 @@ table {
 }
 
 .navbar .container-fluid {
-  width: 75%;
+  width: 60%;
 }
 
 .navbar .navbar-brand {
-  color: #da552f;
+  color: black;
   cursor: pointer;
 }
 
 .navbar .navbar-brand:hover {
-  color: #da552f;
+  color: black;
   cursor: pointer;
   opacity: 0.5;
 }
 
 .navbar .active a {
   background-color: white !important;
-  border-bottom: 2px solid #da552f;
+  border-bottom: 2px solid #ff4742;
+}
+
+#tagline {
+  color: #da552f;
+  font-size: 0.75em;
+  opacity: 0.7;
+}
+
+/* CAROUSEL */
+
+.top-book-thumbnails img {
+  width: 24.6%;
+  height: 245px;
 }
 
 /* FILTERS */
@@ -57,7 +66,7 @@ table {
 
 .filters button:hover {
   color: white;
-  background-color: #da552f;
+  background-color: #ff4742;
 }
 
 .filter-by-genre {
@@ -70,7 +79,7 @@ table {
 }
 
 .filter-by-genre button {
-  width: 14.3%;
+  width: 12.6%;
 }
 
 .filter-by-length, .filter-by-age, .filter-by-frequency {
@@ -99,14 +108,20 @@ table {
 
 th {
   font-size: 1.1em;
+  color: #bbbbbb;
+}
+
+td {
+  padding: 20px;
 }
 
 .book_title {
   width: 30%;
 }
 
-.book_author {
-  color: #a8a4a0;
+.book_title:hover {
+  color: #ff4742;
+  cursor: pointer;
 }
 
 .book_author, .book_recommenders {
