@@ -3,7 +3,6 @@ body, table {
 }
 
 body {
-  /*background-color: #fbfbfb; */
   background-color: white;
 }
 
@@ -22,15 +21,22 @@ table, .filters {
 .navbar {
   background-color: white;
   box-shadow: 0 1px 0 0 rgba(0,0,0,.05),0 2px 4px 0 rgba(0,0,0,.06);
+  margin: 0;
 }
 
 .navbar .container-fluid {
   width: 60%;
+  padding: 0;
 }
 
 .navbar .navbar-brand {
   color: black;
   cursor: pointer;
+  font-size: 1.5em;
+}
+
+.navbar-collapse {
+  padding: 0;
 }
 
 .navbar .navbar-brand:hover {
@@ -39,15 +45,25 @@ table, .filters {
   opacity: 0.5;
 }
 
-.navbar .active a {
-  background-color: white !important;
-  border-bottom: 2px solid #ff4742;
+.navbar-nav {
+  margin: 0;
 }
 
-#tagline {
-  color: #da552f;
-  font-size: 0.75em;
-  opacity: 0.7;
+.navbar .active a {
+  background-color: white !important;
+  border-bottom: 2px solid #EF233C;
+}
+
+#subscribe-to-list {
+  border: 1px solid #a8a4a0;
+  color: white;
+  background-color: #EF233C;
+}
+
+#subscribe-to-list:hover {
+  border: 1px solid white;
+  color: #EF233C;
+  background-color: white;
 }
 
 /* CAROUSEL */
@@ -55,6 +71,31 @@ table, .filters {
 .top-book-thumbnails img {
   width: 24.6%;
   height: 245px;
+}
+
+/* BANNER */
+
+#banner-container {
+  height: 200px;
+  margin: 0 auto;
+  background-color: #38369A;
+  /*background: url('https://static.pexels.com/photos/36178/pexels-photo.jpg') 50% 0%;*/
+  font-size: 2.5em;
+  font-family: 'Montserrat';
+  /*color: #2a2f36;*/
+  color: white;
+}
+
+#banner-text-container {
+  width: 60%;
+  margin: 0 auto;
+  padding-top: 50px;
+}
+
+#banner-text {
+  width: 100%;
+  margin: 10px 0;
+  text-align: center;
 }
 
 /* FILTERS */
@@ -66,7 +107,7 @@ table, .filters {
 
 .filters button:hover {
   color: white;
-  background-color: #ff4742;
+  background-color: #EF233C;
 }
 
 .filter-by-genre {
@@ -88,7 +129,7 @@ table, .filters {
 }
 
 .filter-by-length, .filter-by-age {
-  margin-right: 4.4%;
+  margin-right: 4.5%;
 }
 
 .filter-by-length button, .filter-by-age button {
@@ -117,10 +158,11 @@ td {
 
 .book_title {
   width: 30%;
+  font-weight: bold;
 }
 
 .book_title:hover {
-  color: #ff4742;
+  color: #EF233C;
   cursor: pointer;
 }
 
