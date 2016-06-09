@@ -1,5 +1,5 @@
-body, table {
-  font-family: 'Open Sans', sans-serif;
+body, .books {
+  font-family: 'Montserrat', sans-serif;
 }
 
 body {
@@ -11,7 +11,7 @@ body {
   width: 60%;
 }
 
-table, .filters {
+.books, .filters {
   width: 100%;
   margin: 20px auto;
 }
@@ -73,36 +73,12 @@ table, .filters {
   height: 245px;
 }
 
-/* BANNER */
-
-#banner-container {
-  height: 200px;
-  margin: 0 auto;
-  background-color: #38369A;
-  /*background: url('https://static.pexels.com/photos/36178/pexels-photo.jpg') 50% 0%;*/
-  font-size: 2.5em;
-  font-family: 'Montserrat';
-  /*color: #2a2f36;*/
-  color: white;
-}
-
-#banner-text-container {
-  width: 60%;
-  margin: 0 auto;
-  padding-top: 50px;
-}
-
-#banner-text {
-  width: 100%;
-  margin: 10px 0;
-  text-align: center;
-}
-
 /* FILTERS */
 
 .filters button {
   border: 1px solid #a8a4a0;
   color: #a8a4a0;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .filters button:hover {
@@ -140,39 +116,54 @@ table, .filters {
   width: 100%;
 }
 
-/* TABLE */
+/* LIST */
 
-.table th, .table td {
-  border-top: none !important;
-  border-bottom: none !important;
+.books-list li {
+  border: none;
+  padding: 8px 0;
 }
 
-th {
-  font-size: 1.1em;
-  color: #bbbbbb;
+.books-list li:hover {
+  background-color: #f5f8fa;
 }
 
-td {
-  padding: 20px;
+.book, .book_data, .book_recommenders {
+  display: inline-block;
+  height: 40px;
+  position: relative;
+}
+
+.book {
+  width: 60%;
+}
+
+.book_data {
+  width: 25%;
+}
+
+.book_recommenders {
+  position: absolute;
 }
 
 .book_title {
-  width: 30%;
+  color: #534540;
   font-weight: bold;
+  font-size: 1.2em;
 }
 
 .book_title:hover {
-  color: #EF233C;
+  text-decoration: underline;
   cursor: pointer;
 }
 
-.book_author, .book_recommenders {
-  width: 20%;
+.book_author, .book_length {
+  color: #999999
 }
 
 .book_recommenders .img-circle {
-  width: 15%;
+  width: 25%;
   margin: 0 4px;
+
 }
 
 .book_recommenders .img-circle:hover {

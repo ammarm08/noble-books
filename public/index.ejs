@@ -28,14 +28,6 @@
     </div>
   </nav>
 
-  <div id="banner-container">
-    <div id="banner-text-container">
-      <div id="banner-text">
-        Book Recommendations from the World's Most Influential Scientists, Journalists, and Novelists
-      </div>
-    </div>
-  </div>
-
   <div id="app">
 
     <div class="filters">
@@ -78,27 +70,18 @@
       </div>
 
     </div>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Author</th>
-          <th>Genre</th>
-          <th>Length</th>
-          <th>Recommended By</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!--  data goes here -->
-      </tbody>
-    </table>
+    <div class="books">
+      <ul class="books-list list-group">
+        <!-- books go here -->
+      </ul>
+    </div>
   </div>
 
   <script type="text/javascript">
     (function() {
       $(document).ready(function() {
         var local_data = JSON.parse(localStorage.getItem('books_list'));
-        var $list = $('body table tbody');
+        var $list = $('.books-list');
 
         fetch_books();
 
@@ -125,29 +108,42 @@
         }
 
         function append_one_to_table(book, rank) {
-          var $row = $('<tr></tr>');
+          var $row = $('<li class="list-group-item"></li>');
 
-          var $title = $('<td class="book_title"></td>');
-          var $author = $('<td class="book_author"></td>');
-          var $genre = $('<td>Culture + Society</td>');
-          var $length = $('<td>225</td>');
-          var $recommenders = $('<td class="book_recommenders"></td>');
+          var $book = $('<div class="book"></div>')
+          var $title = $('<div class="book_title"></div>');
+          var $author = $('<div class="book_author"></div>');
+
+          var $data = $('<div class="book_data"></div>')
+          var $genre = $('<div class="book_genre">Culture + Society</div>');
+          var $length = $('<div class="book_length">225 pages</div>');
+
+          var $recommenders = $('<div class="book_recommenders"></div>');
           var $rec_thumbnail1 = $('<img class="img-circle" src="https://qph.is.quoracdn.net/main-thumb-148986927-50-fbohjmmcrizbhsijbkiuuxdekhbtppdf.jpeg"/>');
           var $rec_thumbnail2 = $('<img class="img-circle" src="http://img2-ak.lst.fm/i/u/64s/25bcf1206e94470aa8525d44f82f635d.png"/>');
-          var $rec_thumbnail3 = $('<img class="img-circle" src="https://pbs.twimg.com/profile_images/429346159870488576/N18OCeAD_normal.jpeg "/>');     
+          var $rec_thumbnail3 = $('<img class="img-circle" src="https://pbs.twimg.com/profile_images/429346159870488576/N18OCeAD_normal.jpeg "/>'); 
 
-          $title.text(book[0]);
+          // TITLE + AUTHOR
+          if (book[0].length > 50) {
+            $title.text(book[0].slice(0,50) + '...');
+          } else {
+            $title.text(book[0]);
+          }
+          
           $author.text(book[1]);
-          $recommenders.append($rec_thumbnail1);
-          $recommenders.append($rec_thumbnail2);
-          $recommenders.append($rec_thumbnail3);
-          // $recommenders.text(book[2].join(', '));
+          $book.append($title).append($author);
 
-          $row.append($title)
-              .append($author)
-              .append($genre)
-              .append($length)
+          // DATA
+          $data.append($genre).append($length);
+
+          // RECOMMENDERS
+          $recommenders.append($rec_thumbnail1).append($rec_thumbnail2).append($rec_thumbnail3);
+
+          // POST
+          $row.append($book)
+              .append($data)
               .append($recommenders);
+
           $list.append($row);
         }
       })
