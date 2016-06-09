@@ -71,7 +71,7 @@ body {
   margin: 40px auto;
   padding: 20px;
   background-color: #f0efef;
-  height: 60px;
+  height: 80px;
   border-radius: 8px;
   text-align: center;
 }
@@ -174,4 +174,14 @@ body {
 .book_recommenders .img-circle:hover {
   filter: grayscale(100%);
   -webkit-filter: grayscale(100%);
+}
+
+/* STICKY DIV */
+
+.sticky-div {
+  margin: 10px auto;
+}
+
+.fa-heart {
+  color: #c00;
 }
