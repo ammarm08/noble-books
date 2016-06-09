@@ -30,7 +30,7 @@ body {
 }
 
 .navbar .navbar-brand {
-  color: black;
+  color: #534540;
   cursor: pointer;
   font-size: 1.5em;
 }
@@ -144,6 +144,7 @@ body {
 }
 
 .book_data {
+  color: #534540;
   width: 25%;
 }
 
