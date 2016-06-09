@@ -40,7 +40,7 @@ body {
 }
 
 .navbar .navbar-brand:hover {
-  color: black;
+  color: #c00;
   cursor: pointer;
   opacity: 0.5;
 }
@@ -51,19 +51,17 @@ body {
 
 .navbar .active a {
   background-color: white !important;
-  border-bottom: 2px solid #EF233C;
+  border-bottom: 2px solid #c00;
 }
 
 #subscribe-to-list {
   border: 1px solid #a8a4a0;
   color: white;
-  background-color: #EF233C;
+  background-color: #c00;
 }
 
 #subscribe-to-list:hover {
-  border: 1px solid white;
-  color: #EF233C;
-  background-color: white;
+  opacity: 0.5;
 }
 
 /* SUBSCRIBE */
@@ -89,7 +87,7 @@ body {
 
 .filters button:hover {
   color: white;
-  background-color: #EF233C;
+  background-color: #c00;
 }
 
 .filter-by-genre {
