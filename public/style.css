@@ -66,12 +66,18 @@ body {
   background-color: white;
 }
 
-/* CAROUSEL */
+/* SUBSCRIBE */
 
-.top-book-thumbnails img {
-  width: 24.6%;
-  height: 245px;
+.subscribe {
+  width: 100%;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #f0efef;
+  height: 60px;
+  border-radius: 8px;
+  text-align: center;
 }
+
 
 /* FILTERS */
 
