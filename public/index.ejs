@@ -97,6 +97,7 @@
   <script type="text/javascript">
     (function() {
       $(document).ready(function() {
+        // GLOBALS
         var PAGE = 0;
         var local_data = JSON.parse(localStorage.getItem('books_list'));
         var $list = $('.books-list');
@@ -124,10 +125,12 @@
           }
         }
 
+        // LOAD NEXT 15 results
         function loadNextBooksGroup(p) {
           append_all_to_table(local_data.slice(p*15, 15 + p*15));
         }
 
+        // APPEND A LIST OF BOOKS
         function append_all_to_table(books) {
           books.forEach(function(book) {
             append_one_to_table(book);
@@ -146,6 +149,7 @@
           });
         }
 
+        // BUILD INDIVIDUAL BOOK ITEM & APPEND IT TO LIST
         function append_one_to_table(book) {
           var $row = $('<li class="list-group-item" style="display: none"></li>');
 
