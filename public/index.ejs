@@ -9,6 +9,7 @@
   <script src="https://code.jquery.com/jquery-2.2.4.min.js"   
   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
   crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   <script src="https://use.fontawesome.com/a1990ff7a7.js"></script>
 </head>
 <body>
@@ -85,7 +86,6 @@
         <!-- books go here -->
       </ul>
     </div>
-    
   </div>
 
   <script type="text/javascript">
@@ -101,6 +101,9 @@
             loadNextBooksGroup(PAGE + 1)
           }
         });
+
+        // MODAL LISTENER
+
 
         // INITIAL DATA FETCH
         fetch_books();
@@ -124,6 +127,8 @@
         }
 
         function loadNextBooksGroup(p) {
+          $('.fa-spinner').fadeOut();
+          $('.fa-spinner').remove();
           append_all_to_table(local_data.slice(p*15, p + p*15))
           PAGE++;
         }
@@ -132,10 +137,11 @@
           books.forEach(function(book, i) {
             append_one_to_table(book, i+1);
           });
+          $list.append('<li class="scroll list-group-item"><i class="fa fa-spinner" aria-hidden="true"></i></li>')
         }
 
         function append_one_to_table(book, rank) {
-          var $row = $('<li class="list-group-item"></li>');
+          var $row = $('<li class="list-group-item" style="display: none"></li>');
 
           var $book = $('<div class="book"></div>')
           var $title = $('<div class="book_title"></div>');
@@ -193,6 +199,7 @@
               .append($recommenders);
 
           $list.append($row);
+          $row.fadeIn();
         }
       })
     })()
