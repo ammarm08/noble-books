@@ -54,11 +54,11 @@ body {
   border-bottom: 4px solid #ff4742;
 }
 
-#subscribe-to-list {
+#join-list {
   color: #ff4742;
 }
 
-#subscribe-to-list:hover {
+#join-list:hover {
   opacity: 0.5;
 }
 
@@ -141,16 +141,16 @@ body {
 }
 
 .book {
-  width: 56%;
+  width: 54%;
 }
 
 .book_data {
   color: #534540;
-  width: 18%;
+  width: 22%;
 }
 
 .book_recommenders {
-  width: 24%;
+  width: 22%;
   position: absolute;
   text-align: right;
 }
