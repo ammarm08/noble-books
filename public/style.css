@@ -66,9 +66,9 @@ body {
 
 .subscribe {
   width: 100%;
-  margin: 40px auto;
+  margin: 20px auto;
   padding: 20px;
-  background-color: #F3ECCE;
+  background-color: #f5f8fa;
   height: 80px;
   border-radius: 8px;
   text-align: center;
@@ -141,16 +141,18 @@ body {
 }
 
 .book {
-  width: 60%;
+  width: 56%;
 }
 
 .book_data {
   color: #534540;
-  width: 25%;
+  width: 18%;
 }
 
 .book_recommenders {
+  width: 24%;
   position: absolute;
+  text-align: right;
 }
 
 .book_title {
@@ -169,14 +171,18 @@ body {
 }
 
 .book_recommenders .img-circle {
-  width: 25%;
-  margin: 0 4px;
+  width: 16%;
+  margin: 0 2px;
 
 }
 
 .book_recommenders .img-circle:hover {
   filter: grayscale(100%);
   -webkit-filter: grayscale(100%);
+}
+
+.book_recommenders span {
+  font-size: 0.75em;
 }
 
 .pagination {
