@@ -8,7 +8,7 @@ function sort_by_title_freq () {
   let book_title_frequencies = Object.keys(BOOKS).reduce(function(frequencies, book) {
     let title = BOOKS[book].title;
     let author = BOOKS[book].author;
-    let recommenders = AUTHORS[author].recommenders;
+    let recommenders = BOOKS[book].recommenders;
     let frequency = recommenders.length;
 
     frequencies.push([title, author, recommenders, frequency]);

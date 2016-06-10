@@ -88,6 +88,11 @@ body {
   background-color: #ff4742;
 }
 
+.filters .active {
+  color: white;
+  background-color: #ff4742;
+}
+
 .filter-by-genre {
   width: 100%;
   margin: 10px auto;
