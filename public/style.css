@@ -121,8 +121,7 @@ body {
 /* LIST */
 
 .books {
-  max-height: 870px;
-  overflow: hidden;
+  /*max-height: 870px;*/
 }
 
 .books-list li {

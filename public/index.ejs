@@ -85,27 +85,7 @@
         <!-- books go here -->
       </ul>
     </div>
-    <nav>
-      <ul class="pagination">
-        <li class="page-item">
-          <a class="page-link" href="#" aria-label="Previous">
-            <span aria-hidden="true">&laquo;</span>
-            <span class="sr-only">Previous</span>
-          </a>
-        </li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item"><a class="page-link" href="#">4</a></li>
-        <li class="page-item"><a class="page-link" href="#">5</a></li>
-        <li class="page-item">
-          <a class="page-link" href="#" aria-label="Next">
-            <span aria-hidden="true">&raquo;</span>
-            <span class="sr-only">Next</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
+    
   </div>
 
   <script type="text/javascript">
@@ -113,8 +93,16 @@
       $(document).ready(function() {
         var local_data = JSON.parse(localStorage.getItem('books_list'));
         var $list = $('.books-list');
-        var page = 0;
+        var PAGE = 0;
 
+        // INFINITE SCROLL PAGINATION
+        $(window).scroll(function(){
+          if  ($(window).scrollTop() == $(document).height() - $(window).height()){
+            loadNextBooksGroup(PAGE + 1)
+          }
+        });
+
+        // INITIAL DATA FETCH
         fetch_books();
 
         function fetch_books() {
@@ -123,17 +111,24 @@
               type: 'GET',
               url: '/api/books',
               success: function(data) {
-                append_all_to_table(data.slice(page*15, 15 + page*15));
+                $list.empty();
+                append_all_to_table(data.slice(0, 15));
                 localStorage.setItem('books_list', JSON.stringify(data));
+                local_data = JSON.parse(localStorage.getItem('books_list'));
               }
             })
           } else {
-            append_all_to_table(local_data.slice(page*15, 15 + page*15));
+            $list.empty();
+            append_all_to_table(local_data.slice(0, 15));
           }
         }
 
+        function loadNextBooksGroup(p) {
+          append_all_to_table(local_data.slice(p*15, p + p*15))
+          PAGE++;
+        }
+
         function append_all_to_table(books) {
-          $list.empty();
           books.forEach(function(book, i) {
             append_one_to_table(book, i+1);
           });
