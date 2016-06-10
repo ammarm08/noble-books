@@ -40,7 +40,7 @@ body {
 }
 
 .navbar .navbar-brand:hover {
-  color: #c00;
+  color: #ff4742;
   cursor: pointer;
   opacity: 0.5;
 }
@@ -51,13 +51,11 @@ body {
 
 .navbar .active a {
   background-color: white !important;
-  border-bottom: 2px solid #c00;
+  border-bottom: 4px solid #ff4742;
 }
 
 #subscribe-to-list {
-  border: 1px solid #a8a4a0;
-  color: white;
-  background-color: #c00;
+  color: #ff4742;
 }
 
 #subscribe-to-list:hover {
@@ -70,7 +68,7 @@ body {
   width: 100%;
   margin: 40px auto;
   padding: 20px;
-  background-color: #f0efef;
+  background-color: #F3ECCE;
   height: 80px;
   border-radius: 8px;
   text-align: center;
@@ -87,7 +85,7 @@ body {
 
 .filters button:hover {
   color: white;
-  background-color: #c00;
+  background-color: #ff4742;
 }
 
 .filter-by-genre {
@@ -121,6 +119,11 @@ body {
 }
 
 /* LIST */
+
+.books {
+  max-height: 870px;
+  overflow: hidden;
+}
 
 .books-list li {
   border: none;
@@ -176,6 +179,11 @@ body {
   -webkit-filter: grayscale(100%);
 }
 
+.pagination {
+  padding: 0;
+  margin: 0;
+}
+
 /* STICKY DIV */
 
 .sticky-div {
@@ -183,5 +191,5 @@ body {
 }
 
 .fa-heart {
-  color: #c00;
+  color: #ff4742;
 }
