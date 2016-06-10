@@ -111,7 +111,7 @@
               url: '/api/books',
               success: function(data) {
                 $list.empty();
-                append_all_to_table(data.slice(PAGE, 15 + PAGE*15));
+                append_all_to_table(data.slice(0, 15 + PAGE*15));
                 PAGE++;
                 localStorage.setItem('books_list', JSON.stringify(data));
                 local_data = JSON.parse(localStorage.getItem('books_list'));
@@ -120,6 +120,7 @@
           } else {
             $list.empty();
             append_all_to_table(local_data.slice(PAGE, 15 + PAGE*15));
+            PAGE++;
           }
         }
 
@@ -134,7 +135,9 @@
 
           // INFINITE PAGINATION
           $('#next_results').remove();
-          $list.append('<a id="next_results">More Results</a>');
+          var current = 15 + PAGE * 15;
+          var total = local_data.length;
+          $list.append('<a id="next_results">More Results (viewing ' + current + ' of ' + total + ') </a>');
 
           $('#next_results').click(function(e) {
             e.preventDefault();
