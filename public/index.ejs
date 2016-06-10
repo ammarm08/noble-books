@@ -88,22 +88,18 @@
     </div>
   </div>
 
+  <footer class="footer">
+    <div class="footer-message">
+      * List based upon GDI/WorldPost's Most Influential Thinkers of 2015 list.
+    </div>
+  </footer>
+
   <script type="text/javascript">
     (function() {
       $(document).ready(function() {
+        var PAGE = 0;
         var local_data = JSON.parse(localStorage.getItem('books_list'));
         var $list = $('.books-list');
-        var PAGE = 0;
-
-        // INFINITE SCROLL PAGINATION
-        $(window).scroll(function(){
-          if  ($(window).scrollTop() == $(document).height() - $(window).height()){
-            loadNextBooksGroup(PAGE + 1)
-          }
-        });
-
-        // MODAL LISTENER
-
 
         // INITIAL DATA FETCH
         fetch_books();
@@ -115,32 +111,39 @@
               url: '/api/books',
               success: function(data) {
                 $list.empty();
-                append_all_to_table(data.slice(0, 15));
+                append_all_to_table(data.slice(PAGE, 15 + PAGE*15));
+                PAGE++;
                 localStorage.setItem('books_list', JSON.stringify(data));
                 local_data = JSON.parse(localStorage.getItem('books_list'));
               }
             })
           } else {
             $list.empty();
-            append_all_to_table(local_data.slice(0, 15));
+            append_all_to_table(local_data.slice(PAGE, 15 + PAGE*15));
           }
         }
 
         function loadNextBooksGroup(p) {
-          $('.fa-spinner').fadeOut();
-          $('.fa-spinner').remove();
-          append_all_to_table(local_data.slice(p*15, p + p*15))
-          PAGE++;
+          append_all_to_table(local_data.slice(p*15, 15 + p*15));
         }
 
         function append_all_to_table(books) {
-          books.forEach(function(book, i) {
-            append_one_to_table(book, i+1);
+          books.forEach(function(book) {
+            append_one_to_table(book);
           });
-          $list.append('<li class="scroll list-group-item"><i class="fa fa-spinner" aria-hidden="true"></i></li>')
+
+          // INFINITE PAGINATION
+          $('#next_results').remove();
+          $list.append('<a id="next_results">More Results</a>');
+
+          $('#next_results').click(function(e) {
+            e.preventDefault();
+            loadNextBooksGroup(PAGE);
+            PAGE++;
+          });
         }
 
-        function append_one_to_table(book, rank) {
+        function append_one_to_table(book) {
           var $row = $('<li class="list-group-item" style="display: none"></li>');
 
           var $book = $('<div class="book"></div>')

@@ -120,10 +120,6 @@ body {
 
 /* LIST */
 
-.books {
-  /*max-height: 870px;*/
-}
-
 .books-list li {
   border: none;
   padding: 8px 0;
@@ -184,10 +180,6 @@ body {
   font-size: 0.75em;
 }
 
-.scroll {
-  text-align: center;
-}
-
 /* STICKY DIV */
 
 .sticky-div {
@@ -196,4 +188,18 @@ body {
 
 .fa-heart {
   color: #ff4742;
+}
+
+/* FOOTER */
+
+footer {
+  background-color: #f5f8fa;
+}
+
+.footer-message {
+  width: 60%;
+  margin: 50px auto 0px auto;
+  padding: 12px;
+  text-align: center;
+  color: #999999;
 }
