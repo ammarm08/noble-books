@@ -44,12 +44,12 @@
       <!-- GENRE -->
       <div class="filter-by-genre">
         <div class="btn-group" role="group" aria-label="filter-by-genre">
-          <button type="button" class="btn btn-default"> Physics </button>
-          <button type="button" class="btn btn-default"> Life Sciences </button>
-          <button type="button" class="btn btn-default"> Numbers </button>
-          <button type="button" class="btn btn-default"> Business </button>
+          <button type="button" class="btn btn-default"> Math + Sci </button>
+          <button type="button" class="btn btn-default"> Econ </button>
+          <button type="button" class="btn btn-default"> Biz + Tech </button>
           <button type="button" class="btn btn-default"> The Mind </button>
           <button type="button" class="btn btn-default"> History </button>
+          <button type="button" class="btn btn-default"> Culture </button>
           <button type="button" class="btn btn-default"> Literature </button>
           <button type="button" class="btn btn-default active"> All </button>
         </div>
@@ -99,35 +99,35 @@
       $(document).ready(function() {
         // GLOBALS
         var PAGE = 0;
-        var local_data = JSON.parse(localStorage.getItem('books_list'));
+        var LOCAL_DATA = JSON.parse(localStorage.getItem('books_list'));
         var $list = $('.books-list');
 
         // INITIAL DATA FETCH
         fetch_books();
 
         function fetch_books() {
-          if (!local_data) {
+          if (!LOCAL_DATA) {
             $.ajax({
               type: 'GET',
               url: '/api/books',
               success: function(data) {
                 $list.empty();
-                append_all_to_table(data.slice(0, 15 + PAGE*15));
+                loadNextBooksGroup(PAGE, data);
+                LOCAL_DATA = JSON.parse(localStorage.getItem('books_list'));
                 PAGE++;
-                localStorage.setItem('books_list', JSON.stringify(data));
-                local_data = JSON.parse(localStorage.getItem('books_list'));
               }
             })
           } else {
             $list.empty();
-            append_all_to_table(local_data.slice(PAGE, 15 + PAGE*15));
+            loadNextBooksGroup(PAGE, LOCAL_DATA);
             PAGE++;
           }
         }
 
         // LOAD NEXT 15 results
-        function loadNextBooksGroup(p) {
-          append_all_to_table(local_data.slice(p*15, 15 + p*15));
+        function loadNextBooksGroup(p, data) {
+          append_all_to_table(data.slice(p*15, 15 + p*15));
+          append_pagination(data);
         }
 
         // APPEND A LIST OF BOOKS
@@ -135,18 +135,19 @@
           books.forEach(function(book) {
             append_one_to_table(book);
           });
+        }
 
-          // INFINITE PAGINATION
-          $('#next_results').remove();
+        function append_pagination(data) {
           var current = 15 + PAGE * 15;
-          var total = local_data.length;
-          $list.append('<a id="next_results">More Results (viewing ' + current + ' of ' + total + ') </a>');
-
-          $('#next_results').click(function(e) {
+          var total = data.length;
+          var $next_results = $('<a class="next_results">More Results (viewing ' + current + ' of ' + total + ') </a>');
+          $next_results.click(function(e) {
+            this.remove();
             e.preventDefault();
-            loadNextBooksGroup(PAGE);
+            loadNextBooksGroup(PAGE, data);
             PAGE++;
           });
+          $list.append($next_results);
         }
 
         // BUILD INDIVIDUAL BOOK ITEM & APPEND IT TO LIST
