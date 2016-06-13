@@ -185,6 +185,12 @@ body {
   font-size: 0.75em;
 }
 
+/* PAGINATION */
+
+.next_results:hover {
+  cursor: pointer;
+}
+
 /* STICKY DIV */
 
 .sticky-div {

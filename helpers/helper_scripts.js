@@ -1,13 +1,26 @@
+var fs = require('fs');
 
 function writeTSVtoJSON () {
-  fs.readFile('master_list.tsv', 'utf8', function(err, data) {
+  fs.readFile('./data/test_data.tsv', 'utf8', function(err, data) {
     if (err) {
       console.error(err);
     } else {
       var entries = data.split('\r\n').map(function(entry) {
-        return entry.split('\t').slice(0,3);
+        return entry.split('\t');
       })
       entries.shift();
+
+      //0- Title
+      //1- Author
+      //2- Recommender
+      //3- Rec_Source
+      //4- Amazon_Link
+      //5- Book_Genre
+      //6- Length
+      //7- Publish_Date
+      //8- On_List?
+      //9- Rec_Review
+      //10- Recommender_Genre
       
       var books = {};
       var authors = {};
@@ -19,11 +32,29 @@ function writeTSVtoJSON () {
         var recommender = entry[2];
         var slug = title + '\t' + author;
 
+        var amazon_link = entry[4];
+        var book_genre = entry[6];
+        var length = entry[7]
+        var publish_year = entry[8];
+        var on_list = entry[9];
+        var review_excerpt = entry[10];
+        var rec_genre = entry[11];
+
         // BOOK
         if (books[slug]) {
           books[slug].recommenders.push(recommender);
+          books[slug].reviews.push(review_excerpt);
         } else {
-          books[slug] = { title: title, author: author, recommenders: [recommender] };
+          books[slug] = { 
+            title: title, 
+            author: author, 
+            recommenders: [recommender],
+            amazon_link: amazon_link,
+            genre: book_genre,
+            length: length,
+            year: publish_year,
+            reviews: [review_excerpt] 
+          };
         }
 
         // AUTHOR
@@ -37,7 +68,11 @@ function writeTSVtoJSON () {
           }
 
         } else {
-          authors[author] = { titles: [title], recommenders: [recommender] };
+          authors[author] = { 
+            titles: [title], 
+            recommenders: [recommender],
+            on_list: on_list
+          };
         }
 
         // RECOMMENDER
@@ -45,17 +80,25 @@ function writeTSVtoJSON () {
           recommenders[recommender].recommended_books.push(title);
           if (recommenders[recommender].recommended_authors.indexOf(author) === -1) {
             recommenders[recommender].recommended_authors.push(author);
+            recommenders[recommender].reviews.push(review_excerpt);
           }
         } else {
-          recommenders[recommender] = { recommended_books: [title], recommended_authors: [author] };
+          recommenders[recommender] = { 
+            recommended_books: [title], 
+            recommended_authors: [author],
+            reviews: [review_excerpt],
+            field: rec_genre
+          };
         }
 
       })
 
-      fs.writeFile('authors.json', JSON.stringify(authors));
-      fs.writeFile('books.json', JSON.stringify(books));
-      fs.writeFile('recommenders.json', JSON.stringify(recommenders));
+      fs.writeFile('./data/authors.json', JSON.stringify(authors));
+      fs.writeFile('./data/books.json', JSON.stringify(books));
+      fs.writeFile('./data/recommenders.json', JSON.stringify(recommenders));
       console.log('DONE');
     }
   })
 }
+
+writeTSVtoJSON();

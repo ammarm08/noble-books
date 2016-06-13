@@ -159,8 +159,8 @@
           var $author = $('<div class="book_author"></div>');
 
           var $data = $('<div class="book_data"></div>')
-          var $genre = $('<div class="book_genre">Culture + Society</div>');
-          var $length = $('<div class="book_length">225 pages</div>');
+          var $genre = $('<div class="book_genre">' + book[6] + '</div>');
+          var $length = $('<div class="book_length">' + book[4] + ' pages  (' + book[5] + ')</div>');
 
           var $recommenders = $('<div class="book_recommenders"></div>');
           var $rec_thumbnail1 = $('<img class="img-circle" src="https://qph.is.quoracdn.net/main-thumb-148986927-50-fbohjmmcrizbhsijbkiuuxdekhbtppdf.jpeg"/>');
@@ -176,7 +176,7 @@
             $title.text(book[0]);
           }
           
-          $author.text(book[1]);
+          $author.text(book[1][0]);
           $book.append($title).append($author);
 
           // DATA
@@ -186,19 +186,19 @@
 
           $recommenders.append($rec_thumbnail1);
 
-          if (book[2].length > 1) {
+          if (book[[2]].length > 1) {
             $recommenders.append($rec_thumbnail2);
           }
 
-          if (book[2].length > 2) {
+          if (book[[2]].length > 2) {
             $recommenders.append($rec_thumbnail3);
           }
 
-          if (book[2].length > 3) {
+          if (book[[2]].length > 3) {
             $recommenders.append($rec_thumbnail4);
           }
 
-          if (book[2].length > 4) {
+          if (book[[2]].length > 4) {
             $recommenders.append($rec_thumbnail5);
           }
 
