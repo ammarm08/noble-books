@@ -212,6 +212,13 @@ body {
   color: #ff4742;
 }
 
+/* MODAL */
+
+.modal {
+  width: 100%;
+  margin: 0 auto;
+}
+
 /* FOOTER */
 
 footer {
