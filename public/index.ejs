@@ -44,13 +44,13 @@
       <!-- GENRE -->
       <div class="filter-by-genre">
         <div class="btn-group" role="group" aria-label="filter-by-genre">
-          <button type="button" class="genre_filter btn btn-default"> Evolutionary Biology </button>
-          <button type="button" class="genre_filter btn btn-default"> Finance &amp; Economics </button>
-          <button type="button" class="genre_filter btn btn-default"> Technology </button>
-          <button type="button" class="genre_filter btn btn-default"> Philosophy </button>
-          <button type="button" class="genre_filter btn btn-default"> Psychology </button>
-          <button type="button" class="genre_filter btn btn-default"> Culture &amp; Society </button>
-          <button type="button" class="genre_filter btn btn-default"> Literature </button>
+          <button type="button" class="genre_filter btn btn-default"> Math &amp; Sci </button>
+          <button type="button" class="genre_filter btn btn-default"> The Mind </button>
+          <button type="button" class="genre_filter btn btn-default"> Culture </button>
+          <button type="button" class="genre_filter btn btn-default"> Econ &amp; Gov </button>
+          <button type="button" class="genre_filter btn btn-default"> Faith </button>
+          <button type="button" class="genre_filter btn btn-default"> Fiction </button>
+          <button type="button" class="genre_filter btn btn-default"> Business </button>
           <button type="button" class="all_genres genre_filter btn btn-default active"> All </button>
         </div>
       </div>
@@ -103,6 +103,7 @@
         var all_data = [];
         var selected_data = [];
         var selected_genres = [];
+        var selected_lengths = [];
         var $list = $('.books-list');
 
         // GENRE FILTER LISTENER
@@ -119,12 +120,18 @@
             $('.all_genres').removeClass('active');
             $(this).removeClass('active');
             selected_genres = selected_genres.filter(function(genre) {
-              return genre !== $(this).text().trim();
+              return genre === $(this).text().trim();
             });
-            selected_data = selected_data.filter(function(book) {
-              var genre = book[6];
-              return selected_genres.indexOf(genre) !== -1;
-            })
+
+            if (selected_genres.length === 0) {
+              selected_data = all_data;
+            } else {
+              selected_data = selected_data.filter(function(book) {
+                var genre = book[6];
+                return selected_genres.indexOf(genre) !== -1;
+              })
+            }
+            
             $list.empty();
             PAGE = 0;
             loadNextBooksGroup(PAGE, selected_data);
@@ -142,7 +149,7 @@
             loadNextBooksGroup(PAGE, selected_data);
             PAGE++;
           }
-        })
+        });
 
         // INITIAL DATA FETCH
         fetch_books();
@@ -192,12 +199,19 @@
           var $row = $('<li class="list-group-item" style="display: none"></li>');
 
           var $book = $('<div class="book"></div>')
-          var $title = $('<div class="book_title"></div>');
+          var $title = $('<a class="book_title" target="_blank"></a>');
           var $author = $('<div class="book_author"></div>');
 
           var $data = $('<div class="book_data"></div>')
           var $genre = $('<div class="book_genre">' + book[6] + '</div>');
-          var $length = $('<div class="book_length">' + book[4] + ' pages  (' + book[5] + ')</div>');
+
+          var year = book[5];
+          if (year < 0) {
+            year = parseInt(Math.abs(year)) + ' BC';
+          } else if (parseInt(year) < 1400) {
+            year = parseInt(year) + ' AD';
+          }
+          var $length = $('<div class="book_length">' + book[4] + ' pages  (' + year + ')</div>');
 
           var $recommenders = $('<div class="book_recommenders"></div>');
           var $rec_thumbnail1 = $('<img class="img-circle" src="https://qph.is.quoracdn.net/main-thumb-148986927-50-fbohjmmcrizbhsijbkiuuxdekhbtppdf.jpeg"/>');
@@ -207,13 +221,14 @@
           var $rec_thumbnail5 = $('<img class="img-circle" src="https://i.guim.co.uk/img/static/sys-images/Guardian/Pix/pictures/2003/01/27/chomsky.jpg?w=620&q=55&auto=format&usm=12&fit=max&s=8398cfe3da5b90d86320ddf033408005"/>'); 
 
           // TITLE + AUTHOR
-          if (book[0].length > 40) {
-            $title.text(book[0].slice(0,40) + '...');
+          if (book[0].length > 50) {
+            $title.text(book[0].slice(0,50) + '...');
           } else {
             $title.text(book[0]);
           }
           
-          $author.text(book[1][0]);
+          $title.attr('href', book[9]);
+          $author.text(book[1][0] + ' (' + book[8] + ') ');
           $book.append($title).append($author);
 
           // DATA
