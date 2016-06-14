@@ -109,44 +109,37 @@
         // GENRE FILTER LISTENER
         $('.genre_filter').on('click', function(e) {
           e.preventDefault();
-          if ($(this).text().trim() === 'All' || $('.filter-by-genre .active').length >= 6) {
+
+          if ($(this).text().trim() === 'All') {
             $('.genre_filter').removeClass('active');
             $('.all_genres').addClass('active');
-            PAGE = 0;
             selected_genres = [];
-            fetch_books();
           } else if ($(this).hasClass('active')) {
-            // detoggle
-            $('.all_genres').removeClass('active');
             $(this).removeClass('active');
             selected_genres = selected_genres.filter(function(genre) {
               return genre === $(this).text().trim();
             });
-
-            if (selected_genres.length === 0) {
-              selected_data = all_data;
-            } else {
-              selected_data = selected_data.filter(function(book) {
-                return selected_genres.indexOf(book.genre) !== -1;
-              })
-            }
-            
-            $list.empty();
-            PAGE = 0;
-            loadNextBooksGroup(PAGE, selected_data);
-            PAGE++;
+          } else if ($('.filter-by-genre .active').length >= 6) {
+            $('.all_genres').trigger('click');
           } else {
             $(this).addClass('active');
             $('.all_genres').removeClass('active');
             selected_genres.push($(this).text().trim());
+          }
+
+          $list.empty();
+          PAGE = 0;
+
+          if (selected_genres.length === 0) {
+            selected_data = all_data;
+          } else {
             selected_data = all_data.filter(function(book) {
               return selected_genres.indexOf(book.genre) !== -1;
             })
-            $list.empty();
-            PAGE = 0;
-            loadNextBooksGroup(PAGE, selected_data);
-            PAGE++;
           }
+
+          loadNextBooksGroup(PAGE, selected_data);
+          PAGE++;
         });
 
         // INITIAL DATA FETCH

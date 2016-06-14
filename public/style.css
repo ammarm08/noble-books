@@ -83,14 +83,15 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 
-.filters button:hover {
+.filters button:hover, .filters button:active, .filters button:focus {
   color: white;
   background-color: #ff4742;
 }
 
-.filters .active {
+.filters .active, .filters .active:hover, .filters .active:focus {
   color: white;
   background-color: #ff4742;
+  outline: none;
 }
 
 .filter-by-genre {
