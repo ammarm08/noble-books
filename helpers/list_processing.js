@@ -4,16 +4,16 @@ let BOOKS = require('../data/books.json');
 let AUTHORS = require('../data/authors.json');
 let RECS = require('../data/recommenders.json');
 let GENRE_LOOKUP = {
-  'Evolutionary Biology': 'Math & Sci',
-  'Physics': 'Math & Sci',
-  'Anthropology': 'Math & Sci',
-  'Mathematics': 'Math & Sci',
+  'Evolutionary Biology': 'Math + Sci',
+  'Physics': 'Math + Sci',
+  'Anthropology': 'Math + Sci',
+  'Mathematics': 'Math + Sci',
   'Neuroscience': 'The Mind',
   'Psychology': 'The Mind',
   'Philosophy': 'The Mind',
-  'Finance & Economics': 'Econ & Gov',
-  'Politics': 'Econ & Gov',
-  'Law': 'Econ & Gov',
+  'Finance & Economics': 'Econ + Gov',
+  'Politics': 'Econ + Gov',
+  'Law': 'Econ + Gov',
   'Literature': 'Fiction',
   'Technology': 'Culture',
   'Culture & Society': 'Culture',
@@ -22,7 +22,7 @@ let GENRE_LOOKUP = {
   'Religion & Spirituality': 'Faith'
 }
 
-function sort_by_title_freq () {
+exports.process_books = function () {
   let book_title_frequencies = Object.keys(BOOKS).reduce(function(frequencies, book) {
     let title = BOOKS[book].title;
     let author = BOOKS[book].author;
@@ -61,4 +61,32 @@ function sort_by_title_freq () {
   });
 }
 
-module.exports = sort_by_title_freq;
+exports.process_recommenders = function () {
+  let recommenders_list = Object.keys(RECS).reduce(function(results, rec) {
+    var rec_obj = {
+      name: rec,
+      recommended_books: RECS[rec].recommended_books
+    }
+    results.push(rec_obj);
+    return results;
+  }, []);
+
+  return recommenders_list.sort(function(a,b) {
+    return b.recommended_books.length - a.recommended_books.length;
+  });
+}
+
+exports.process_authors = function () {
+  let authors_list = Object.keys(AUTHORS).reduce(function(results, a) {
+    var a_obj = {
+      name: a,
+      books: AUTHORS[a].titles
+    }
+    results.push(a_obj);
+    return results;
+  }, []);
+
+  return authors_list.sort(function(a,b) {
+    return b.books.length - a.books.length;
+  })
+}

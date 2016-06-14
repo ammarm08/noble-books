@@ -20,9 +20,9 @@
       </div>
       <div class="collapse navbar-collapse pull-right">
         <ul class="nav navbar-nav">
-          <li class="active"><a href="#">Books</a></li>
-          <li><a href="#">Collections</a></li>
-          <li><a href="#">Authors</a></li>
+          <li class="active"><a href="/books">Books</a></li>
+          <li><a href="/collections">Collections</a></li>
+          <li><a href="/authors">Authors</a></li>
           <li><a href="#" id="join-list">Join</a></li>
         </ul>
       </div>
@@ -44,10 +44,10 @@
       <!-- GENRE -->
       <div class="filter-by-genre">
         <div class="btn-group" role="group" aria-label="filter-by-genre">
-          <button type="button" class="genre_filter btn btn-default"> Math &amp; Sci </button>
+          <button type="button" class="genre_filter btn btn-default"> Math + Sci </button>
           <button type="button" class="genre_filter btn btn-default"> The Mind </button>
           <button type="button" class="genre_filter btn btn-default"> Culture </button>
-          <button type="button" class="genre_filter btn btn-default"> Econ &amp; Gov </button>
+          <button type="button" class="genre_filter btn btn-default"> Econ + Gov </button>
           <button type="button" class="genre_filter btn btn-default"> Faith </button>
           <button type="button" class="genre_filter btn btn-default"> Fiction </button>
           <button type="button" class="genre_filter btn btn-default"> Business </button>
@@ -56,7 +56,7 @@
       </div>
 
       <!-- LENGTH -->
-      <div class="filter-by-length">
+      <div class="filter-by-length" style="display: none">
         <div class="btn-group" role="group" aria-label="filter-by-length">
           <button type="button" class="length_filter btn btn-default"> Short </button>
           <button type="button" class="length_filter btn btn-default"> Medium </button>
@@ -65,7 +65,7 @@
       </div>
 
       <!-- AGE -->
-      <div class="filter-by-age">
+      <div class="filter-by-age" style="display: none">
         <div class="btn-group" role="group" aria-label="filter-by-age">
           <button type="button" class="age_filter btn btn-default"> &lt; 1900 </button>
           <button type="button" class="age_filter btn btn-default"> 1900s </button>
@@ -74,7 +74,7 @@
       </div>
 
       <!-- CLEAR ALL FILTERS -->
-      <div class="clear-all-filters">
+      <div class="clear-all-filters" style="display: none">
         <div class="btn-group" role="group" aria-label="clear-all-filters">
           <button type="button" class="btn btn-default"> Clear All Filters </button>
         </div>
@@ -99,44 +99,50 @@
       $(document).ready(function() {
         // GLOBALS
         var PAGE = 0;
-        var genre_list = $('.genre_filter').map(function(x) { return $(this).text().trim(); }).toArray();
+        var genre_list = $('.genre_filter').map(function() { return $(this).text().trim(); }).toArray();
         var all_data = [];
         var selected_data = [];
-        var selected_genres = [];
-        var selected_lengths = [];
+        var selected_genres = genre_list;
         var $list = $('.books-list');
 
         // GENRE FILTER LISTENER
         $('.genre_filter').on('click', function(e) {
           e.preventDefault();
 
+          // reset to ALL
           if ($(this).text().trim() === 'All') {
             $('.genre_filter').removeClass('active');
             $('.all_genres').addClass('active');
-            selected_genres = [];
+            selected_genres = genre_list;
+          // toggle off 
           } else if ($(this).hasClass('active')) {
             $(this).removeClass('active');
             selected_genres = selected_genres.filter(function(genre) {
               return genre === $(this).text().trim();
             });
+          // edge case: all filters selected, reset to ALL
           } else if ($('.filter-by-genre .active').length >= 6) {
             $('.all_genres').trigger('click');
+          // toggle on
           } else {
             $(this).addClass('active');
             $('.all_genres').removeClass('active');
+
+            // first filter applied -> empty genres array
+            if ($('.filter-by-genre .active').length === 1) {
+              selected_genres = [];
+            }
+
             selected_genres.push($(this).text().trim());
           }
 
           $list.empty();
           PAGE = 0;
 
-          if (selected_genres.length === 0) {
-            selected_data = all_data;
-          } else {
-            selected_data = all_data.filter(function(book) {
-              return selected_genres.indexOf(book.genre) !== -1;
-            })
-          }
+          // set data to all books within selected list of genres
+          selected_data = all_data.filter(function(book) {
+            return selected_genres.indexOf(book.genre) !== -1;
+          })
 
           loadNextBooksGroup(PAGE, selected_data);
           PAGE++;
