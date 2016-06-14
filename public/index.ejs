@@ -44,38 +44,38 @@
       <!-- GENRE -->
       <div class="filter-by-genre">
         <div class="btn-group" role="group" aria-label="filter-by-genre">
-          <button type="button" class="btn btn-default"> Math + Sci </button>
-          <button type="button" class="btn btn-default"> Econ </button>
-          <button type="button" class="btn btn-default"> Biz + Tech </button>
-          <button type="button" class="btn btn-default"> The Mind </button>
-          <button type="button" class="btn btn-default"> History </button>
-          <button type="button" class="btn btn-default"> Culture </button>
-          <button type="button" class="btn btn-default"> Literature </button>
-          <button type="button" class="btn btn-default active"> All </button>
+          <button type="button" class="genre_filter btn btn-default"> Evolutionary Biology </button>
+          <button type="button" class="genre_filter btn btn-default"> Finance &amp; Economics </button>
+          <button type="button" class="genre_filter btn btn-default"> Technology </button>
+          <button type="button" class="genre_filter btn btn-default"> Philosophy </button>
+          <button type="button" class="genre_filter btn btn-default"> Psychology </button>
+          <button type="button" class="genre_filter btn btn-default"> Culture &amp; Society </button>
+          <button type="button" class="genre_filter btn btn-default"> Literature </button>
+          <button type="button" class="all_genres genre_filter btn btn-default active"> All </button>
         </div>
       </div>
 
       <!-- LENGTH -->
       <div class="filter-by-length">
         <div class="btn-group" role="group" aria-label="filter-by-length">
-          <button type="button" class="btn btn-default"> Short </button>
-          <button type="button" class="btn btn-default"> Medium </button>
-          <button type="button" class="btn btn-default"> Long </button>
+          <button type="button" class="length_filter btn btn-default"> Short </button>
+          <button type="button" class="length_filter btn btn-default"> Medium </button>
+          <button type="button" class="length_filter btn btn-default"> Long </button>
         </div>
       </div>
 
       <!-- AGE -->
       <div class="filter-by-age">
         <div class="btn-group" role="group" aria-label="filter-by-age">
-          <button type="button" class="btn btn-default"> &lt 1900 </button>
-          <button type="button" class="btn btn-default"> 1900s </button>
-          <button type="button" class="btn btn-default"> 2000s </button>
+          <button type="button" class="age_filter btn btn-default"> &lt; 1900 </button>
+          <button type="button" class="age_filter btn btn-default"> 1900s </button>
+          <button type="button" class="age_filter btn btn-default"> 2000s </button>
         </div>
       </div>
 
       <!-- CLEAR ALL FILTERS -->
-      <div class="filter-by-frequency">
-        <div class="btn-group" role="group" aria-label="filter-by-frequency">
+      <div class="clear-all-filters">
+        <div class="btn-group" role="group" aria-label="clear-all-filters">
           <button type="button" class="btn btn-default"> Clear All Filters </button>
         </div>
       </div>
@@ -99,29 +99,66 @@
       $(document).ready(function() {
         // GLOBALS
         var PAGE = 0;
-        var LOCAL_DATA = JSON.parse(localStorage.getItem('books_list'));
+        var genre_list = $('.genre_filter').map(function(x) { return $(this).text().trim(); }).toArray();
+        var all_data = [];
+        var selected_data = [];
+        var selected_genres = [];
         var $list = $('.books-list');
+
+        // GENRE FILTER LISTENER
+        $('.genre_filter').on('click', function(e) {
+          e.preventDefault();
+          if ($(this).text().trim() === 'All' || $('.filter-by-genre .active').length >= 6) {
+            $('.genre_filter').removeClass('active');
+            $('.all_genres').addClass('active');
+            PAGE = 0;
+            selected_genres = [];
+            fetch_books();
+          } else if ($(this).hasClass('active')) {
+            // detoggle
+            $('.all_genres').removeClass('active');
+            $(this).removeClass('active');
+            selected_genres = selected_genres.filter(function(genre) {
+              return genre !== $(this).text().trim();
+            });
+            selected_data = selected_data.filter(function(book) {
+              var genre = book[6];
+              return selected_genres.indexOf(genre) !== -1;
+            })
+            $list.empty();
+            PAGE = 0;
+            loadNextBooksGroup(PAGE, selected_data);
+            PAGE++;
+          } else {
+            $(this).addClass('active');
+            $('.all_genres').removeClass('active');
+            selected_genres.push($(this).text().trim());
+            selected_data = all_data.filter(function(book) {
+              var genre = book[6];
+              return selected_genres.indexOf(genre) !== -1;
+            })
+            $list.empty();
+            PAGE = 0;
+            loadNextBooksGroup(PAGE, selected_data);
+            PAGE++;
+          }
+        })
 
         // INITIAL DATA FETCH
         fetch_books();
 
         function fetch_books() {
-          if (!LOCAL_DATA) {
-            $.ajax({
-              type: 'GET',
-              url: '/api/books',
-              success: function(data) {
-                $list.empty();
-                loadNextBooksGroup(PAGE, data);
-                LOCAL_DATA = JSON.parse(localStorage.getItem('books_list'));
-                PAGE++;
-              }
-            })
-          } else {
-            $list.empty();
-            loadNextBooksGroup(PAGE, LOCAL_DATA);
-            PAGE++;
-          }
+          $.ajax({
+            type: 'GET',
+            url: '/api/books',
+            success: function(data) {
+              $list.empty();
+              all_data = data;
+              selected_data = all_data;
+              loadNextBooksGroup(PAGE, selected_data);
+              PAGE++;
+            }
+          })
         }
 
         // LOAD NEXT 15 results
@@ -138,8 +175,8 @@
         }
 
         function append_pagination(data) {
-          var current = 15 + PAGE * 15;
           var total = data.length;
+          var current = total <= 15 + PAGE * 15 ? total : 15 + PAGE * 15;
           var $next_results = $('<a class="next_results">More Results (viewing ' + current + ' of ' + total + ') </a>');
           $next_results.click(function(e) {
             this.remove();
