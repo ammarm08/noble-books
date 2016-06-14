@@ -4,10 +4,10 @@ let BOOKS = require('../data/books.json');
 let AUTHORS = require('../data/authors.json');
 let RECS = require('../data/recommenders.json');
 let GENRE_LOOKUP = {
-  'Evolutionary Biology': 'Math + Sci',
-  'Physics': 'Math + Sci',
-  'Anthropology': 'Math + Sci',
-  'Mathematics': 'Math + Sci',
+  'Evolutionary Biology': 'Math/Science',
+  'Physics': 'Math/Science',
+  'Anthropology': 'Math/Science',
+  'Mathematics': 'Math/Science',
   'Neuroscience': 'The Mind',
   'Psychology': 'The Mind',
   'Philosophy': 'The Mind',

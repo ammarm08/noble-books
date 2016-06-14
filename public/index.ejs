@@ -16,7 +16,7 @@
   <nav class="navbar navbar-default">
     <div class="container-fluid">
       <div class="navbar-header">
-        <div class="navbar-brand"><i class="glyphicon glyphicon-home"></i>  Bookswell</div>
+        <a class="navbar-brand" href="/"><i class="glyphicon glyphicon-collapse-down"></i>  Bookswell</a>
       </div>
       <div class="collapse navbar-collapse pull-right">
         <ul class="nav navbar-nav">
@@ -44,7 +44,7 @@
       <!-- GENRE -->
       <div class="filter-by-genre">
         <div class="btn-group" role="group" aria-label="filter-by-genre">
-          <button type="button" class="genre_filter btn btn-default"> Math + Sci </button>
+          <button type="button" class="genre_filter btn btn-default"> Math/Science </button>
           <button type="button" class="genre_filter btn btn-default"> The Mind </button>
           <button type="button" class="genre_filter btn btn-default"> Culture </button>
           <button type="button" class="genre_filter btn btn-default"> Econ + Gov </button>
@@ -117,8 +117,10 @@
           // toggle off 
           } else if ($(this).hasClass('active')) {
             $(this).removeClass('active');
+            $(this).blur();
+            var self = this;
             selected_genres = selected_genres.filter(function(genre) {
-              return genre === $(this).text().trim();
+              return genre !== $(self).text().trim();
             });
           // edge case: all filters selected, reset to ALL
           } else if ($('.filter-by-genre .active').length >= 6) {
@@ -225,7 +227,7 @@
           }
           
           $title.attr('href', book.link);
-          $author.text(book.author + ' (' + book.score + ') ');
+          $author.text(book.author);
           $book.append($title).append($author);
 
           // DATA

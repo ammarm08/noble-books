@@ -104,7 +104,8 @@ body {
 }
 
 .filter-by-genre button {
-  width: 12.6%;
+  width: 25%;
+  margin: 0 !important;
 }
 
 .filter-by-length, .filter-by-age, .clear-all-filters {
