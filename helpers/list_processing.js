@@ -38,12 +38,26 @@ function sort_by_title_freq () {
     // calculate score
     let score = (frequency * 5) + (AUTHORS[author].recommenders.length * 2) + (1000/year) + (100/length) + (on_list * 2);
 
-    frequencies.push([title, [author, on_list], recommenders, reviews, length, year, genre, frequency, score, link]);
+    var book_obj = {
+      title: title,
+      author: author,
+      link: link,
+      on_list: on_list,
+      recommenders: recommenders,
+      reviews: reviews,
+      length: length,
+      year: year,
+      genre: genre,
+      frequency: frequency,
+      score: score
+    };
+
+    frequencies.push(book_obj);
     return frequencies;
   }, []);
 
   return book_title_frequencies.sort(function (a,b) {
-    return b[8] - a[8];
+    return b.score - a.score;
   });
 }
 

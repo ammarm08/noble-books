@@ -127,8 +127,7 @@
               selected_data = all_data;
             } else {
               selected_data = selected_data.filter(function(book) {
-                var genre = book[6];
-                return selected_genres.indexOf(genre) !== -1;
+                return selected_genres.indexOf(book.genre) !== -1;
               })
             }
             
@@ -141,8 +140,7 @@
             $('.all_genres').removeClass('active');
             selected_genres.push($(this).text().trim());
             selected_data = all_data.filter(function(book) {
-              var genre = book[6];
-              return selected_genres.indexOf(genre) !== -1;
+              return selected_genres.indexOf(book.genre) !== -1;
             })
             $list.empty();
             PAGE = 0;
@@ -203,15 +201,15 @@
           var $author = $('<div class="book_author"></div>');
 
           var $data = $('<div class="book_data"></div>')
-          var $genre = $('<div class="book_genre">' + book[6] + '</div>');
+          var $genre = $('<div class="book_genre">' + book.genre + '</div>');
 
-          var year = book[5];
+          var year = book.year;
           if (year < 0) {
             year = parseInt(Math.abs(year)) + ' BC';
           } else if (parseInt(year) < 1400) {
             year = parseInt(year) + ' AD';
           }
-          var $length = $('<div class="book_length">' + book[4] + ' pages  (' + year + ')</div>');
+          var $length = $('<div class="book_length">' + book.length + ' pages  (' + year + ')</div>');
 
           var $recommenders = $('<div class="book_recommenders"></div>');
           var $rec_thumbnail1 = $('<img class="img-circle" src="https://qph.is.quoracdn.net/main-thumb-148986927-50-fbohjmmcrizbhsijbkiuuxdekhbtppdf.jpeg"/>');
@@ -221,40 +219,39 @@
           var $rec_thumbnail5 = $('<img class="img-circle" src="https://i.guim.co.uk/img/static/sys-images/Guardian/Pix/pictures/2003/01/27/chomsky.jpg?w=620&q=55&auto=format&usm=12&fit=max&s=8398cfe3da5b90d86320ddf033408005"/>'); 
 
           // TITLE + AUTHOR
-          if (book[0].length > 50) {
-            $title.text(book[0].slice(0,50) + '...');
+          if (book.title.length > 50) {
+            $title.text(book.title.slice(0,50) + '...');
           } else {
-            $title.text(book[0]);
+            $title.text(book.title);
           }
           
-          $title.attr('href', book[9]);
-          $author.text(book[1][0] + ' (' + book[8] + ') ');
+          $title.attr('href', book.link);
+          $author.text(book.author + ' (' + book.score + ') ');
           $book.append($title).append($author);
 
           // DATA
           $data.append($genre).append($length);
 
           // RECOMMENDERS
-
           $recommenders.append($rec_thumbnail1);
 
-          if (book[[2]].length > 1) {
+          if (book.recommenders.length > 1) {
             $recommenders.append($rec_thumbnail2);
           }
 
-          if (book[[2]].length > 2) {
+          if (book.recommenders.length > 2) {
             $recommenders.append($rec_thumbnail3);
           }
 
-          if (book[[2]].length > 3) {
+          if (book.recommenders.length > 3) {
             $recommenders.append($rec_thumbnail4);
           }
 
-          if (book[[2]].length > 4) {
+          if (book.recommenders.length > 4) {
             $recommenders.append($rec_thumbnail5);
           }
 
-          $recommenders.append($('<span><a href="#">' + ' (' + book[2].length + ')' + '</a></span>'));
+          $recommenders.append($('<span><a href="#">' + ' (' + book.recommenders.length + ')' + '</a></span>'));
 
           // POST
           $row.append($book)
