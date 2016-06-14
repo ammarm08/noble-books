@@ -238,7 +238,7 @@
           while (i < book.recommenders.length && i < thumb_urls.length) {
             var $thumb = $('<img class="img-circle"/>');
             var recommender = book.recommenders[i];
-            var review = book.reviews[i] === '""' ? null : book.reviews[i];
+            var review = book.reviews[i] === '""' ? null : book.reviews[i].trim();
             var tooltip_text = review ? recommender + ': ' + review : recommender;
 
             $thumb.data('toggle', 'tooltip');

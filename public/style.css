@@ -198,6 +198,10 @@ body {
   cursor: pointer;
 }
 
+.tooltip {
+  width: 200px;
+}
+
 /* STICKY DIV */
 
 .sticky-div {
