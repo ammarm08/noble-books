@@ -214,9 +214,42 @@ body {
 
 /* MODAL */
 
-.modal {
+.modal-dialog {
+  width: 60%;
+  margin: 50px auto;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.modal-header {
+  background-color: #0F1B38;
+  color: white;
+}
+
+.modal img {
   width: 100%;
-  margin: 0 auto;
+}
+
+.modal-about, .modal-blurb, .modal-reviews, .modal-recommenders {
+  margin: 20px auto;
+  font-size: 1.1em;
+}
+
+.modal-year, .modal-length, .modal-genre {
+  background-color: white;
+  border: 1px solid #999999;
+  border-radius: 12px;
+  text-align: center;
+  padding: 4px 4px 4px 4px;
+  margin: 4px auto;
+}
+
+.modal-year, .modal-length {
+  display: inline-block;
+  width: 49%;
+}
+
+.modal-genre {
+  width: 100%;
 }
 
 /* FOOTER */
