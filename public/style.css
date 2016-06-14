@@ -29,14 +29,14 @@ body {
   padding: 0;
 }
 
+.navbar-collapse {
+  padding: 0;
+}
+
 .navbar .navbar-brand {
   color: #534540;
   cursor: pointer;
   font-size: 1.5em;
-}
-
-.navbar-collapse {
-  padding: 0;
 }
 
 .navbar .navbar-brand:hover {
@@ -62,16 +62,21 @@ body {
   opacity: 0.5;
 }
 
+.glyphicon-collapse-down {
+  color: #ff4742;
+}
+
 /* SUBSCRIBE */
 
 .subscribe {
   width: 100%;
   margin: 20px auto;
-  padding: 20px;
+  padding: 12px 12px 12px 12px;
   background-color: #f5f8fa;
-  height: 80px;
+  height: 90%;
   border-radius: 8px;
   text-align: center;
+  font-size: 1.1em;
 }
 
 
