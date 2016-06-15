@@ -315,11 +315,11 @@ body {
 }
 
 #book_details, #book_about, #book_blurb, #book_review {
-  color: #ff4742;
-  opacity: 0.5;
+  color: #999999;
   width: 90%;
   margin: 12px 10px;
   font-size: 1.1em;
+  font-family: 'Montserrat';
 }
 
 .modal-recommenders {
