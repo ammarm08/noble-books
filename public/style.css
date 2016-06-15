@@ -279,6 +279,20 @@ body {
   font-size: 1.1em;
 }
 
+.modal-recommenders {
+  text-align: center;
+}
+
+.modal-recommenders .img-circle {
+  width: 16%;
+  margin: 10px 2px;
+}
+
+.modal-recommenders .img-circle:hover {
+  filter: grayscale(100%);
+  -webkit-filter: grayscale(100%);
+}
+
 /* FOOTER */
 
 footer {

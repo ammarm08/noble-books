@@ -106,6 +106,7 @@
                 <div class="modal-year"></div>
                 <div class="modal-length"></div>
                 <div class="modal-genre"></div>
+                <div class="modal-recommenders"></div>
               </div>
             </div>
           </div>
@@ -265,10 +266,7 @@
             $('.modal-genre').text(book.genre);
 
             $('.modal-review').empty();
-
-            var $reviewers = $('<div></div>');
-            $reviewers.text('Recommended by ' + book.recommenders.join(', '));
-            $('.modal-review').append($reviewers);
+            $('.modal-recommenders').empty();
 
             var count = 0;
             var review_text = "";
@@ -285,6 +283,21 @@
               var $review = $('<div></div>');
               $review.text(review_text);
               $('.modal-review').append($review);
+            }
+
+            var i = 0;
+            while (i < book.recommenders.length) {
+              var $thumb = $('<img class="img-circle"/>');
+              var recommender = book.recommenders[i];
+
+              $thumb.data('toggle', 'tooltip');
+              $thumb.attr('title', recommender);
+              $thumb.attr('src', book.thumbnails[i]);
+
+              $('.modal-recommenders').append($thumb);
+              $thumb.tooltip();
+
+              i++;
             }
           })
 
