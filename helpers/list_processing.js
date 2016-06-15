@@ -119,14 +119,15 @@ exports.process_recommenders = function () {
   let recommenders_list = Object.keys(RECS).reduce(function(results, rec) {
     var rec_obj = {
       name: rec,
-      recommended_books: RECS[rec].recommended_books
+      recommended_books: RECS[rec].recommended_books,
+      thumbnail: THUMBNAILS[rec]
     }
     results.push(rec_obj);
     return results;
   }, []);
 
   return recommenders_list.sort(function(a,b) {
-    return b.recommended_books.length - a.recommended_books.length;
+    return a.recommended_books.length - b.recommended_books.length;
   });
 }
 

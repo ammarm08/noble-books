@@ -356,6 +356,31 @@ footer {
   color: #999999;
 }
 
+/* COLLECTIONS */
+
+.recommender-collection {
+  width: 25%;
+  padding: 10px 10px;
+  display: inline-block;
+  text-align: center;
+}
+
+.recommender-collection img {
+  width: 20%;
+}
+
+.recommender {
+  border: none;
+  color: #534540;
+  font-size: 1.2em;
+}
+
+.recommender:hover {
+  background-color: #f5f8fa;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 /* VIEWPORTS */
 
 @media (max-width: 1000px) {

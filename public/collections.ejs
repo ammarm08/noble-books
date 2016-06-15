@@ -41,7 +41,7 @@
     </div>
 
     <div class="books">
-      <ul class="books-list list-group">
+      <ul class="books-list">
         <!-- books go here -->
       </ul>
     </div>
@@ -57,9 +57,7 @@
     (function() {
       $(document).ready(function() {
         // GLOBALS
-        var PAGE = 0;
         var all_data = [];
-        var selected_data = [];
         var $list = $('.books-list');
 
         // INITIAL DATA FETCH
@@ -72,17 +70,14 @@
             success: function(data) {
               $list.empty();
               all_data = data;
-              selected_data = all_data;
-              loadNextRecommenderGroup(PAGE, selected_data);
-              PAGE++;
+              loadNextRecommenderGroup(all_data);
             }
           })
         }
 
         // LOAD NEXT 15 results
-        function loadNextRecommenderGroup(p, data) {
-          append_all_recs_to_table(data.slice(p*15, 15 + p*15));
-          append_rec_pagination(data);
+        function loadNextRecommenderGroup(data) {
+          append_all_recs_to_table(data);
         }
 
         // APPEND A LIST OF RECOMMENDERS
@@ -92,34 +87,23 @@
           });
         }
 
-        function append_rec_pagination(data) {
-          var total = data.length;
-          var current = total <= 15 + PAGE * 15 ? total : 15 + PAGE * 15;
-          var $next_results = $('<a class="next_results">More Recommenders (viewing ' + current + ' of ' + total + ') </a>');
-          $next_results.click(function(e) {
-            this.remove();
-            e.preventDefault();
-            loadNextRecommenderGroup(PAGE, data);
-            PAGE++;
-          });
-          $list.append($next_results);
-        }
-
         // BUILD INDIVIDUAL BOOK ITEM & APPEND IT TO LIST
         function append_one_rec_to_table(rec) {
-          var $row = $('<li class="list-group-item" style="display: none"></li>');
+          var $row = $('<div class="recommender-collection" style="display: none"></div>');
+          var $thumb = $('<img class="img-circle"/>');
+          $thumb.attr('src', rec.thumbnail);
 
           var $recommender = $('<div class="recommender"></div>');
           $recommender.text(rec.name);
 
-          var $recommendations = $('<div class="list-group"></div>');
-          rec.recommended_books.forEach(function(book) {
-            var $b = $('<div class="list-group-item"></div>');
-            $b.text(book);
-            $recommendations.append($b);
-          })
+          // var $recommendations = $('<div class="list-group" style="display:none"></div>');
+          // rec.recommended_books.forEach(function(book) {
+          //   var $b = $('<div class="list-group-item"></div>');
+          //   $b.text(book);
+          //   $recommendations.append($b);
+          // })
 
-          $row.append($recommender).append($recommendations);
+          $row.append($thumb).append($recommender);
           $list.append($row);
           $row.fadeIn();
         }
