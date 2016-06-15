@@ -267,7 +267,7 @@ body {
 
 .modal-about, .modal-blurb, .modal-review {
   width: 90%;
-  margin: 20px auto;
+  margin: 10px;
   font-size: 1.1em;
 }
 
@@ -298,7 +298,7 @@ body {
   color: #ff4742;
   opacity: 0.5;
   width: 90%;
-  margin: 8px auto;
+  margin: 12px 10px;
   font-size: 1.1em;
 }
 
