@@ -365,6 +365,12 @@ footer {
   text-align: center;
 }
 
+.recommender-collection:hover {
+  background-color: #f5f8fa;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .recommender-collection img {
   width: 20%;
 }
@@ -373,12 +379,6 @@ footer {
   border: none;
   color: #534540;
   font-size: 1.2em;
-}
-
-.recommender:hover {
-  background-color: #f5f8fa;
-  text-decoration: underline;
-  cursor: pointer;
 }
 
 /* VIEWPORTS */
