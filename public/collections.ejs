@@ -40,9 +40,7 @@
     </div>
 
     <div class="books">
-      <ul class="books-list">
-        <!-- books go here -->
-      </ul>
+      <!-- books go here -->
     </div>
   </div>
 
@@ -57,7 +55,7 @@
       $(document).ready(function() {
         // GLOBALS
         var all_data = [];
-        var $list = $('.books-list');
+        var $books = $('.books');
 
         // INITIAL DATA FETCH
         fetch_books();
@@ -67,7 +65,7 @@
             type: 'GET',
             url: '/api/recommenders',
             success: function(data) {
-              $list.empty();
+              $books.empty();
               all_data = data;
               loadNextRecommenderGroup(all_data);
             }
@@ -103,7 +101,7 @@
           // })
 
           $row.append($thumb).append($recommender);
-          $list.append($row);
+          $books.append($row);
           $row.fadeIn();
         }
       })

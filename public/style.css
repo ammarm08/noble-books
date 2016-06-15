@@ -358,6 +358,10 @@ footer {
 
 /* COLLECTIONS */
 
+.books {
+  margin: 0 auto;
+}
+
 .recommender-collection {
   width: 25%;
   padding: 10px 10px;
