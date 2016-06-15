@@ -243,12 +243,7 @@
           }
           var $length = $('<div class="book_length">' + book.length + ' pages  (' + year + ')</div>');
 
-          var $recommenders = $('<div class="book_recommenders"></div>');
-          var thumb_urls = [];
-          thumb_urls.push('https://qph.is.quoracdn.net/main-thumb-148986927-50-fbohjmmcrizbhsijbkiuuxdekhbtppdf.jpeg');
-          thumb_urls.push('http://img2-ak.lst.fm/i/u/64s/25bcf1206e94470aa8525d44f82f635d.png');
-          thumb_urls.push('https://pbs.twimg.com/profile_images/429346159870488576/N18OCeAD_normal.jpeg');
-          thumb_urls.push('https://pbs.twimg.com/profile_images/378800000632812409/8df49dbba51e94557c46fe7fd26137ce.jpeg'); 
+          var $recommenders = $('<div class="book_recommenders"></div>'); 
 
           // TITLE + AUTHOR
           if (book.title.length > 50) {
@@ -298,7 +293,7 @@
 
           // RECOMMENDERS
           var i = 0;
-          while (i < book.recommenders.length && i < thumb_urls.length) {
+          while (i < book.recommenders.length) {
             var $thumb = $('<img class="img-circle"/>');
             var recommender = book.recommenders[i];
             var review = book.reviews[i] === '""' ? null : book.reviews[i].trim();
@@ -306,7 +301,7 @@
 
             $thumb.data('toggle', 'tooltip');
             $thumb.attr('title', tooltip_text);
-            $thumb.attr('src', thumb_urls[i]);
+            $thumb.attr('src', book.thumbnails[i]);
 
             $recommenders.append($thumb);
             $thumb.tooltip();
@@ -317,7 +312,7 @@
           var $span = $('<span><a href="#"></a></span>');
           $span.text(' (' + book.recommenders.length + ')');
           $span.data('toggle', 'tooltip');
-          $span.attr('title', JSON.stringify(book.recommenders));
+          $span.attr('title', book.recommenders.join(', '));
           $recommenders.append($span);
           $span.tooltip();
 

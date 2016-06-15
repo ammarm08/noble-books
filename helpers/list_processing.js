@@ -86,7 +86,7 @@ exports.process_books = function () {
     let genre = GENRE_LOOKUP[BOOKS[book].genre] ? GENRE_LOOKUP[BOOKS[book].genre] : BOOKS[book].genre;
     let frequency = recommenders.length;
     let link = BOOKS[book].amazon_link;
-    let thumbnail = THUMBNAILS[author];
+    let thumbnails = recommenders.map(function(person) { return THUMBNAILS[person]; });
 
     // calculate score
     let score = (frequency * 5) + (AUTHORS[author].recommenders.length * 2) + (1000/year) + (100/length) + (on_list * 2);
@@ -102,7 +102,8 @@ exports.process_books = function () {
       year: year,
       genre: genre,
       frequency: frequency,
-      score: score
+      score: score,
+      thumbnails: thumbnails
     };
 
     frequencies.push(book_obj);
