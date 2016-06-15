@@ -232,6 +232,7 @@ body {
 
 .get-book {
   background-color: #21ce99;
+  border-radius: 2px;
 }
 
 .modal-title {
@@ -280,11 +281,13 @@ body {
 }
 
 .modal-recommenders {
-  text-align: center;
+  width: 40%;
+  margin: 10px;
+  display: inline-block;
 }
 
 .modal-recommenders .img-circle {
-  width: 16%;
+  width: 10%;
   margin: 10px 2px;
 }
 
@@ -312,5 +315,12 @@ footer {
 @media (max-width: 1000px) {
   #app, .navbar .container-fluid, .modal-dialog {
     width: 90%;
+  }
+}
+
+@media (max-width: 600px) {
+  .modal-recommenders {
+    width: 75%;
+    display: block;
   }
 }

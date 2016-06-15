@@ -89,7 +89,8 @@
               <span aria-hidden="true">&times;</span>
             </button>
             <div class="modal-title"></div>
-            <a class="btn btn-success get-book">Get It</a>
+            <a class="btn btn-success get-book">Get Book</a>
+            <div class="modal-recommenders"></div>
           </div>
           <div class="modal-body">
             <div class="row">
@@ -106,7 +107,6 @@
                 <div class="modal-year"></div>
                 <div class="modal-length"></div>
                 <div class="modal-genre"></div>
-                <div class="modal-recommenders"></div>
               </div>
             </div>
           </div>
@@ -281,7 +281,7 @@
 
             if (review_text.length) {
               var $review = $('<div></div>');
-              $review.text(review_text);
+              $review.text(review_text + ' - ' + book.recommenders[count]);
               $('.modal-review').append($review);
             }
 
@@ -291,7 +291,7 @@
               var recommender = book.recommenders[i];
 
               $thumb.data('toggle', 'tooltip');
-              $thumb.attr('title', recommender);
+              $thumb.attr('title', 'Recommended by ' + recommender);
               $thumb.attr('src', book.thumbnails[i]);
 
               $('.modal-recommenders').append($thumb);
