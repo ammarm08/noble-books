@@ -217,30 +217,49 @@ body {
 .modal-dialog {
   width: 60%;
   margin: 50px auto;
-  font-family: 'Open Sans', sans-serif;
+  color: #534540;
 }
 
 .modal-header {
-  background-color: #0F1B38;
+  background-image: url('bookstore.png');
   color: white;
+  min-height: 150px;
+}
+
+.modal-title, .get-book {
+  margin: 10px;
+}
+
+.get-book {
+  background-color: #21ce99;
+}
+
+.modal-title {
+  font-size: 1.4em;
 }
 
 .modal img {
   width: 100%;
 }
 
-.modal-about, .modal-blurb, .modal-reviews, .modal-recommenders {
+.modal-about, .modal-blurb, .modal-review {
+  width: 90%;
   margin: 20px auto;
   font-size: 1.1em;
 }
 
+.modal-review div {
+  margin: 8px auto;
+}
+
 .modal-year, .modal-length, .modal-genre {
-  background-color: white;
-  border: 1px solid #999999;
-  border-radius: 12px;
+  background-color: #f2f2f2;
+  border: 1px solid #f2f2f2;
+  border-radius: 2px;
   text-align: center;
-  padding: 4px 4px 4px 4px;
+  padding: 2px 2px 2px 2px;
   margin: 4px auto;
+  color: black;
 }
 
 .modal-year, .modal-length {
@@ -250,6 +269,14 @@ body {
 
 .modal-genre {
   width: 100%;
+}
+
+#book_details, #book_about, #book_blurb, #book_review {
+  color: #ff4742;
+  opacity: 0.5;
+  width: 90%;
+  margin: 8px auto;
+  font-size: 1.1em;
 }
 
 /* FOOTER */
@@ -264,4 +291,12 @@ footer {
   padding: 12px;
   text-align: center;
   color: #999999;
+}
+
+/* VIEWPORTS */
+
+@media (max-width: 1000px) {
+  #app, .navbar .container-fluid, .modal-dialog {
+    width: 90%;
+  }
 }

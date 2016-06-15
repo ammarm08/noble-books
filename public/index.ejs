@@ -44,7 +44,7 @@
       <!-- GENRE -->
       <div class="filter-by-genre">
         <div class="btn-group" role="group" aria-label="filter-by-genre">
-          <button type="button" class="genre_filter btn btn-default"> Math/Science </button>
+          <button type="button" class="genre_filter btn btn-default"> Math / Science </button>
           <button type="button" class="genre_filter btn btn-default"> The Mind </button>
           <button type="button" class="genre_filter btn btn-default"> Culture </button>
           <button type="button" class="genre_filter btn btn-default"> Econ + Gov </button>
@@ -81,40 +81,38 @@
       </div>
 
     </div>
-    <div class="books">
-      <div class="modal fade" id="bookModal" tabindex="-1" role="dialog" aria-labelledby="bookModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-              <h4 class="modal-title"></h4>
-              <h5 class="modal-author"></h5>
-            </div>
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-sm-4">
-                  <img class="modal-image img-rounded"/>
-                  <div class="modal-year"></div>
-                  <div class="modal-length"></div>
-                  <div class="modal-genre"></div>
-                </div>
-                <div class="col-sm-8">
-                  <div class="modal-about"></div>
-                  <div class="modal-blurb"></div>
-                  <div class="modal-recommenders"></div>
-                  <div class="modal-reviews"></div>
-                </div>
+    <div class="modal fade" id="bookModal" tabindex="-1" role="dialog" aria-labelledby="bookModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="modal-title"></div>
+            <a class="btn btn-success get-book">Get It</a>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-8">
+                <div id="book_about">ABOUT</div>
+                <div class="modal-about"></div>
+                <div id="book_blurb">AUTHOR</div>
+                <div class="modal-blurb"></div>
+                <div id="book_review">REVIEW</div>
+                <div class="modal-review"></div>
               </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <a class="btn btn-success get-book">Get It</a>
+              <div class="col-sm-4">
+                <div id="book_details">DETAILS</div>
+                <div class="modal-year"></div>
+                <div class="modal-length"></div>
+                <div class="modal-genre"></div>
+              </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
+    <div class="books">
       <ul class="books-list list-group">
         <!-- books go here -->
       </ul>
@@ -263,7 +261,6 @@
           $book.append($title).append($author);
           $book.on('click', function(e) {
             $('.modal-title').text(book.title);
-            $('.modal-author').text(book.author);
             $('.modal-about').text('A compelling narrative on the self-organized nature of the universe.');
             $('.modal-blurb').text('Richard Dawkins is is an English ethologist, evolutionary biologist and author. He is an emeritus fellow of New College, Oxford.')
             $('.get-book').attr('href', book.link).attr('target', '_blank');
@@ -271,8 +268,29 @@
             $('.modal-year').text(year);
             $('.modal-length').text(book.length + ' pages');
             $('.modal-genre').text(book.genre);
-            $('.modal-recommenders').text(JSON.stringify(book.recommenders));
-            $('.modal-reviews').text(JSON.stringify(book.reviews));
+
+            $('.modal-review').empty();
+
+            var $reviewers = $('<div></div>');
+            $reviewers.text('Recommended by ' + book.recommenders.join(', '));
+            $('.modal-review').append($reviewers);
+
+            var count = 0;
+            var review_text = "";
+            while (count < book.reviews.length) {
+              if (book.reviews[count] !== '""') {
+                review_text = book.reviews[count];
+                break;
+              } else {
+                count++;
+              }
+            }
+
+            if (review_text.length) {
+              var $review = $('<div></div>');
+              $review.text(review_text);
+              $('.modal-review').append($review);
+            }
           })
 
           // DATA
