@@ -89,12 +89,17 @@
               <span aria-hidden="true">&times;</span>
             </button>
             <div class="modal-title"></div>
-            <a class="btn btn-success get-book">Get Book</a>
-            <div class="modal-recommenders"></div>
+            <div class="modal-author"></div>
+            <div class="action-buttons">
+              <div class="get-book-group">
+                <a class="btn btn-default get-book">Get Book</a>
+                <div class="modal-recommenders"></div>
+              </div>
+            </div>
           </div>
           <div class="modal-body">
             <div class="row">
-              <div class="col-sm-8">
+              <div class="col-sm-8 metadata">
                 <div id="book_about">ABOUT</div>
                 <div class="modal-about"></div>
                 <div id="book_blurb">AUTHOR</div>
@@ -257,6 +262,7 @@
           $book.append($title).append($author);
           $book.on('click', function(e) {
             $('.modal-title').text(book.title);
+            $('.modal-author').text(book.author);
             $('.modal-about').text('A compelling narrative on the self-organized nature of the universe.');
             $('.modal-blurb').text('Richard Dawkins is is an English ethologist, evolutionary biologist and author. He is an emeritus fellow of New College, Oxford.')
             $('.get-book').attr('href', book.link).attr('target', '_blank');
