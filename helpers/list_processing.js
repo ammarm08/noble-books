@@ -130,18 +130,3 @@ exports.process_recommenders = function () {
     return a.recommended_books.length - b.recommended_books.length;
   });
 }
-
-exports.process_authors = function () {
-  let authors_list = Object.keys(AUTHORS).reduce(function(results, a) {
-    var a_obj = {
-      name: a,
-      books: AUTHORS[a].titles
-    }
-    results.push(a_obj);
-    return results;
-  }, []);
-
-  return authors_list.sort(function(a,b) {
-    return b.books.length - a.books.length;
-  })
-}

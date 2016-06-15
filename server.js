@@ -25,9 +25,6 @@ app.get('/books', function (req, res) {
 app.get('/collections', function (req, res) {
   res.render('collections');
 })
-app.get('/authors', function (req, res) {
-  res.render('authors');
-})
 
 app.get('/api/books', function (req, res) {
   res.json(process_books());
@@ -35,11 +32,6 @@ app.get('/api/books', function (req, res) {
 
 app.get('/api/recommenders', function (req, res) {
   res.json(process_recommenders());
-})
-
-app.get('/api/authors', function (req, res) {
-  // query builder
-  res.json(process_authors());
 })
 
 app.get('/*', function (req, res) {
