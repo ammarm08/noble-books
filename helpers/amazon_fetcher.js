@@ -17,3 +17,17 @@ function getResponse(msg, cb) {
     }
   })
 }
+
+fs.readFile('./data/remaining.tsv', 'utf8', function(err, data) {
+  if (err) {
+    console.error(err);
+  } else {
+    var lines = data.split('\r\n');
+    lines.forEach(function(line) {
+      var msg = line.replace('\t', ' ');
+      getResponse(msg, function(l) {
+        console.log(msg + '\t' + l);
+      })
+    })
+  }
+})

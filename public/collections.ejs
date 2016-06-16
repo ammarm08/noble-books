@@ -39,6 +39,33 @@
     </div>
     </div>
 
+    <div class="modal fade" id="recModal" tabindex="-1" role="dialog" aria-labelledby="recModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="modal-title"></div>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-12 metadata">
+                <div id="book_about">ABOUT</div>
+                <div class="modal-about"></div>
+                <div id="book_recommendations">RECOMMENDATIONS</div>
+                <div class="modal-recommendations">
+                  <div class="recommendations-container list-group">
+                    <!-- recommendations go here -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="books">
       <!-- books go here -->
     </div>
@@ -86,23 +113,30 @@
 
         // BUILD INDIVIDUAL BOOK ITEM & APPEND IT TO LIST
         function append_one_rec_to_table(rec) {
-          var $row = $('<div class="recommender-collection" style="display: none"></div>');
+          var $grid = $('<div class="recommender-collection" style="display: none"></div>');
           var $thumb = $('<img class="img-circle"/>');
           $thumb.attr('src', rec.thumbnail);
 
-          var $recommender = $('<div class="recommender"></div>');
+          var $recommender = $('<div class="recommender" data-toggle="modal" data-target="#recModal"></div>');
           $recommender.text(rec.name);
 
-          // var $recommendations = $('<div class="list-group" style="display:none"></div>');
-          // rec.recommended_books.forEach(function(book) {
-          //   var $b = $('<div class="list-group-item"></div>');
-          //   $b.text(book);
-          //   $recommendations.append($b);
-          // })
+          $recommender.on('click', function(e) {
+            e.preventDefault();
 
-          $row.append($thumb).append($recommender);
-          $books.append($row);
-          $row.fadeIn();
+            $('.modal-title').text(rec.name + "'s Picks");
+            $('.modal-about').text('Evgeny Morozov is a writer who studies political and social implications of tech.');
+
+            $('.recommendations-container').empty();
+            rec.recommended_books.forEach(function(b) {
+              var $recommendation = $('<div class="list-group-item"></div>');
+              $recommendation.text(b);
+              $('.recommendations-container').append($recommendation);
+            })
+          });
+
+          $grid.append($thumb).append($recommender);
+          $books.append($grid);
+          $grid.fadeIn();
         }
       })
     })()

@@ -264,7 +264,7 @@ body {
   width: 100%;
 }
 
-.modal-about, .modal-blurb, .modal-review {
+.modal-about, .modal-blurb, .modal-review, .modal-recommendations {
   width: 90%;
   margin: 10px;
   font-size: 1.1em;
@@ -314,7 +314,7 @@ body {
   text-align: center;
 }
 
-#book_details, #book_about, #book_blurb, #book_review {
+#book_details, #book_about, #book_blurb, #book_review, #book_recommendations {
   color: #999999;
   width: 90%;
   margin: 12px 10px;
