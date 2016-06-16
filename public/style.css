@@ -132,7 +132,7 @@ body {
 
 /* LIST */
 
-.books-list li {
+.books-list li, .recommendation {
   border: none;
   padding: 8px 0;
 }
@@ -190,6 +190,11 @@ body {
 
 .book_recommenders span {
   font-size: 0.75em;
+}
+
+.recommendation:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 /* PAGINATION */

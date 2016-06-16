@@ -73,7 +73,8 @@
 
   <footer class="footer">
     <div class="footer-message">
-      * List based upon GDI/WorldPost's Most Influential Thinkers of 2015 list.
+      <p>* List based upon GDI/WorldPost's Most Influential Thinkers of 2015 list.</p>
+      <p>Any suggestions or tips? Hit us up at <a>hi@bookswell.io</a></p>
     </div>
   </footer>
 
@@ -114,13 +115,15 @@
         // BUILD INDIVIDUAL BOOK ITEM & APPEND IT TO LIST
         function append_one_rec_to_table(rec) {
           var $grid = $('<div class="recommender-collection" style="display: none"></div>');
-          var $thumb = $('<img class="img-circle"/>');
-          $thumb.attr('src', rec.thumbnail);
-
           var $recommender = $('<div class="recommender" data-toggle="modal" data-target="#recModal"></div>');
           $recommender.text(rec.name);
 
-          $recommender.on('click', function(e) {
+          var $thumb = $('<img class="img-circle"/>');
+          $thumb.attr('src', rec.thumbnail);
+
+          $grid.append($thumb).append($recommender);
+
+          $grid.on('click', function(e) {
             e.preventDefault();
 
             $('.modal-title').text(rec.name + "'s Picks");
@@ -128,13 +131,12 @@
 
             $('.recommendations-container').empty();
             rec.recommended_books.forEach(function(b) {
-              var $recommendation = $('<div class="list-group-item"></div>');
+              var $recommendation = $('<div class="list-group-item recommendation"></div>');
               $recommendation.text(b);
               $('.recommendations-container').append($recommendation);
             })
           });
 
-          $grid.append($thumb).append($recommender);
           $books.append($grid);
           $grid.fadeIn();
         }
