@@ -84,9 +84,20 @@ exports.process_books = function () {
     let length = BOOKS[book].length > 0 ? BOOKS[book].length : 150;
     let year = BOOKS[book].year;
     let genre = GENRE_LOOKUP[BOOKS[book].genre] ? GENRE_LOOKUP[BOOKS[book].genre] : BOOKS[book].genre;
-    let frequency = recommenders.length;
     let link = BOOKS[book].amazon_link;
     let thumbnails = recommenders.map(function(person) { return THUMBNAILS[person]; });
+
+    // adjust for the Sam Harris Effect
+    let frequency = recommenders.reduce(function(total, rec) {
+      let current = RECS[rec].recommended_books.length;
+      if (current > 10) {
+        total += 1/current;
+      } else {
+        total += 1;
+      }
+
+      return total;
+    }, 0)
 
     // calculate score
     let score = (frequency * 5) + (AUTHORS[author].recommenders.length * 2) + (1000/year) + (100/length) + (on_list * 2);
