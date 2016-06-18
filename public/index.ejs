@@ -67,10 +67,10 @@
       <!-- AGE -->
       <div class="filter-by-age advanced-filter" style="display: none">
         <div class="btn-group" role="group" aria-label="filter-by-age">
-          <button type="button" class="age_filter btn btn-default"> &lt; 1900 </button>
-          <button type="button" class="age_filter btn btn-default"> 1900s </button>
-          <button type="button" class="age_filter btn btn-default"> 2000s </button>
-          <button type="button" data-length="all" class="age_filter btn btn-default active"> All </button>
+          <button type="button" data-age="1900" class="age_filter btn btn-default"> &lt; 1900 </button>
+          <button type="button" data-age="1901" class="age_filter btn btn-default"> 1900s </button>
+          <button type="button" data-age="2000" class="age_filter btn btn-default"> 2000s </button>
+          <button type="button" data-age="all" class="all_ages age_filter btn btn-default active"> All </button>
         </div>
       </div>
 
@@ -147,10 +147,12 @@
         var PAGE = 0;
         var genre_list = $('.genre_filter').map(function() { return $(this).text().trim(); }).toArray();
         var length_list = $('.filter-by-length button').map(function() { return $(this).data('length'); }).toArray();
+        var age_list = $('.filter-by-age button').map(function() { return $(this).data('age'); }).toArray();
         var all_data = [];
         var selected_data = [];
         var selected_lengths = length_list;
         var selected_genres = genre_list;
+        var selected_ages = age_list;
         var $list = $('.books-list');
 
         // SHOW/HIDE ADVANCED LISTENER
@@ -181,6 +183,18 @@
             } else if (selected_lengths.indexOf('medium') !== -1 && book.length > 150 && book.length < 400) {
               return true;
             } else if (selected_lengths.indexOf('long') !== -1 && book.length > 400) {
+              return true;
+            } else {
+              return false;
+            }
+          })
+
+          selected_data = selected_data.filter(function(book) {
+            if (selected_ages.indexOf(1900) !== -1 && book.year < 1900) {
+              return true;
+            } else if (selected_ages.indexOf(1901) !== -1 && book.year >= 1900 && book.year < 2000) {
+              return true;
+            } else if (selected_ages.indexOf(2000) !== -1 && book.year >= 2000) {
               return true;
             } else {
               return false;
@@ -219,7 +233,37 @@
 
             selected_lengths.push($(this).data('length'));
           }
-        })    
+        })
+
+        // AGE FILTER LISTENER
+        $('.filter-by-age button').on('click', function(e) {
+          e.preventDefault();
+
+          if ($(this).data('age') === 'all') {
+            $('.filter-by-age button').removeClass('active');
+            $(this).addClass('active');
+            selected_ages = age_list;
+          } else if ($(this).hasClass('active')) {
+            $(this).removeClass('active');
+            $(this).blur();
+            var self = this;
+            selected_ages = selected_ages.filter(function(age) {
+              return age !== $(self).data('age');
+            })
+          } else if ($('.filter-by-age .active').length >= 2) {
+            $('.all_ages').trigger('click');
+          } else {
+            $(this).addClass('active');
+            $('.all_ages').removeClass('active');
+
+            // first time
+            if ($('.filter-by-age .active').length === 1) {
+              selected_ages = [];
+            }
+
+            selected_ages.push($(this).data('age'));
+          }
+        })   
 
         // GENRE FILTER LISTENER
         $('.genre_filter').on('click', function(e) {
