@@ -149,10 +149,9 @@
         var selected_genres = genre_list;
         var $list = $('.books-list');
 
-        // SHOW ADVANCED LISTENER
+        // SHOW/HIDE ADVANCED LISTENER
         $('.show-advanced').on('click', function(e) {
           e.preventDefault();
-          // $('.advanced-filter').show();
           if ($('.advanced-filter:visible').length) {
             $('.advanced-filter').hide();
             $('.show-advanced').text('Advanced Filters');
@@ -160,7 +159,21 @@
             $('.advanced-filter').show();
             $('.show-advanced').text('Show Less Filters')
           }
-        })        
+        })
+
+        // SHOW RESULTS
+        $('.show-results').on('click', function(e) {
+          $list.empty();
+          PAGE = 0;
+
+          // set data to all books within selected list of genres
+          selected_data = all_data.filter(function(book) {
+            return selected_genres.indexOf(book.genre) !== -1;
+          })
+
+          loadNextBooksGroup(PAGE, selected_data);
+          PAGE++;
+        })      
 
         // GENRE FILTER LISTENER
         $('.genre_filter').on('click', function(e) {
@@ -194,17 +207,6 @@
 
             selected_genres.push($(this).text().trim());
           }
-
-          $list.empty();
-          PAGE = 0;
-
-          // set data to all books within selected list of genres
-          selected_data = all_data.filter(function(book) {
-            return selected_genres.indexOf(book.genre) !== -1;
-          })
-
-          loadNextBooksGroup(PAGE, selected_data);
-          PAGE++;
         });
 
         // INITIAL DATA FETCH
