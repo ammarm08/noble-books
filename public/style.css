@@ -118,12 +118,8 @@ body {
   display: inline-block;
 }
 
-.filter-by-length, .filter-by-age {
-  /*margin:*/
-}
-
 .filter-by-length button, .filter-by-age button {
-  width: 33.3%;
+  width: 25%;
 }
 
 .filter-options {

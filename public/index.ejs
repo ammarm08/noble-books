@@ -57,9 +57,10 @@
       <!-- LENGTH -->
       <div class="filter-by-length advanced-filter" style="display: none">
         <div class="btn-group" role="group" aria-label="filter-by-length">
-          <button type="button" class="length_filter btn btn-default"> Short </button>
-          <button type="button" class="length_filter btn btn-default"> Medium </button>
-          <button type="button" class="length_filter btn btn-default"> Long </button>
+          <button type="button" data-length="short" class="length_filter btn btn-default"> Short </button>
+          <button type="button" data-length="medium" class="length_filter btn btn-default"> Medium </button>
+          <button type="button" data-length="long" class="length_filter btn btn-default"> Long </button>
+          <button type="button" data-length="all" class="all_lengths length_filter btn btn-default active"> All </button>
         </div>
       </div>
 
@@ -69,6 +70,7 @@
           <button type="button" class="age_filter btn btn-default"> &lt; 1900 </button>
           <button type="button" class="age_filter btn btn-default"> 1900s </button>
           <button type="button" class="age_filter btn btn-default"> 2000s </button>
+          <button type="button" data-length="all" class="age_filter btn btn-default active"> All </button>
         </div>
       </div>
 
@@ -144,8 +146,10 @@
         // GLOBALS
         var PAGE = 0;
         var genre_list = $('.genre_filter').map(function() { return $(this).text().trim(); }).toArray();
+        var length_list = $('.filter-by-length button').map(function() { return $(this).data('length'); }).toArray();
         var all_data = [];
         var selected_data = [];
+        var selected_lengths = length_list;
         var selected_genres = genre_list;
         var $list = $('.books-list');
 
@@ -171,9 +175,51 @@
             return selected_genres.indexOf(book.genre) !== -1;
           })
 
+          selected_data = selected_data.filter(function(book) {
+            if (selected_lengths.indexOf('short') !== -1 && book.length < 150) {
+              return true;
+            } else if (selected_lengths.indexOf('medium') !== -1 && book.length > 150 && book.length < 400) {
+              return true;
+            } else if (selected_lengths.indexOf('long') !== -1 && book.length > 400) {
+              return true;
+            } else {
+              return false;
+            }
+          })
+
           loadNextBooksGroup(PAGE, selected_data);
           PAGE++;
-        })      
+        })  
+
+        // LENGTH FILTER LISTENER
+        $('.filter-by-length button').on('click', function(e) {
+          e.preventDefault();
+
+          if ($(this).data('length') === 'all') {
+            $('.filter-by-length button').removeClass('active');
+            $(this).addClass('active');
+            selected_lengths = length_list;
+          } else if ($(this).hasClass('active')) {
+            $(this).removeClass('active');
+            $(this).blur();
+            var self = this;
+            selected_lengths = selected_lengths.filter(function(length) {
+              return length !== $(self).data('length');
+            })
+          } else if ($('.filter-by-length .active').length >= 2) {
+            $('.all_lengths').trigger('click');
+          } else {
+            $(this).addClass('active');
+            $('.all_lengths').removeClass('active');
+
+            // first time
+            if ($('.filter-by-length .active').length === 1) {
+              selected_lengths = [];
+            }
+
+            selected_lengths.push($(this).data('length'));
+          }
+        })    
 
         // GENRE FILTER LISTENER
         $('.genre_filter').on('click', function(e) {
