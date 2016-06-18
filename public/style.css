@@ -88,7 +88,7 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 
-.filters button:hover, .filters button:active, .filters button:focus {
+#app button:hover, #app button:active, #app button:focus {
   color: white;
   background-color: #ff4742;
 }
@@ -113,21 +113,28 @@ body {
   margin: 0 !important;
 }
 
-.filter-by-length, .filter-by-age, .clear-all-filters {
-  width: 30%;
+.filter-by-length, .filter-by-age {
+  width: 49.7%;
   display: inline-block;
 }
 
 .filter-by-length, .filter-by-age {
-  margin-right: 4.5%;
+  /*margin:*/
 }
 
 .filter-by-length button, .filter-by-age button {
   width: 33.3%;
 }
 
-.clear-all-filters button {
+.filter-options {
   width: 100%;
+  margin: 10px auto;
+}
+
+.filter-options button {
+  width: 49.7%;
+  border: 2px solid #a8a4a0;
+  border-radius: 0;
 }
 
 /* LIST */

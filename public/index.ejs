@@ -55,7 +55,7 @@
       </div>
 
       <!-- LENGTH -->
-      <div class="filter-by-length" style="display: none">
+      <div class="filter-by-length advanced-filter" style="display: none">
         <div class="btn-group" role="group" aria-label="filter-by-length">
           <button type="button" class="length_filter btn btn-default"> Short </button>
           <button type="button" class="length_filter btn btn-default"> Medium </button>
@@ -64,12 +64,17 @@
       </div>
 
       <!-- AGE -->
-      <div class="filter-by-age" style="display: none">
+      <div class="filter-by-age advanced-filter" style="display: none">
         <div class="btn-group" role="group" aria-label="filter-by-age">
           <button type="button" class="age_filter btn btn-default"> &lt; 1900 </button>
           <button type="button" class="age_filter btn btn-default"> 1900s </button>
           <button type="button" class="age_filter btn btn-default"> 2000s </button>
         </div>
+      </div>
+
+      <div class="filter-options">
+        <button type="button" class="show-results btn btn-default"> Show Results </button>
+        <button type="button" class="show-advanced btn btn-default"> Advanced Filters </button>
       </div>
 
       <!-- CLEAR ALL FILTERS -->
@@ -142,7 +147,20 @@
         var all_data = [];
         var selected_data = [];
         var selected_genres = genre_list;
-        var $list = $('.books-list');        
+        var $list = $('.books-list');
+
+        // SHOW ADVANCED LISTENER
+        $('.show-advanced').on('click', function(e) {
+          e.preventDefault();
+          // $('.advanced-filter').show();
+          if ($('.advanced-filter:visible').length) {
+            $('.advanced-filter').hide();
+            $('.show-advanced').text('Advanced Filters');
+          } else {
+            $('.advanced-filter').show();
+            $('.show-advanced').text('Show Less Filters')
+          }
+        })        
 
         // GENRE FILTER LISTENER
         $('.genre_filter').on('click', function(e) {
