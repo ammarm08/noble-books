@@ -224,6 +224,10 @@ body {
   width: 200px;
 }
 
+.glyphicon-chevron-right {
+  color: #999999;
+}
+
 /* STICKY DIV */
 
 .sticky-div {
