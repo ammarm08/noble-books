@@ -68,7 +68,7 @@ let THUMBNAILS = {
   'Bill McKibben': 'http://s1.evcdn.com/images/block/I0-001/026/920/884-2.jpeg_/bill-mckibben-84.jpeg',
   'Wade Davis': 'https://pbs.twimg.com/profile_images/737663288968925189/VuRJz7Iq_normal.jpg',
   'Sean Carroll': 'http://i.embed.ly/1/display/resize?key=1e6a1a1efdb011df84894040444cdc60&url=http%3A%2F%2Fpbs.twimg.com%2Fprofile_images%2F554901773467406337%2FemLyWwmt_normal.jpeg',
-  'Dambisa Moyo': 'https://www.druckerforum.org/uploads/tx_templavoila/moyodambisa_49px_07.jpg',
+  'Dambisa Moyo': 'http://cdn.thedailybeast.com/etc/authors/d/dambisa-moyo/image.crop.96.96.jpg/43499148.cached.jpg',
   'Dani Rodrik': 'https://pbs.twimg.com/profile_images/463546417999396864/XpJflXF5_normal.png',
   'John Gray': 'https://www.couplewise.com/assets/cw-advisors-john-bc84e12d0271065b1424189a33235d9906585b7b69d28090440dbd56039d2d47.jpg',
   'Tom Peters': 'http://static2.quoteswave.com/wp-content/uploads/2012/12/Tom-Peters1-50x50.jpg?31a535'
