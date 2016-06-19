@@ -296,6 +296,11 @@ body {
   font-size: 1.1em;
 }
 
+.modal-recommendations {
+  max-height: 250px;
+  overflow: scroll;
+}
+
 .modal-review div {
   margin: 8px auto;
 }
