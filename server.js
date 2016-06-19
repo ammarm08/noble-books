@@ -8,11 +8,12 @@ let process_books = require('./helpers/list_processing.js').process_books;
 let process_recommenders = require('./helpers/list_processing.js').process_recommenders;
 let process_authors = require('./helpers/list_processing.js').process_authors;
 
-
+let favicon = require('serve-favicon');
 
 app.set('views', __dirname + '/public');
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
+app.use(favicon(__dirname + '/public/favicon.ico'));
 
 app.get('/', function (req, res) {
   res.render('index');
