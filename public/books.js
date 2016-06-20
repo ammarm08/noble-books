@@ -220,6 +220,41 @@
       $list.append($next_results);
     }
 
+    function append_one_to_table (book) {
+      // CONTAINER
+      var $row = $('<li class="list-group-item" style="display: none"></li>');
+
+      // TITLE + AUTHOR
+      var $book = $('<div class="book" data-toggle="modal" data-target="#bookModal"></div>')
+      var $title = $('<div class="book_title"></div>');
+      var $author = $('<div class="book_author"></div>');
+
+      $title.text(formatTitle(book.title));
+      $author.text(book.author);
+      $book.append($title).append($author);
+      $book.click({book: book}, updateModal);
+
+      // GENRE + LENGTH
+      var $data = $('<div class="book_data"></div>')
+      var $genre = $('<div class="book_genre">' + book.genre + '</div>');
+      var $length = $('<div class="book_length">' + book.length + ' pages  (' + formatYear(book.year) + ')</div>');
+
+      $data.append($genre).append($length);
+
+      // RECOMMENDERS
+      var $recommenders = $('<div class="book_recommenders"></div>'); 
+      setListThumbnails(book, $recommenders);
+      setRecommenderChevron(book, $recommenders);
+
+      // APPEND ALL
+      $row.append($book)
+          .append($data)
+          .append($recommenders);
+
+      $list.append($row);
+      $row.fadeIn();
+    }
+
     function calculateBooksCurrentlyViewed (total) {
       return total <= 15 + PAGE * 15 ? total : 15 + PAGE * 15; // factor of 15 unless on last page
     }
@@ -231,89 +266,90 @@
       PAGE++;
     }
 
-    // BUILD INDIVIDUAL BOOK ITEM & APPEND IT TO LIST
-    function append_one_to_table(book) {
-      var $row = $('<li class="list-group-item" style="display: none"></li>');
-
-      var $book = $('<div class="book" data-toggle="modal" data-target="#bookModal"></div>')
-      var $title = $('<div class="book_title"></div>');
-      var $author = $('<div class="book_author"></div>');
-
-      var $data = $('<div class="book_data"></div>')
-      var $genre = $('<div class="book_genre">' + book.genre + '</div>');
-
-      var year = book.year;
+    function formatYear (year) {
       if (year < 0) {
-        year = parseInt(Math.abs(year)) + ' BC';
+        return parseInt(Math.abs(year)) + ' BC';
       } else if (parseInt(year) < 1400) {
-        year = parseInt(year) + ' AD';
-      }
-      var $length = $('<div class="book_length">' + book.length + ' pages  (' + year + ')</div>');
-
-      var $recommenders = $('<div class="book_recommenders"></div>'); 
-
-      // TITLE + AUTHOR
-      if (book.title.length > 50) {
-        $title.text(book.title.slice(0,50) + '...');
+        return parseInt(year) + ' AD';
       } else {
-        $title.text(book.title);
+        return year;
       }
-      
-      $author.text(book.author);
-      $book.append($title).append($author);
-      $book.on('click', function(e) {
-        $('.modal-title').text(book.title);
-        $('.modal-about').text(book.summary);
-        $('.modal-blurb').text('Richard Dawkins is an English ethologist, evolutionary biologist and author. He is an emeritus fellow of New College, Oxford.')
-        $('.get-book').attr('href', book.link).attr('target', '_blank');
-        $('.modal-image').attr('src', 'https://images-na.ssl-images-amazon.com/images/I/41YdCQ5bIAL.jpg');
-        $('.modal-year').text(year);
-        $('.modal-length').text(book.length + ' pages');
-        $('.modal-genre').text(book.genre);
+    }
 
-        $('.modal-review').empty();
-        $('.modal-recommenders').empty();
+    function formatTitle (title) {
+      if (title.length > 50) {
+        return title.slice(0,50) + '...';
+      } else {
+        return title;
+      }
+    }
 
-        var count = 0;
-        var review_text = "";
-        while (count < book.reviews.length) {
-          if (book.reviews[count] !== '""') {
-            review_text = book.reviews[count];
-            break;
-          } else {
-            count++;
-          }
-        }
+    function calculateReviewIndex (reviews) {
+      var i = 0;
+      var review_index = -1;
 
-        if (review_text.length) {
-          var $review = $('<div></div>');
-          $review.text(review_text + ' - ' + book.recommenders[count]);
-          $('.modal-review').append($review);
-        }
-
-        var i = 0;
-        while (i < book.recommenders.length) {
-          var $thumb = $('<img class="img-circle"/>');
-          var recommender = book.recommenders[i];
-
-          $thumb.data('toggle', 'tooltip');
-          $thumb.attr('title', 'Recommended by ' + recommender);
-          $thumb.attr('src', book.thumbnails[i]);
-
-          $('.modal-recommenders').append($thumb);
-          $thumb.tooltip();
-
+      while (i < reviews.length && review_index === -1) {
+        if (reviews[i] !== '""') {
+          review_index = reviews[i];
+        } else {
           i++;
         }
-      })
+      }
 
-      // DATA
-      $data.append($genre).append($length);
+      return review_index;
+    }
 
-      // RECOMMENDERS
-      var i = 0;
-      while (i < book.recommenders.length) {
+    function setDefaultReview (book) {
+      var review_index = calculateReviewIndex(book.reviews);
+      var review_text = book.reviews[review_index] || "";
+      var reviewer = book.recommenders[review_index] || "";
+
+      var $review = $('<div></div>');
+      $review.text(review_text + ' - ' + reviewer);
+
+      return $review;
+    }
+
+    function setModalThumbnails (book) {
+      for (var i = 0; i < book.recommenders.length; i++) {
         var $thumb = $('<img class="img-circle"/>');
+
+        $thumb.data('toggle', 'tooltip');
+        $thumb.attr('title', 'Recommended by ' + book.recommenders[i]);
+        $thumb.attr('src', book.thumbnails[i]);
+
+        $('.modal-recommenders').append($thumb);
+        $thumb.tooltip();
+      }
+    }
+
+    function updateModal (e) {
+      // clear previous values
+      $('.modal-review').empty();
+      $('.modal-recommenders').empty();
+
+      // update values
+      $('.modal-title').text(e.data.book.title);
+      $('.modal-about').text(e.data.book.summary);
+      $('.modal-blurb').text('Richard Dawkins is an English ethologist, evolutionary biologist and author. He is an emeritus fellow of New College, Oxford.');
+      $('.get-book').attr('href', e.data.book.link).attr('target', '_blank');
+      $('.modal-image').attr('src', 'https://images-na.ssl-images-amazon.com/images/I/41YdCQ5bIAL.jpg');
+      $('.modal-year').text(formatYear(e.data.book.year));
+      $('.modal-length').text(e.data.book.length + ' pages');
+      $('.modal-genre').text(e.data.book.genre);
+
+      // set default review text
+      var $review = setDefaultReview(e.data.book);
+      $('.modal-review').append($review);
+
+      // set recommender thumbnails
+      setModalThumbnails(e.data.book);
+    }
+
+    function setListThumbnails (book, $recommenders) {
+      for (var i = 0; i < book.recommenders.length; i++) {
+        var $thumb = $('<img class="img-circle"/>');
+
         var recommender = book.recommenders[i];
         var review = book.reviews[i] === '""' ? null : book.reviews[i].trim();
         var tooltip_text = review ? recommender + ': ' + review : recommender;
@@ -324,24 +360,18 @@
 
         $recommenders.append($thumb);
         $thumb.tooltip();
-
-        i++;
       }
+    }
 
+    function setRecommenderChevron (book, $recommenders) {
       var $span = $('<span><a href="#"></a></span>');
       $span.addClass('glyphicon glyphicon-chevron-right');
+
       $span.data('toggle', 'tooltip');
       $span.attr('title', book.recommenders.join(', '));
-      $recommenders.append($span);
       $span.tooltip();
 
-      // POST
-      $row.append($book)
-          .append($data)
-          .append($recommenders);
-
-      $list.append($row);
-      $row.fadeIn();
+      $recommenders.append($span);
     }
   })
 })()
