@@ -33,12 +33,14 @@ function writeTSVtoJSON () {
         var slug = title + '\t' + author;
 
         var amazon_link = entry[4];
+        var summary = entry[5];
         var book_genre = entry[6];
         var length = entry[7]
         var publish_year = entry[8];
         var on_list = entry[9];
         var review_excerpt = entry[10];
         var rec_genre = entry[11];
+        var rec_bio = entry[12];
 
         // BOOK
         if (books[slug]) {
@@ -53,6 +55,7 @@ function writeTSVtoJSON () {
             genre: book_genre,
             length: length,
             year: publish_year,
+            summary: summary,
             reviews: [review_excerpt] 
           };
         }
@@ -87,7 +90,8 @@ function writeTSVtoJSON () {
             recommended_books: [title], 
             recommended_authors: [author],
             reviews: [review_excerpt],
-            field: rec_genre
+            field: rec_genre,
+            bio: rec_bio
           };
         }
 

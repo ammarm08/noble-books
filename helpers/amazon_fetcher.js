@@ -12,7 +12,7 @@ function getResponse(msg, cb) {
     if (err) {
       return cb(err, null);
     } else {
-      let results = res.links[0].href;
+      let results = res.links[0] ? res.links[0].href : [];
       return cb(null, results);
     }
   })

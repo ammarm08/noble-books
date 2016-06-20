@@ -78,6 +78,7 @@ exports.process_books = function () {
   let book_title_frequencies = Object.keys(BOOKS).reduce(function(frequencies, book) {
     let title = BOOKS[book].title;
     let author = BOOKS[book].author;
+    let summary = BOOKS[book].summary;
     let on_list = AUTHORS[author].on_list === 'TRUE' ? 1 : 0;
     let recommenders = BOOKS[book].recommenders;
     let reviews = BOOKS[book].reviews;
@@ -100,7 +101,7 @@ exports.process_books = function () {
     }, 0)
 
     // calculate score
-    let score = (frequency * 5) + (AUTHORS[author].recommenders.length * 2) + (1000/year) + (100/length) + (on_list * 2);
+    let score = (frequency * 10) + (AUTHORS[author].recommenders.length * 2) + (1000/year) + (100/length);
 
     var book_obj = {
       title: title,
@@ -108,6 +109,7 @@ exports.process_books = function () {
       link: link,
       on_list: on_list,
       recommenders: recommenders,
+      summary: summary,
       reviews: reviews,
       length: length,
       year: year,
@@ -130,6 +132,7 @@ exports.process_recommenders = function () {
   let recommenders_list = Object.keys(RECS).reduce(function(results, rec) {
     var rec_obj = {
       name: rec,
+      bio: RECS[rec].bio,
       recommended_books: RECS[rec].recommended_books,
       thumbnail: THUMBNAILS[rec]
     }

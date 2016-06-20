@@ -133,7 +133,7 @@
             e.preventDefault();
 
             $('.modal-title').text(rec.name + "'s Picks");
-            $('.modal-about').text('Evgeny Morozov is a writer who studies political and social implications of tech.');
+            $('.modal-about').text(rec.name + ' ' + rec.bio);
 
             $('.recommendations-container').empty();
             rec.recommended_books.forEach(function(b) {

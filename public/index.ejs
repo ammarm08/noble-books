@@ -380,7 +380,7 @@
           $book.append($title).append($author);
           $book.on('click', function(e) {
             $('.modal-title').text(book.title);
-            $('.modal-about').text('A compelling narrative on the self-organized nature of the universe.');
+            $('.modal-about').text(book.summary);
             $('.modal-blurb').text('Richard Dawkins is an English ethologist, evolutionary biologist and author. He is an emeritus fellow of New College, Oxford.')
             $('.get-book').attr('href', book.link).attr('target', '_blank');
             $('.modal-image').attr('src', 'https://images-na.ssl-images-amazon.com/images/I/41YdCQ5bIAL.jpg');
