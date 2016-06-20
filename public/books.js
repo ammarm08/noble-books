@@ -1,163 +1,43 @@
 (function() {
   $(document).ready(function() {
-    // GLOBALS
+    // PAGINATION STATE
     var PAGE = 0;
+
+    // FILTER CATEGORIES
     var genre_list = $('.genre_filter').map(function() { return $(this).text().trim(); }).toArray();
     var length_list = $('.filter-by-length button').map(function() { return $(this).data('length'); }).toArray();
     var age_list = $('.filter-by-age button').map(function() { return $(this).data('age'); }).toArray();
+
+    // DATA STORE (ALL v. SELECTED)
     var all_data = [];
     var selected_data = [];
+
+    // FILTER STORE
     var selected_lengths = length_list;
     var selected_genres = genre_list;
     var selected_ages = age_list;
+
+    // SELECTORS
     var $list = $('.books-list');
+    var $advanced = $('.show-advanced');
+    var $search = $('.show-results');
+    var $ageFilter = $('.filter-by-age button');
+    var $genreFilter = $('.genre_filter');
+    var $lengthFilter = $('.filter-by-length button');
 
-    // SHOW/HIDE ADVANCED LISTENER
-    $('.show-advanced').on('click', function(e) {
-      e.preventDefault();
-      if ($('.advanced-filter:visible').length) {
-        $('.advanced-filter').hide();
-        $('.show-advanced').text('Advanced Filters');
-      } else {
-        $('.advanced-filter').show();
-        $('.show-advanced').text('Show Less Filters')
-      }
-    })
-
-    // SHOW RESULTS
-    $('.show-results').on('click', function(e) {
-      $list.empty();
-      PAGE = 0;
-
-      // set data to all books within selected list of genres
-      selected_data = all_data.filter(function(book) {
-        return selected_genres.indexOf(book.genre) !== -1;
-      })
-
-      selected_data = selected_data.filter(function(book) {
-        if (selected_lengths.indexOf('short') !== -1 && book.length < 150) {
-          return true;
-        } else if (selected_lengths.indexOf('medium') !== -1 && book.length > 150 && book.length < 400) {
-          return true;
-        } else if (selected_lengths.indexOf('long') !== -1 && book.length > 400) {
-          return true;
-        } else {
-          return false;
-        }
-      })
-
-      selected_data = selected_data.filter(function(book) {
-        if (selected_ages.indexOf(1900) !== -1 && book.year < 1900) {
-          return true;
-        } else if (selected_ages.indexOf(1901) !== -1 && book.year >= 1900 && book.year < 2000) {
-          return true;
-        } else if (selected_ages.indexOf(2000) !== -1 && book.year >= 2000) {
-          return true;
-        } else {
-          return false;
-        }
-      })
-
-      loadNextBooksGroup(PAGE, selected_data);
-      PAGE++;
-    })  
-
-    // LENGTH FILTER LISTENER
-    $('.filter-by-length button').on('click', function(e) {
-      e.preventDefault();
-
-      if ($(this).data('length') === 'all') {
-        $('.filter-by-length button').removeClass('active');
-        $(this).addClass('active');
-        selected_lengths = length_list;
-      } else if ($(this).hasClass('active')) {
-        $(this).removeClass('active');
-        $(this).blur();
-        var self = this;
-        selected_lengths = selected_lengths.filter(function(length) {
-          return length !== $(self).data('length');
-        })
-      } else if ($('.filter-by-length .active').length >= 2) {
-        $('.all_lengths').trigger('click');
-      } else {
-        $(this).addClass('active');
-        $('.all_lengths').removeClass('active');
-
-        // first time
-        if ($('.filter-by-length .active').length === 1) {
-          selected_lengths = [];
-        }
-
-        selected_lengths.push($(this).data('length'));
-      }
-    })
-
-    // AGE FILTER LISTENER
-    $('.filter-by-age button').on('click', function(e) {
-      e.preventDefault();
-
-      if ($(this).data('age') === 'all') {
-        $('.filter-by-age button').removeClass('active');
-        $(this).addClass('active');
-        selected_ages = age_list;
-      } else if ($(this).hasClass('active')) {
-        $(this).removeClass('active');
-        $(this).blur();
-        var self = this;
-        selected_ages = selected_ages.filter(function(age) {
-          return age !== $(self).data('age');
-        })
-      } else if ($('.filter-by-age .active').length >= 2) {
-        $('.all_ages').trigger('click');
-      } else {
-        $(this).addClass('active');
-        $('.all_ages').removeClass('active');
-
-        // first time
-        if ($('.filter-by-age .active').length === 1) {
-          selected_ages = [];
-        }
-
-        selected_ages.push($(this).data('age'));
-      }
-    })   
-
-    // GENRE FILTER LISTENER
-    $('.genre_filter').on('click', function(e) {
-      e.preventDefault();
-
-      // reset to ALL
-      if ($(this).text().trim() === 'All') {
-        $('.genre_filter').removeClass('active');
-        $('.all_genres').addClass('active');
-        selected_genres = genre_list;
-      // toggle off 
-      } else if ($(this).hasClass('active')) {
-        $(this).removeClass('active');
-        $(this).blur();
-        var self = this;
-        selected_genres = selected_genres.filter(function(genre) {
-          return genre !== $(self).text().trim();
-        });
-      // edge case: all filters selected, reset to ALL
-      } else if ($('.filter-by-genre .active').length >= 6) {
-        $('.all_genres').trigger('click');
-      // toggle on
-      } else {
-        $(this).addClass('active');
-        $('.all_genres').removeClass('active');
-
-        // first filter applied -> empty genres array
-        if ($('.filter-by-genre .active').length === 1) {
-          selected_genres = [];
-        }
-
-        selected_genres.push($(this).text().trim());
-      }
-    });
-
-    // INITIAL DATA FETCH
+    // INIT
+    setListeners();
     fetch_books();
+
+    function setListeners () {
+      // set filters
+      $ageFilter.on('click', updateAgeFilter);
+      $genreFilter.on('click', updateGenreFilter);
+      $lengthFilter.on('click', updateLengthFilter);
+
+      $advanced.on('click', toggleAdvancedFilters); // show advanced filters
+      $search.on('click', applyFilters); // filter results
+    }
 
     function fetch_books() {
       $.ajax({
@@ -171,6 +51,149 @@
           PAGE++;
         }
       })
+    }
+
+    function toggleAdvancedFilters (e) {
+      e.preventDefault();
+      if ($('.advanced-filter:visible').length) {
+        $('.advanced-filter').hide();
+        $('.show-advanced').text('Advanced Filters');
+      } else {
+        $('.advanced-filter').show();
+        $('.show-advanced').text('Show Less Filters')
+      }
+    }
+
+    function applyFilters (e) {
+      resetList();
+      selected_data = filterData();
+      loadNextBooksGroup(PAGE, selected_data);
+      PAGE++;
+    }
+
+    function resetList () {
+      $list.empty();
+      PAGE = 0;
+    }
+
+    function filterData () {
+      return all_data.filter(function(book) {
+        return isSelectedGenre(book.genre) && isSelectedLength(book.length) && isSelectedAge(book.year);
+      })
+    }
+
+    function isSelectedGenre (g) {
+      return selected_genres.indexOf(g) !== -1;
+    }
+
+    function isSelectedLength (l) {
+      if (selected_lengths.indexOf('short') !== -1 && l < 150) {
+        return true;
+      } else if (selected_lengths.indexOf('medium') !== -1 && l > 150 && l < 400) {
+        return true;
+      } else if (selected_lengths.indexOf('long') !== -1 && l > 400) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    function isSelectedAge (a) {
+      if (selected_ages.indexOf(1900) !== -1 && a < 1900) {
+        return true;
+      } else if (selected_ages.indexOf(1901) !== -1 && a >= 1900 && a < 2000) {
+        return true;
+      } else if (selected_ages.indexOf(2000) !== -1 && a >= 2000) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    function updateLengthFilter (e) {
+      e.preventDefault();
+
+      if ($(this).data('length') === 'all') {
+        setAsUniquelyActive($lengthFilter, $(this));
+        selected_ages = length_list;
+      } else if ($(this).hasClass('active')) {
+        removeActiveClass($(this));
+        selected_ages = updateFilterOptions(selected_lengths, 'length', $(this));
+      } else if ($('.filter-by-length .active').length >= 2) {
+        $('.all_lengths').trigger('click');
+      } else {
+        $(this).addClass('active');
+        $('.all_lengths').removeClass('active');
+        selected_lengths = emptyListOnFirstTimeFilter(selected_lengths, $('.filter-by-length .active'));
+        addFilterToList(selected_lengths, $(this).data('length'));
+        console.log(selected_lengths);
+      }
+    }
+
+    function updateAgeFilter (e) {
+      e.preventDefault();
+
+      if ($(this).data('age') === 'all') {
+        setAsUniquelyActive($ageFilter, $(this));
+        selected_ages = age_list;
+      } else if ($(this).hasClass('active')) {
+        removeActiveClass($(this));
+        selected_ages = updateFilterOptions(selected_ages, 'age', $(this));
+      } else if ($('.filter-by-age .active').length >= 2) {
+        $('.all_ages').trigger('click');
+      } else {
+        $(this).addClass('active');
+        $('.all_ages').removeClass('active');
+        selected_ages = emptyListOnFirstTimeFilter(selected_ages, $('.filter-by-age .active'));
+        addFilterToList(selected_ages, $(this).data('age'));
+      }
+    }
+
+    function updateGenreFilter (e) {
+      e.preventDefault();
+
+      if ($(this).data('genre') === 'All') {
+        setAsUniquelyActive($genreFilter, $(this));
+        selected_genres = genre_list;
+      } else if ($(this).hasClass('active')) {
+        removeActiveClass($(this));
+        selected_genres = updateFilterOptions(selected_genres, 'genre', $(this));
+      } else if ($('.filter-by-genre .active').length >= 6) {
+        $('.all_genres').trigger('click');
+      } else {
+        $(this).addClass('active');
+        $('.all_genres').removeClass('active');
+        selected_genres = emptyListOnFirstTimeFilter(selected_genres, $('.filter-by-genre .active'));
+        addFilterToList(selected_genres, $(this).data('genre'));
+      }
+    }
+
+    function setAsUniquelyActive($selectors, $target) {
+      $selectors.removeClass('active');
+      $target.addClass('active');
+    }
+
+    function removeActiveClass($target) {
+      $target.removeClass('active');
+      $target.blur();
+    }
+
+    function updateFilterOptions(filter_list, type, $target) {
+      return filter_list.filter(function(item) {
+        return item !== $target.data(type);
+      })
+    }
+
+    function emptyListOnFirstTimeFilter (filter_list, $target) {
+      if ($target.length === 1) {
+        return [];
+      } else {
+        return filter_list;
+      }
+    }
+
+    function addFilterToList (filter_list, filter) {
+      filter_list.push(filter);
     }
 
     // LOAD NEXT 15 results
