@@ -253,7 +253,7 @@ body {
 }
 
 .modal-header {
-  background-image: url('bookstore.png');
+  background-image: url('../assets/bookstore.png');
   color: white;
   min-height: 120px;
 }
