@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <% include ./partials/head %>
+  <% include ./partials/layout/head %>
 </head>
 <body>
 
-  <% include ./partials/nav %>
+  <% include ./partials/layout/nav %>
 
   <div id="app">
 
-    <% include ./partials/tagline %>
+    <% include ./partials/layout/tagline %>
 
     <div class="filters">
       <% include ./partials/filters/genre_filter %>
@@ -31,7 +31,7 @@
     </div>
   </div>
 
-  <% include ./partials/footer %>
+  <% include ./partials/layout/footer %>
 
   <script src="../scripts/books.js"></script>
 </body>

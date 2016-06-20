@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <% include ./partials/head %>
+  <% include ./partials/layout/head %>
 </head>
 <body>
-  <% include ./partials/nav %>
+  <% include ./partials/layout/nav %>
 
   <div id="app">
 
-    <% include ./partials/tagline %>
+    <% include ./partials/layout/tagline %>
     <% include ./partials/modals/rec_modal %>
 
     <div class="books">
@@ -16,7 +16,7 @@
     </div>
   </div>
 
-  <% include ./partials/footer %>
+  <% include ./partials/layout/footer %>
 
   <script src="../scripts/collections.js"></script>
 </body>
