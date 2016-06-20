@@ -209,7 +209,12 @@ body {
   font-size: 0.75em;
 }
 
-.recommendation:hover {
+.recommendations-container .list-group-item {
+  color: #534540;
+  font-weight: bold;
+}
+
+.recommendations-container .list-group-item:hover {
   text-decoration: underline;
   cursor: pointer;
 }

@@ -137,8 +137,10 @@
 
             $('.recommendations-container').empty();
             rec.recommended_books.forEach(function(b) {
-              var $recommendation = $('<div class="list-group-item recommendation"></div>');
-              $recommendation.text(b);
+              var $recommendation = $('<a class="list-group-item recommendation"></a>');
+              $recommendation.text(b[0]);
+              $recommendation.attr('href', b[1]);
+              $recommendation.attr('target', '_blank');
               $('.recommendations-container').append($recommendation);
             })
           });
