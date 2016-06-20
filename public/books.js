@@ -197,9 +197,9 @@
     }
 
     // LOAD NEXT 15 results
-    function loadNextBooksGroup(p, data) {
-      append_all_to_table(data.slice(p*15, 15 + p*15));
-      append_pagination(data);
+    function loadNextBooksGroup(p, book_data) {
+      append_all_to_table(book_data.slice(p*15, 15 + p*15)); // only append 15 at a time
+      append_pagination(book_data);
     }
 
     // APPEND A LIST OF BOOKS
@@ -209,17 +209,26 @@
       });
     }
 
-    function append_pagination(data) {
-      var total = data.length;
-      var current = total <= 15 + PAGE * 15 ? total : 15 + PAGE * 15;
-      var $next_results = $('<a class="next_results">More Results (viewing ' + current + ' of ' + total + ') </a>');
-      $next_results.click(function(e) {
-        this.remove();
-        e.preventDefault();
-        loadNextBooksGroup(PAGE, data);
-        PAGE++;
-      });
+    function append_pagination(book_data) {
+      var total = book_data.length;
+      var current = calculateBooksCurrentlyViewed(total);
+
+      var $next_results = $('<a class="next_results"></a>');
+      $next_results.text('More Results (viewing ' + current + ' of ' + total + ')');
+      $next_results.click({book_data: book_data}, showMoreResults);
+
       $list.append($next_results);
+    }
+
+    function calculateBooksCurrentlyViewed (total) {
+      return total <= 15 + PAGE * 15 ? total : 15 + PAGE * 15; // factor of 15 unless on last page
+    }
+
+    function showMoreResults (e) {
+      this.remove();
+      e.preventDefault();
+      loadNextBooksGroup(PAGE, e.data.book_data);
+      PAGE++;
     }
 
     // BUILD INDIVIDUAL BOOK ITEM & APPEND IT TO LIST
