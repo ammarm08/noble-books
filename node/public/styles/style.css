@@ -443,3 +443,13 @@ footer {
     display: block;
   }
 }
+
+@media (max-width: 600px) {
+  .book_data {
+    display: none;
+  }
+
+  .book_recommenders {
+    width: 40%;
+  }
+}
