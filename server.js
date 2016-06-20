@@ -7,10 +7,10 @@ const PORT = 8080;
 let utils = require('./helpers/list_processing.js');
 let favicon = require('serve-favicon');
 
-app.set('views', __dirname + '/public');
+app.set('views', __dirname + '/public/views');
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
-app.use(favicon(__dirname + '/public/favicon.ico'));
+app.use(favicon(__dirname + '/public/assets/favicon.ico'));
 
 app.get('/', function (req, res) {
   res.render('index');
@@ -37,5 +37,5 @@ app.get('/*', function (req, res) {
 })
 
 app.listen(PORT, function () {
-  console.log('Listening on port', PORT)
+  console.log('Listening on port', PORT);
 })
