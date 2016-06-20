@@ -1,159 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
-  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Montserrat" />
-  <link rel="stylesheet" type="text/css" href="../styles/style.css">
-  <script src="https://code.jquery.com/jquery-2.2.4.min.js"   
-  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
-  crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-  <script src="https://use.fontawesome.com/a1990ff7a7.js"></script>
-  <title>Bookswell: Book Recommendations from Famous Writers and Thinkers</title>
-  <meta http-equiv="Content-Language" content="en-us">
-  <meta name="google" value="notranslate">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta http-equiv="cleartype" content="on">
-  <meta name="description" content="Book recommendations from the world's most influential scientists, novelists, and thinkers, as determined by WorldPost/GDI's 2015 Influential Thinkers List. Sort and filter results based on genre, length, age, and a handful of other factors.">
-  <meta property="og:title" content="Bookswell — Book Recommendations from Famous Writers and Thinkers">
-  <meta property="og:url" content="https://bookswell.io/">
-  <meta property="og:description" content="Book recommendations from the world's most influential scientists, novelists, and thinkers. Sort and filter results based on genre, length, age, and a handful of other factors.">
-  <!-- OG IMAGE needed -->
-  <meta property="og:image" content="">
-  <meta property="og:type" content="website">
-  <!-- GOOGLE VERIFICATION needed -->
-  <meta name="google-site-verification" content="">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:site" content="@bookswellapp">
-  <meta name="twitter:creator" content="@ammarm08">
-  <meta name="twitter:title" content="Bookswell — Book Recommendations from Famous Writers and Thinkers">
-  <meta name="twitter:description" content="Book recommendations from the world's most influential scientists, novelists, and thinkers. Sort and filter results based on genre, length, age, and a handful of other factors.">
-  <!-- TWITTER IMAGE needed -->
-  <meta name="twitter:image:src" content="">
-  <meta name="twitter:url" content="https://bookswell.io/">
+  <% include ./partials/head %>
 </head>
 <body>
-  <nav class="navbar navbar-default">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <a class="navbar-brand" href="/"><i class="glyphicon glyphicon-collapse-down"></i>  Bookswell</a>
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#link-collapse">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-      </div>
-      <div class="collapse navbar-collapse pull-right" id="link-collapse">
-        <ul class="nav navbar-nav">
-          <li class="active"><a href="/books">Books</a></li>
-          <li><a href="/collections">Collections</a></li>
-          <li><a href="http://eepurl.com/b5XRYX" target="_blank" id="join-list">Join</a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+
+  <% include ./partials/nav %>
 
   <div id="app">
 
-    <div class="subscribe inline-form">
-      <div id="subscribe-message">Book recommendations from the world's most influential scientists, novelists, and thinkers.</div>
-      <div class="sticky-div">
-      <div>
-        Made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="http://www.twitter.com/ammarm08" target="_blank">Ammar</a>.
-      </div>
-    </div>
-    </div>
+    <% include ./partials/tagline %>
 
     <div class="filters">
-      <!-- GENRE -->
-      <div class="filter-by-genre">
-        <div class="btn-group" role="group" aria-label="filter-by-genre">
-          <button type="button" data-genre="Math / Science" class="genre_filter btn btn-default"> Math / Science </button>
-          <button type="button" data-genre="The Mind" class="genre_filter btn btn-default"> The Mind </button>
-          <button type="button" data-genre="Culture" class="genre_filter btn btn-default"> Culture </button>
-          <button type="button" data-genre="Econ + Gov" class="genre_filter btn btn-default"> Econ + Gov </button>
-          <button type="button" data-genre="Faith" class="genre_filter btn btn-default"> Faith </button>
-          <button type="button" data-genre="Fiction" class="genre_filter btn btn-default"> Fiction </button>
-          <button type="button" data-genre="Business" class="genre_filter btn btn-default"> Business </button>
-          <button type="button" data-genre="All" class="all_genres genre_filter btn btn-default active"> All </button>
-        </div>
-      </div>
-
-      <!-- LENGTH -->
-      <div class="filter-by-length advanced-filter" style="display: none">
-        <div class="btn-group" role="group" aria-label="filter-by-length">
-          <button type="button" data-length="short" class="length_filter btn btn-default"> Short </button>
-          <button type="button" data-length="medium" class="length_filter btn btn-default"> Medium </button>
-          <button type="button" data-length="long" class="length_filter btn btn-default"> Long </button>
-          <button type="button" data-length="all" class="all_lengths length_filter btn btn-default active"> All </button>
-        </div>
-      </div>
-
-      <!-- AGE -->
-      <div class="filter-by-age advanced-filter" style="display: none">
-        <div class="btn-group" role="group" aria-label="filter-by-age">
-          <button type="button" data-age="1900" class="age_filter btn btn-default"> &lt; 1900 </button>
-          <button type="button" data-age="1901" class="age_filter btn btn-default"> 1900s </button>
-          <button type="button" data-age="2000" class="age_filter btn btn-default"> 2000s </button>
-          <button type="button" data-age="all" class="all_ages age_filter btn btn-default active"> All </button>
-        </div>
-      </div>
+      <% include ./partials/filters/genre_filter %>
+      <% include ./partials/filters/length_filter %>
+      <% include ./partials/filters/age_filter %>
 
       <div class="filter-options">
         <button type="button" class="show-results btn btn-default"> Show Results </button>
         <button type="button" class="show-advanced btn btn-default"> Advanced Filters </button>
       </div>
-
-      <!-- CLEAR ALL FILTERS -->
-      <div class="clear-all-filters" style="display: none">
-        <div class="btn-group" role="group" aria-label="clear-all-filters">
-          <button type="button" class="btn btn-default"> Clear All Filters </button>
-        </div>
-      </div>
-
     </div>
-    <div class="modal fade" id="bookModal" tabindex="-1" role="dialog" aria-labelledby="bookModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-            <div class="modal-title"></div>
-            <div class="action-buttons">
-              <div class="get-book-group">
-                <a class="btn btn-default get-book">Get Book</a>
-                <div class="modal-recommenders"></div>
-              </div>
-            </div>
-          </div>
-          <div class="modal-body">
-            <div class="row">
-              <div class="col-sm-8 metadata">
-                <div id="book_about">ABOUT</div>
-                <div class="modal-about"></div>
-                <div id="book_blurb">AUTHOR</div>
-                <div class="modal-blurb"></div>
-                <div id="book_review">REVIEW</div>
-                <div class="modal-review"></div>
-              </div>
-              <div class="col-sm-4">
-                <div id="book_details">DETAILS</div>
-                <div class="modal-year"></div>
-                <div class="modal-length"></div>
-                <div class="modal-genre"></div>
-                <div class="modal-edit-book">
-                  <a class="btn btn-default" href="https://ammar44.typeform.com/to/auWrLe" target="_blank">Edit</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    
+    <% include ./partials/modals/book_modal %>
+
     <div class="books">
       <ul class="books-list list-group">
         <!-- books go here -->
@@ -161,12 +31,7 @@
     </div>
   </div>
 
-  <footer class="footer">
-    <div class="footer-message">
-      <p>* List based upon GDI/WorldPost's Most Influential Thinkers of 2015 list</p>
-      <p>Any suggestions or tips? Hit us up at <a>hi@bookswell.io</a></p>
-    </div>
-  </footer>
+  <% include ./partials/footer %>
 
   <script src="../scripts/books.js"></script>
 </body>

@@ -13,15 +13,15 @@ app.use(express.static(__dirname + '/public'));
 app.use(favicon(__dirname + '/public/assets/favicon.ico'));
 
 app.get('/', function (req, res) {
-  res.render('index');
+  res.render('index', {page_name: 'books'});
 })
 
 app.get('/books', function (req, res) {
-  res.render('index');
+  res.render('index', {page_name: 'books'});
 })
 
 app.get('/collections', function (req, res) {
-  res.render('collections');
+  res.render('collections', {page_name: 'collections'});
 })
 
 app.get('/api/books', function (req, res) {
