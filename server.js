@@ -4,10 +4,7 @@ let express = require('express');
 let app = express();
 const PORT = 8080;
 
-let process_books = require('./helpers/list_processing.js').process_books;
-let process_recommenders = require('./helpers/list_processing.js').process_recommenders;
-let process_authors = require('./helpers/list_processing.js').process_authors;
-
+let utils = require('./helpers/list_processing.js');
 let favicon = require('serve-favicon');
 
 app.set('views', __dirname + '/public');
@@ -28,11 +25,11 @@ app.get('/collections', function (req, res) {
 })
 
 app.get('/api/books', function (req, res) {
-  res.json(process_books());
+  res.json(utils.process_books());
 })
 
 app.get('/api/recommenders', function (req, res) {
-  res.json(process_recommenders());
+  res.json(utils.process_recommenders());
 })
 
 app.get('/*', function (req, res) {
