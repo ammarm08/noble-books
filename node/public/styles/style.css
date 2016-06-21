@@ -281,6 +281,14 @@ body {
   color: #ff4742;
 }
 
+.twitter-follow {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  margin: 10px;
+  z-index: 100;
+}
+
 /* MODAL */
 
 .modal-dialog {

@@ -34,6 +34,16 @@
 
   <% include ./partials/layout/footer %>
 
+  <div class="twitter-follow">
+    <a href="https://twitter.com/AmmarM08" class="twitter-follow-button" data-show-count="false" style="display:none">Follow @AmmarM08</a>
+    <script async>
+    !function(d,s,id){
+      var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);
+      }}(document, 'script', 'twitter-wjs'); 
+      $('.twitter-follow').show();
+    </script>
+  </div>
+
   <script src="../scripts/books.js"></script>
 </body>
 </html>
