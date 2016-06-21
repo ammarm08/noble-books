@@ -288,7 +288,7 @@ body {
 }
 
 .modal-header {
-  background-image: url('../assets/bookstore.png');
+  background: url('https://s3.amazonaws.com/bookswell-media/img-assets/bookstore.png') cover;
   color: white;
   min-height: 120px;
 }
