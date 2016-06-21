@@ -8,7 +8,7 @@ body {
 
 #app {
   margin: 0 auto;
-  width: 60%;
+  width: 65%;
 }
 
 .books, .filters {
@@ -25,7 +25,7 @@ body {
 }
 
 .navbar .container-fluid {
-  width: 60%;
+  width: 65%;
   padding: 0;
 }
 
@@ -200,7 +200,7 @@ body {
 }
 
 .book {
-  width: 60%;
+  width: 55%;
 }
 
 .book_data {
@@ -209,7 +209,7 @@ body {
 }
 
 .book_recommenders {
-  width: 22%;
+  width: 27%;
   position: absolute;
   text-align: right;
 }
@@ -281,7 +281,7 @@ body {
 /* MODAL */
 
 .modal-dialog {
-  width: 60%;
+  width: 65%;
   margin: 50px auto;
   color: #534540;
   border-radius: 2px;
@@ -435,7 +435,7 @@ footer {
 }
 
 .footer-message {
-  width: 60%;
+  width: 65%;
   margin: 50px auto 0px auto;
   padding: 12px;
   text-align: center;
@@ -492,7 +492,7 @@ footer {
   }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 768px) {
   .filter-options button {
     width: 100%;
   }
@@ -521,19 +521,28 @@ footer {
   .recommender {
     font-size: 0.8em;
   }
+
+  #link-collapse {
+    width: 100%;
+  }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 550px) {
   .book {
     font-size: 0.9em;
+    width: 40%;
   }
 
   .filter-by-genre button {
     width: 50%;
   }
 
+  .book_recommenders {
+    width: 60%;
+  }
+
   .modal-recommenders {
-    width: 125%;
+    width: 100%;
   }
 
   .recommender-collection img {
