@@ -535,6 +535,10 @@ footer {
   #link-collapse {
     width: 100%;
   }
+
+  .twitter-follow {
+    display: none;
+  }
 }
 
 @media (max-width: 550px) {
