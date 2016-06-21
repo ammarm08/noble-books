@@ -92,7 +92,13 @@ body {
   border-radius: 1px;
 }
 
-#app button:hover, #app button:active, #app button:focus {
+#app button:hover {
+  color: #ff4742;
+  background-color: white;
+  border: 1px solid #ff4742;
+}
+
+#app button:active, #app button:focus {
   color: white;
   background-color: #ff4742;
   outline: none;
@@ -484,7 +490,7 @@ footer {
   }
 
   .filters button {
-    font-size: 0.75em ;
+    font-size: 0.75em;
   }
 
   .modal-recommenders {
@@ -493,5 +499,11 @@ footer {
 
   .recommender-collection img {
     width: 75%;
+  }
+}
+
+@media (max-width: 400px) {
+  .filters button {
+    font-size: 0.65em;
   }
 }
