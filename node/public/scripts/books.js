@@ -75,7 +75,7 @@
         $('.show-advanced').text('Advanced Filters');
       } else {
         $('.advanced-filter').show();
-        $('.show-advanced').text('Show Less Filters')
+        $('.show-advanced').text('Hide Filters')
       }
     }
 
@@ -91,7 +91,7 @@
 
       var sort_type = $(this).data('sort');
       var sort_text = $('[data-sort="' + sort_type + '"]').text();
-      $('.dropdown button').text('Sort By: ' + sort_text)
+      $('#current-sort').text('Sort By: ' + sort_text)
 
       fetch_books(sort_type);
     }

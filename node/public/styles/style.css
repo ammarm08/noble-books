@@ -155,30 +155,33 @@ body {
 
 .dropdown button {
   background-color: white;
-  border: 2px solid #0F1B38;
-  color: #0F1B38;
+  border: 2px solid #a8a4a0;
+  color: #a8a4a0;
 }
 
 .dropdown button:hover, .dropdown button:active, .dropdown button:focus {
   background-color: white !important;
-  border: 2px solid #0F1B38 !important;
-  color: #0F1B38 !important;
-  opacity: 0.8;
+  border: 2px solid #ff4742 !important;
+  color: #ff4742 !important;
 }
 
 .dropdown-item {
   display: block;
-  border: none;
+  border: 1px solid #a8a4a0;
   border-radius: 0;
   color: #a8a4a0;
+  background-color: white;
   font-family: 'Open Sans', sans-serif;
 }
 
 .dropdown-item:hover {
   background-color: white;
-  color: #0F1b38;
+  color: #ff4742;
 }
 
+#menu-down {
+  float:right;
+}
 
 
 /* LIST */
@@ -288,7 +291,7 @@ body {
 }
 
 .modal-header {
-  background: url('https://s3.amazonaws.com/bookswell-media/img-assets/bookstore.png') cover;
+  background: url('https://s3.amazonaws.com/bookswell-media/img-assets/bookstore.png');
   color: white;
   min-height: 120px;
 }
@@ -502,8 +505,7 @@ footer {
   }
 
   .modal-recommenders {
-    width: 75%;
-    display: block;
+    width: 65%;
   }
 
   .book_data {
@@ -542,7 +544,11 @@ footer {
   }
 
   .modal-recommenders {
-    width: 100%;
+    width: 50%;
+  }
+
+  .modal-recommenders .img-circle {
+    width: 15%;
   }
 
   .recommender-collection img {
