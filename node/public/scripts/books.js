@@ -307,12 +307,16 @@
 
     function setDefaultReview (book) {
       var review_index = calculateReviewIndex(book.reviews);
-      var review_text = book.reviews[review_index] || "";
-      var reviewer = book.recommenders[review_index] || "";
+      var review_text = book.reviews[review_index];
+      var reviewer = book.recommenders[review_index];
 
       var $review = $('<div></div>');
-      $review.text(review_text + ' - ' + reviewer);
-
+      if (review_text) {
+        $review.text(review_text + ' - ' + reviewer);
+      } else {
+        $review.text('None found.');
+      }
+      
       return $review;
     }
 
@@ -337,7 +341,7 @@
       // update values
       $('.modal-title').text(e.data.book.title);
       $('.modal-about').text(e.data.book.summary);
-      $('.modal-blurb').text('Richard Dawkins is an English ethologist, evolutionary biologist and author. He is an emeritus fellow of New College, Oxford.');
+      $('.modal-blurb').text(e.data.book.author);
       $('.get-book').attr('href', e.data.book.link).attr('target', '_blank');
       $('.modal-image').attr('src', 'https://images-na.ssl-images-amazon.com/images/I/41YdCQ5bIAL.jpg');
       $('.modal-year').text(formatYear(e.data.book.year));
