@@ -162,6 +162,7 @@ body {
   display: inline-block;
   height: 40px;
   position: relative;
+  line-height: 1.25;
 }
 
 .book {
@@ -378,6 +379,10 @@ body {
   border-right: 1px solid #f2f2f2;
 }
 
+.close span {
+  color: white;
+}
+
 /* FOOTER */
 
 footer {
@@ -451,5 +456,17 @@ footer {
 
   .book_recommenders {
     width: 40%;
+  }
+
+  .book {
+    font-size: 0.9em;
+  }
+
+  .filters button {
+    font-size: 0.75em ;
+  }
+
+  .modal-recommenders {
+    width: 125%;
   }
 }
