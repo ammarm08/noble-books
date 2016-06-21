@@ -29,8 +29,14 @@
     var $lengthFilter = $('.filter-by-length button');
 
     // INIT
+    initializeTooltips();
     setListeners();
     fetch_books();
+
+    function initializeTooltips () {
+      $ageFilter.tooltip();
+      $lengthFilter.tooltip();
+    }
 
     function setListeners () {
       // set filters
