@@ -20,8 +20,8 @@ app.get('/books', function (req, res) {
   res.render('index', {page_name: 'books'});
 })
 
-app.get('/collections', function (req, res) {
-  res.render('collections', {page_name: 'collections'});
+app.get('/thinkers', function (req, res) {
+  res.render('thinkers', {page_name: 'thinkers'});
 })
 
 app.get('/api/books', function (req, res) {
