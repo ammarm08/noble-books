@@ -41,7 +41,7 @@
       var $recommender = $('<div class="recommender" data-toggle="modal" data-target="#recModal"></div>');
       $recommender.text(rec.name);
 
-      var $thumbContainer = $('<div class="thumbnail-container"></div>');
+      var $thumbContainer = $('<div class="thumbnail-container" data-toggle="modal" data-target="#recModal"></div>');
       var $thumb = $('<img class="img-circle"/>');
       $thumb.attr('src', rec.thumbnail);
 
