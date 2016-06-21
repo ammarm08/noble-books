@@ -293,9 +293,10 @@
       var i = 0;
       var review_index = -1;
 
-      while (i < reviews.length && review_index === -1) {
+      while (i < reviews.length) {
         if (reviews[i] !== '""') {
-          review_index = reviews[i];
+          review_index = i;
+          break;
         } else {
           i++;
         }
