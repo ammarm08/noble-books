@@ -27,6 +27,7 @@
     var $ageFilter = $('.filter-by-age button');
     var $genreFilter = $('.genre_filter');
     var $lengthFilter = $('.filter-by-length button');
+    var $sorts = $('.dropdown-item');
 
     // INIT
     initializeTooltips();
@@ -46,13 +47,16 @@
 
       $advanced.on('click', toggleAdvancedFilters); // show advanced filters
       $search.on('click', applyFilters); // filter results
+      $sorts.on('click', applySort);
     }
 
-    function fetch_books() {
+    function fetch_books(q) {
       $loader.fadeIn();
+      q = q || "";
+
       $.ajax({
         type: 'GET',
-        url: '/api/books',
+        url: '/api/books' + '?' + 'sort=' + q,
         success: function(data) {
           $loader.fadeOut(1500);
           $list.empty();
@@ -80,6 +84,16 @@
       selected_data = filterData();
       loadNextBooksGroup(PAGE, selected_data);
       PAGE++;
+    }
+
+    function applySort (e) {
+      resetList();
+
+      var sort_type = $(this).data('sort');
+      var sort_text = $('[data-sort="' + sort_type + '"]').text();
+      $('.dropdown button').text('Sort By: ' + sort_text)
+
+      fetch_books(sort_type);
     }
 
     function resetList () {

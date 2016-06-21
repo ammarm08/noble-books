@@ -1,5 +1,5 @@
 'use strict';
-
+let fs = require('fs');
 let BOOKS = require('../data/books.json');
 let AUTHORS = require('../data/authors.json');
 let RECS = require('../data/recommenders.json');
@@ -74,7 +74,7 @@ let THUMBNAILS = {
   'Tom Peters': 'http://static2.quoteswave.com/wp-content/uploads/2012/12/Tom-Peters1-50x50.jpg?31a535'
 }
 
-exports.process_books = function () {
+function process_books () {
   let book_title_frequencies = Object.keys(BOOKS).reduce(function(frequencies, book) {
     let title = BOOKS[book].title;
     let author = BOOKS[book].author;
@@ -97,6 +97,7 @@ exports.process_books = function () {
       link: link,
       on_list: on_list,
       recommenders: recommenders,
+      author_recs: AUTHORS[author].recommenders,
       summary: summary,
       reviews: reviews,
       length: length,
@@ -110,9 +111,7 @@ exports.process_books = function () {
     return frequencies;
   }, []);
 
-  return book_title_frequencies.sort(function (a,b) {
-    return b.score - a.score;
-  });
+  return book_title_frequencies;
 }
 
 exports.process_recommenders = function () {
@@ -131,3 +130,57 @@ exports.process_recommenders = function () {
     return a.recommended_books.length - b.recommended_books.length;
   });
 }
+
+let list = process_books();
+
+let sorted_by_title_freq = list.sort(function(a,b) {
+  return b.recommenders.length - a.recommenders.length;
+});
+sorted_by_title_freq = JSON.stringify(sorted_by_title_freq);
+
+let sorted_by_author_freq = list.sort(function(a,b) {
+  return b.author_recs.length - a.author_recs.length;
+});
+sorted_by_author_freq = JSON.stringify(sorted_by_author_freq);
+
+let sorted_by_title = list.sort(function(a,b) {
+  return a.title.toLowerCase().charCodeAt(0) - b.title.toLowerCase().charCodeAt(0);
+});
+sorted_by_title = JSON.stringify(sorted_by_title);
+
+let sorted_by_author = list.sort(function(a,b) {
+  return a.author.toLowerCase().charCodeAt(0) - b.author.toLowerCase().charCodeAt(0);
+})
+sorted_by_author = JSON.stringify(sorted_by_author);
+
+fs.writeFile('./data/frequencies_title.json', sorted_by_title_freq, 'utf8', function(err, data) {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log('Title freq: ', sorted_by_title_freq[0].title);
+  }
+});
+
+fs.writeFile('./data/frequencies_author.json', sorted_by_author_freq, 'utf8', function(err, data) {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log('Author freq: ', sorted_by_author_freq[0].author);
+  }
+});
+
+fs.writeFile('./data/alphabetized_title.json', sorted_by_title, 'utf8', function(err, data) {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log('Alpha title: ', sorted_by_title[0].title);
+  }
+});
+
+fs.writeFile('./data/alphabetized_author.json', sorted_by_author, 'utf8', function(err, data) {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log('Alpha author: ', sorted_by_author[0].author);
+  }
+});

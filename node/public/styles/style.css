@@ -153,6 +153,34 @@ body {
   color: #ff4742;
 }
 
+.dropdown button {
+  background-color: white;
+  border: 2px solid #0F1B38;
+  color: #0F1B38;
+}
+
+.dropdown button:hover, .dropdown button:active, .dropdown button:focus {
+  background-color: white !important;
+  border: 2px solid #0F1B38 !important;
+  color: #0F1B38 !important;
+  opacity: 0.8;
+}
+
+.dropdown-item {
+  display: block;
+  border: none;
+  border-radius: 0;
+  color: #a8a4a0;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.dropdown-item:hover {
+  background-color: white;
+  color: #0F1b38;
+}
+
+
+
 /* LIST */
 
 .books-list li, .recommendation {

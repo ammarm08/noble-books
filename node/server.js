@@ -4,8 +4,12 @@ let express = require('express');
 let app = express();
 const PORT = 8080;
 
-let utils = require('./helpers/list_processing.js');
 let favicon = require('serve-favicon');
+
+let alpha_author = require('./data/alphabetized_author.json');
+let alpha_title = require('./data/alphabetized_title.json');
+let freq_author = require('./data/frequencies_author.json');
+let freq_title = require('./data/frequencies_title.json');
 
 app.set('views', __dirname + '/public/views');
 app.set('view engine', 'ejs');
@@ -25,7 +29,17 @@ app.get('/thinkers', function (req, res) {
 })
 
 app.get('/api/books', function (req, res) {
-  res.json(utils.process_books());
+  var query = req.query.sort;
+
+  if (query === 'popular-authors') {
+    res.json(freq_author);
+  } else if (query === 'alpha-titles') {
+    res.json(alpha_title);
+  } else if (query === 'alpha-authors') {
+    res.json(alpha_author);
+  } else {
+    res.json(freq_title);
+  }
 })
 
 app.get('/api/recommenders', function (req, res) {
