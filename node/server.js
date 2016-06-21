@@ -10,6 +10,7 @@ let alpha_author = require('./data/alphabetized_author.json');
 let alpha_title = require('./data/alphabetized_title.json');
 let freq_author = require('./data/frequencies_author.json');
 let freq_title = require('./data/frequencies_title.json');
+let process_recommenders = require('./helpers/list_processing.js').process_recommenders;
 
 app.set('views', __dirname + '/public/views');
 app.set('view engine', 'ejs');
@@ -43,7 +44,7 @@ app.get('/api/books', function (req, res) {
 })
 
 app.get('/api/recommenders', function (req, res) {
-  res.json(utils.process_recommenders());
+  res.json(process_recommenders());
 })
 
 app.get('/*', function (req, res) {

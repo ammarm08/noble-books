@@ -131,56 +131,58 @@ exports.process_recommenders = function () {
   });
 }
 
-let list = process_books();
+function writeProcessedDataToFile () {
+  let list = process_books();
 
-let sorted_by_title_freq = list.sort(function(a,b) {
-  return b.recommenders.length - a.recommenders.length;
-});
-sorted_by_title_freq = JSON.stringify(sorted_by_title_freq);
+  let sorted_by_title_freq = list.sort(function(a,b) {
+    return b.recommenders.length - a.recommenders.length;
+  });
+  sorted_by_title_freq = JSON.stringify(sorted_by_title_freq);
 
-let sorted_by_author_freq = list.sort(function(a,b) {
-  return b.author_recs.length - a.author_recs.length;
-});
-sorted_by_author_freq = JSON.stringify(sorted_by_author_freq);
+  let sorted_by_author_freq = list.sort(function(a,b) {
+    return b.author_recs.length - a.author_recs.length;
+  });
+  sorted_by_author_freq = JSON.stringify(sorted_by_author_freq);
 
-let sorted_by_title = list.sort(function(a,b) {
-  return a.title.toLowerCase().charCodeAt(0) - b.title.toLowerCase().charCodeAt(0);
-});
-sorted_by_title = JSON.stringify(sorted_by_title);
+  let sorted_by_title = list.sort(function(a,b) {
+    return a.title.toLowerCase().charCodeAt(0) - b.title.toLowerCase().charCodeAt(0);
+  });
+  sorted_by_title = JSON.stringify(sorted_by_title);
 
-let sorted_by_author = list.sort(function(a,b) {
-  return a.author.toLowerCase().charCodeAt(0) - b.author.toLowerCase().charCodeAt(0);
-})
-sorted_by_author = JSON.stringify(sorted_by_author);
+  let sorted_by_author = list.sort(function(a,b) {
+    return a.author.toLowerCase().charCodeAt(0) - b.author.toLowerCase().charCodeAt(0);
+  })
+  sorted_by_author = JSON.stringify(sorted_by_author);
 
-fs.writeFile('./data/frequencies_title.json', sorted_by_title_freq, 'utf8', function(err, data) {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log('Title freq: ', sorted_by_title_freq[0].title);
-  }
-});
+  fs.writeFile('./data/frequencies_title.json', sorted_by_title_freq, 'utf8', function(err, data) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log('Title freq: ', sorted_by_title_freq[0].title);
+    }
+  });
 
-fs.writeFile('./data/frequencies_author.json', sorted_by_author_freq, 'utf8', function(err, data) {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log('Author freq: ', sorted_by_author_freq[0].author);
-  }
-});
+  fs.writeFile('./data/frequencies_author.json', sorted_by_author_freq, 'utf8', function(err, data) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log('Author freq: ', sorted_by_author_freq[0].author);
+    }
+  });
 
-fs.writeFile('./data/alphabetized_title.json', sorted_by_title, 'utf8', function(err, data) {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log('Alpha title: ', sorted_by_title[0].title);
-  }
-});
+  fs.writeFile('./data/alphabetized_title.json', sorted_by_title, 'utf8', function(err, data) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log('Alpha title: ', sorted_by_title[0].title);
+    }
+  });
 
-fs.writeFile('./data/alphabetized_author.json', sorted_by_author, 'utf8', function(err, data) {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log('Alpha author: ', sorted_by_author[0].author);
-  }
-});
+  fs.writeFile('./data/alphabetized_author.json', sorted_by_author, 'utf8', function(err, data) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log('Alpha author: ', sorted_by_author[0].author);
+    }
+  });
+}
