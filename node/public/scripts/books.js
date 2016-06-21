@@ -17,6 +17,9 @@
     var selected_genres = genre_list;
     var selected_ages = age_list;
 
+    // LOADER
+    var $loader = $('.loader');
+
     // SELECTORS
     var $list = $('.books-list');
     var $advanced = $('.show-advanced');
@@ -40,10 +43,12 @@
     }
 
     function fetch_books() {
+      $loader.fadeIn();
       $.ajax({
         type: 'GET',
         url: '/api/books',
         success: function(data) {
+          $loader.fadeOut(1500);
           $list.empty();
           all_data = data;
           selected_data = all_data;
@@ -252,7 +257,7 @@
           .append($recommenders);
 
       $list.append($row);
-      $row.fadeIn();
+      $row.fadeIn(1000);
     }
 
     function calculateBooksCurrentlyViewed (total) {

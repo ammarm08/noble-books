@@ -389,6 +389,17 @@ body {
   color: white;
 }
 
+/* LOADER */
+.loader {
+  width: 100%;
+  text-align: center;
+  opacity: 0.5;
+}
+
+.loader img {
+  margin: 10px auto;
+}
+
 /* FOOTER */
 
 footer {

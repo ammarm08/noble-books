@@ -1,17 +1,21 @@
 (function() {
+
   $(document).ready(function() {
     // GLOBALS
     var all_data = [];
     var $books = $('.books');
+    var $loader = $('.loader');
 
     // INITIAL DATA FETCH
     fetch_books();
 
     function fetch_books() {
+      $loader.fadeIn();
       $.ajax({
         type: 'GET',
         url: '/api/recommenders',
         success: function(data) {
+          $loader.fadeOut(1500);
           $books.empty();
           all_data = data;
           loadNextRecommenderGroup(all_data);
@@ -61,7 +65,7 @@
       });
 
       $books.append($grid);
-      $grid.fadeIn();
+      $grid.fadeIn(1000);
     }
   })
 })()
