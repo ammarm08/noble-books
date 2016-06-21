@@ -375,7 +375,7 @@
 
     function setRecommenderChevron (book, $recommenders) {
       var $span = $('<span><a href="#"></a></span>');
-      $span.addClass('glyphicon glyphicon-chevron-right');
+      $span.addClass('glyphicon glyphicon-option-vertical');
 
       $span.data('toggle', 'tooltip');
       $span.attr('title', book.recommenders.join(', '));

@@ -102,7 +102,6 @@ exports.process_books = function () {
       length: length,
       year: year,
       genre: genre,
-      frequency: frequency,
       score: score,
       thumbnails: thumbnails
     };
