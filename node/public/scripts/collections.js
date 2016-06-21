@@ -37,10 +37,12 @@
       var $recommender = $('<div class="recommender" data-toggle="modal" data-target="#recModal"></div>');
       $recommender.text(rec.name);
 
+      var $thumbContainer = $('<div class="thumbnail-container"></div>');
       var $thumb = $('<img class="img-circle"/>');
       $thumb.attr('src', rec.thumbnail);
 
-      $grid.append($thumb).append($recommender);
+      $thumbContainer.append($thumb);
+      $grid.append($thumbContainer).append($recommender);
 
       $grid.on('click', function(e) {
         e.preventDefault();
@@ -50,7 +52,7 @@
 
         $('.recommendations-container').empty();
         rec.recommended_books.forEach(function(b) {
-          var $recommendation = $('<a class="list-group-item recommendation"></a>');
+          var $recommendation = $('<a class="list-group-item thumbnail recommendation"></a>');
           $recommendation.text(b[0]);
           $recommendation.attr('href', b[1]);
           $recommendation.attr('target', '_blank');

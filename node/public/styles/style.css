@@ -196,7 +196,7 @@ body {
 }
 
 .book_recommenders .img-circle {
-  width: 16%;
+  width: 30px;
   margin: 0 2px;
 
 }
@@ -405,9 +405,9 @@ footer {
 
 .recommender-collection {
   width: 25%;
-  padding: 10px 10px;
   display: inline-block;
   text-align: center;
+  margin: 5px auto;
 }
 
 .recommender-collection:hover {
@@ -417,10 +417,19 @@ footer {
 }
 
 .recommender-collection img {
-  width: 25%;
+  width: 60px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.thumbnail-container {
+  min-height: 58px;
 }
 
 .recommender {
+  min-height: 30px;
+  display: inline-block;
+  vertical-align: middle;
   border: none;
   color: #534540;
   font-size: 1.2em;
@@ -431,6 +440,10 @@ footer {
 @media (max-width: 1100px) {
   #app, .navbar .container-fluid, .modal-dialog {
     width: 90%;
+  }
+
+  .recommender-collection img {
+    width: 30%;
   }
 }
 
@@ -447,9 +460,7 @@ footer {
     width: 75%;
     display: block;
   }
-}
 
-@media (max-width: 600px) {
   .book_data {
     display: none;
   }
@@ -458,6 +469,16 @@ footer {
     width: 40%;
   }
 
+  .thumbnail-container .img-circle {
+    width: 50%;
+  }
+
+  .recommender {
+    font-size: 0.8em;
+  }
+}
+
+@media (max-width: 500px) {
   .book {
     font-size: 0.9em;
   }
@@ -468,5 +489,9 @@ footer {
 
   .modal-recommenders {
     width: 125%;
+  }
+
+  .recommender-collection img {
+    width: 75%;
   }
 }
