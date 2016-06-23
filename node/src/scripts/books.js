@@ -1,4 +1,4 @@
-(function() {
+window.initBooksPage = function () {
   $(document).ready(function() {
     // PAGINATION STATE
     var PAGE = 0;
@@ -411,4 +411,4 @@
       $recommenders.append($span);
     }
   })
-})()
+};

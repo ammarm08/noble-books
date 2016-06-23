@@ -1,15 +1,13 @@
-(function() {
-
+window.initThinkersPage = function() {
   $(document).ready(function() {
     // GLOBALS
     var all_data = [];
     var $books = $('.books');
     var $loader = $('.loader');
 
-    // INITIAL DATA FETCH
     fetch_books();
 
-    function fetch_books() {
+    function fetch_books () {
       $books.append($('<div class="loader"><img src="https://s3.amazonaws.com/bookswell-media/img-assets/default.svg"/></div>'));
       $loader.fadeIn();
       $.ajax({
@@ -75,4 +73,4 @@
       $grid.fadeIn(1000);
     }
   })
-})()
+};
