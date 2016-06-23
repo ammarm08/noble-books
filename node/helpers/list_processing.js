@@ -66,7 +66,7 @@ function process_books () {
   return book_title_frequencies;
 }
 
-exports.process_recommenders = function () {
+function process_recommenders () {
   let recommenders_list = Object.keys(RECS).reduce(function(results, rec) {
     var rec_obj = {
       name: rec,
@@ -83,80 +83,79 @@ exports.process_recommenders = function () {
   });
 }
 
-function writeProcessedDataToFile () {
-  let list = process_books();
+function sortBookList (list, sort_type) {
+  if (sort_type === 'freq-title') {
+    return list.sort(function(a,b) {
+      return b.recommenders.length - a.recommenders.length;
+    })
+  } else if (sort_type === 'freq-author') {
+    return list.sort(function(a,b) {
+      return b.author_recs.length - a.author_recs.length;
+    })
+  } else if (sort_type === 'alpha-title') {
+    return list.sort(function(a,b) {
+      return a.title.toLowerCase().charCodeAt(0) - b.title.toLowerCase().charCodeAt(0);
+    })
+  } else {
+    return list.sort(function(a,b) {
+      return a.author.toLowerCase().charCodeAt(0) - b.author.toLowerCase().charCodeAt(0);
+    });
+  }
+}
 
-  let sorted_by_title_freq = list.sort(function(a,b) {
-    return b.recommenders.length - a.recommenders.length;
-  })
-
-  sorted_by_title_freq = sorted_by_title_freq.filter(function(item) {
+function filterIncompleteBooks (list) {
+  return list.filter(function(item) {
     return item.genre !== 'Misc';
-  });
-
-  sorted_by_title_freq = JSON.stringify(sorted_by_title_freq);
-
-  let sorted_by_author_freq = list.sort(function(a,b) {
-    return b.author_recs.length - a.author_recs.length;
-  })
-
-  sorted_by_author_freq = sorted_by_author_freq.filter(function(item) {
-    return item.genre !== 'Misc';
-  });
-
-  sorted_by_author_freq = JSON.stringify(sorted_by_author_freq);
-
-  let sorted_by_title = list.sort(function(a,b) {
-    return a.title.toLowerCase().charCodeAt(0) - b.title.toLowerCase().charCodeAt(0);
-  });
-
-  sorted_by_title = sorted_by_title.filter(function(item) {
-    return item.genre !== 'Misc';
-  });
-
-  sorted_by_title = JSON.stringify(sorted_by_title);
-
-  let sorted_by_author = list.sort(function(a,b) {
-    return a.author.toLowerCase().charCodeAt(0) - b.author.toLowerCase().charCodeAt(0);
-  });
-
-  sorted_by_author = sorted_by_author.filter(function(item) {
-    return item.genre !== 'Misc';
-  });
-
-  sorted_by_author = JSON.stringify(sorted_by_author);
-
-  fs.writeFile('./data/frequencies_title.json', sorted_by_title_freq, 'utf8', function(err, data) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log('Title freq: ', sorted_by_title_freq[0].title);
-    }
-  });
-
-  fs.writeFile('./data/frequencies_author.json', sorted_by_author_freq, 'utf8', function(err, data) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log('Author freq: ', sorted_by_author_freq[0].author);
-    }
-  });
-
-  fs.writeFile('./data/alphabetized_title.json', sorted_by_title, 'utf8', function(err, data) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log('Alpha title: ', sorted_by_title[0].title);
-    }
-  });
-
-  fs.writeFile('./data/alphabetized_author.json', sorted_by_author, 'utf8', function(err, data) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log('Alpha author: ', sorted_by_author[0].author);
-    }
   });
 }
 
-// writeProcessedDataToFile();
+function sortAndFilterList (list, sort_type) {
+  return filterIncompleteBooks(sortBookList(list, sort_type));
+}
+
+function writeBookListToFile (list, sort_type) {
+  var list = sortAndFilterList(list, sort_type);
+  var stringifiedJSON = JSON.stringify(list); 
+  var dest;
+
+  if (sort_type === 'freq-title') {
+    dest = './data/frequencies_title.json';
+  } else if (sort_type === 'freq-author') {
+    dest = './data/frequencies_author.json';
+  } else if (sort_type === 'alpha-title') {
+    dest = './data/alphabetized_title.json';
+  } else {
+    dest = './data/alphabetized_author.json';
+  }
+
+  fs.writeFile(dest, stringifiedJSON, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log('DONE', sort_type);
+    }
+  })
+}
+
+function writeAllBooksToFiles () {
+  writeBookListToFile(process_books(), 'freq-title');
+  writeBookListToFile(process_books(), 'freq-author');
+  writeBookListToFile(process_books(), 'alpha-title');
+  writeBookListToFile(process_books(), 'alpha-author');
+}
+
+function writeRecommendersListToFile () {
+  var list = process_recommenders();
+  list = JSON.stringify(list);
+
+  fs.writeFile('./data/recommenders_list.json', list, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log('DONE', 'recommenders-list');
+    }
+  })
+}
+
+writeAllBooksToFiles();
+writeRecommendersListToFile();
