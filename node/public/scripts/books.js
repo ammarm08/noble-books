@@ -51,6 +51,7 @@
     }
 
     function fetch_books(q) {
+      $list.append($('<div class="loader"><img src="https://s3.amazonaws.com/bookswell-media/img-assets/default.svg"/></div>'));
       $loader.fadeIn();
       q = q || "";
 
