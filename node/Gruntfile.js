@@ -11,7 +11,7 @@ module.exports = function(grunt) {
         'src/vendor/bootstrap/dist/js/bootstrap.min.js',
         'src/scripts/*.js'
         ],
-        dest: 'public/dist/build.js'
+        dest: 'src/scripts/build.js'
       }
     },
 
