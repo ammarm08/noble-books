@@ -497,7 +497,7 @@ footer {
 
 /* VIEWPORTS */
 
-@media (max-width: 1100px) {
+@media screen and (max-width: 1100px) {
   #app, .navbar .container-fluid, .modal-dialog {
     width: 90%;
   }
@@ -507,7 +507,7 @@ footer {
   }
 }
 
-@media (max-width: 768px) {
+@media screen and (max-width: 768px) {
   .filter-options button {
     width: 100%;
   }
@@ -545,7 +545,7 @@ footer {
   }
 }
 
-@media (max-width: 550px) {
+@media screen and (max-width: 550px) {
   .book {
     font-size: 0.9em;
     width: 40%;
@@ -557,6 +557,10 @@ footer {
 
   .book_recommenders {
     width: 60%;
+  }
+
+  .book_recommenders .img-circle {
+    width: 15%;
   }
 
   .modal-recommenders {
