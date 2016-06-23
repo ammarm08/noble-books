@@ -1,5 +1,6 @@
 node/node_modules
 node/bower_components
 node/src/vendor
+node/src/scripts/build.js
 
 nginx/ssl
