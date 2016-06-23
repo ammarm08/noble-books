@@ -212,7 +212,7 @@ body {
 }
 
 .book_recommenders {
-  width: 27%;
+  width: 29%;
   position: absolute;
   text-align: right;
 }
@@ -525,7 +525,7 @@ footer {
   }
 
   .book_recommenders {
-    width: 40%;
+    width: 45%;
   }
 
   .thumbnail-container .img-circle {
