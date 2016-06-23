@@ -141,10 +141,10 @@ window.initBooksPage = function () {
 
       if ($(this).data('length') === 'all') {
         setAsUniquelyActive($lengthFilter, $(this));
-        selected_ages = length_list;
+        selected_lengths = length_list;
       } else if ($(this).hasClass('active')) {
         removeActiveClass($(this));
-        selected_ages = updateFilterOptions(selected_lengths, 'length', $(this));
+        selected_lengths = updateFilterOptions(selected_lengths, 'length', $(this));
       } else if ($('.filter-by-length .active').length >= 2) {
         $('.all_lengths').trigger('click');
       } else {
@@ -152,7 +152,6 @@ window.initBooksPage = function () {
         $('.all_lengths').removeClass('active');
         selected_lengths = emptyListOnFirstTimeFilter(selected_lengths, $('.filter-by-length .active'));
         addFilterToList(selected_lengths, $(this).data('length'));
-        console.log(selected_lengths);
       }
     }
 
