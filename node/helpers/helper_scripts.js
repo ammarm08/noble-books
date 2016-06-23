@@ -31,7 +31,7 @@ function writeTSVtoJSON () {
         var author = entry[1];
         var recommender = entry[2];
         var slug = title + '\t' + author;
-
+        var source = entry[3];
         var amazon_link = entry[4];
         var summary = entry[5];
         var book_genre = entry[6];
@@ -80,14 +80,14 @@ function writeTSVtoJSON () {
 
         // RECOMMENDER
         if (recommenders[recommender]) {
-          recommenders[recommender].recommended_books.push([title, amazon_link]);
+          recommenders[recommender].recommended_books.push([title, amazon_link, source]);
           if (recommenders[recommender].recommended_authors.indexOf(author) === -1) {
             recommenders[recommender].recommended_authors.push(author);
             recommenders[recommender].reviews.push(review_excerpt);
           }
         } else {
           recommenders[recommender] = { 
-            recommended_books: [[title, amazon_link]], 
+            recommended_books: [[title, amazon_link, source]], 
             recommended_authors: [author],
             reviews: [review_excerpt],
             field: rec_genre,

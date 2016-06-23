@@ -420,6 +420,10 @@ body {
   -webkit-filter: grayscale(100%);
 }
 
+#source {
+  font-size: 0.75em;
+}
+
 .metadata {
   border-right: 1px solid #f2f2f2;
 }

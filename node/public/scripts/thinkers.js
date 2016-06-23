@@ -60,6 +60,12 @@
           $recommendation.text(b[0]);
           $recommendation.attr('href', b[1]);
           $recommendation.attr('target', '_blank');
+          $recommendation.data('toggle', 'tooltip');
+          $recommendation.data('placement', 'middle');
+          $recommendation.attr('title', 'Source: ' + b[2]);
+
+          $recommendation.tooltip();
+
           $('.recommendations-container').append($recommendation);
         })
       });
