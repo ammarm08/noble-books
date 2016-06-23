@@ -360,7 +360,13 @@
 
       // update values
       $('.modal-title').text(e.data.book.title);
-      $('.modal-about').text(e.data.book.summary);
+
+      if (!e.data.book.summary.length) {
+        $('.modal-about').text("We don't have one yet in our system, but it'll be here soon! Help us out by suggesting an edit :)");
+      } else {
+        $('.modal-about').text(e.data.book.summary);
+      }
+      
       $('.modal-blurb').text(e.data.book.author);
       $('.get-book').attr('href', e.data.book.link).attr('target', '_blank');
       $('.modal-image').attr('src', 'https://images-na.ssl-images-amazon.com/images/I/41YdCQ5bIAL.jpg');

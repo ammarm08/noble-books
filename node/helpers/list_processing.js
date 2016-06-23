@@ -36,7 +36,7 @@ function process_books () {
     let reviews = BOOKS[book].reviews;
     let length = BOOKS[book].length > 0 ? BOOKS[book].length : 150;
     let year = BOOKS[book].year;
-    let genre = GENRE_LOOKUP[BOOKS[book].genre] ? GENRE_LOOKUP[BOOKS[book].genre] : BOOKS[book].genre;
+    let genre = GENRE_LOOKUP[BOOKS[book].genre] ? GENRE_LOOKUP[BOOKS[book].genre] : BOOKS[book].genre || 'Misc';
     let link = BOOKS[book].amazon_link;
     let thumbnails = recommenders.map(function(person) { return formatThumbLink(person); });
 
@@ -88,22 +88,42 @@ function writeProcessedDataToFile () {
 
   let sorted_by_title_freq = list.sort(function(a,b) {
     return b.recommenders.length - a.recommenders.length;
+  })
+
+  sorted_by_title_freq = sorted_by_title_freq.filter(function(item) {
+    return item.genre !== 'Misc';
   });
+
   sorted_by_title_freq = JSON.stringify(sorted_by_title_freq);
 
   let sorted_by_author_freq = list.sort(function(a,b) {
     return b.author_recs.length - a.author_recs.length;
+  })
+
+  sorted_by_author_freq = sorted_by_author_freq.filter(function(item) {
+    return item.genre !== 'Misc';
   });
+
   sorted_by_author_freq = JSON.stringify(sorted_by_author_freq);
 
   let sorted_by_title = list.sort(function(a,b) {
     return a.title.toLowerCase().charCodeAt(0) - b.title.toLowerCase().charCodeAt(0);
   });
+
+  sorted_by_title = sorted_by_title.filter(function(item) {
+    return item.genre !== 'Misc';
+  });
+
   sorted_by_title = JSON.stringify(sorted_by_title);
 
   let sorted_by_author = list.sort(function(a,b) {
     return a.author.toLowerCase().charCodeAt(0) - b.author.toLowerCase().charCodeAt(0);
-  })
+  });
+
+  sorted_by_author = sorted_by_author.filter(function(item) {
+    return item.genre !== 'Misc';
+  });
+
   sorted_by_author = JSON.stringify(sorted_by_author);
 
   fs.writeFile('./data/frequencies_title.json', sorted_by_title_freq, 'utf8', function(err, data) {
@@ -138,3 +158,5 @@ function writeProcessedDataToFile () {
     }
   });
 }
+
+// writeProcessedDataToFile();
