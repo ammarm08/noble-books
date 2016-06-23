@@ -144,13 +144,16 @@ body {
   width: 49.7%;
 }
 
-.filter-options .show-advanced {
-  border: 2px solid #ff4742;
-}
-
-.filter-options .show-results {
+.filter-options .show-results, .filter-options .show-advanced {
   border: 2px solid #ff4742;
   color: #ff4742;
+  background: white;
+}
+
+.filter-options button:hover, .filter-options .active, .filter-options:focus {
+  border: 2px solid #ff4742;
+  color: #ff4742;
+  background: white;
 }
 
 .dropdown button {

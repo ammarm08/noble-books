@@ -40,6 +40,9 @@ window.initBooksPage = function () {
     }
 
     function setListeners () {
+      // immediately apply appropriate styling on all buttons
+      $('button').mouseup(function(e) { $(this).blur(); });
+      
       // set filters
       $ageFilter.on('click', updateAgeFilter);
       $genreFilter.on('click', updateGenreFilter);
@@ -84,6 +87,7 @@ window.initBooksPage = function () {
       resetList();
       selected_data = filterData();
       loadNextBooksGroup(PAGE, selected_data);
+      removeActiveFromSearch();
       PAGE++;
     }
 
@@ -153,6 +157,8 @@ window.initBooksPage = function () {
         selected_lengths = emptyListOnFirstTimeFilter(selected_lengths, $('.filter-by-length .active'));
         addFilterToList(selected_lengths, $(this).data('length'));
       }
+
+      addActiveToSearch();
     }
 
     function updateAgeFilter (e) {
@@ -172,6 +178,8 @@ window.initBooksPage = function () {
         selected_ages = emptyListOnFirstTimeFilter(selected_ages, $('.filter-by-age .active'));
         addFilterToList(selected_ages, $(this).data('age'));
       }
+
+      addActiveToSearch();
     }
 
     function updateGenreFilter (e) {
@@ -190,6 +198,20 @@ window.initBooksPage = function () {
         $('.all_genres').removeClass('active');
         selected_genres = emptyListOnFirstTimeFilter(selected_genres, $('.filter-by-genre .active'));
         addFilterToList(selected_genres, $(this).data('genre'));
+      }
+
+      addActiveToSearch();
+    }
+
+    function addActiveToSearch () {
+      if (!$search.hasClass('active')) {
+        $search.addClass('active');
+      }
+    }
+
+    function removeActiveFromSearch () {
+      if ($search.hasClass('active')) {
+        $search.removeClass('active');
       }
     }
 
