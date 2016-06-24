@@ -41,7 +41,7 @@ window.initBooksPage = function () {
 
     function setListeners () {
       // immediately apply appropriate styling on all buttons
-      $('button').mouseup(function(e) { $(this).blur(); });
+      $search.mouseup(function(e) { $(this).blur(); });
       
       // set filters
       $ageFilter.on('click', updateAgeFilter);
