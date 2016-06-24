@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "grunt build && nodemon server.js"
+    "dev": "grunt dev"
   },
   "author": "",
   "license": "ISC",
@@ -21,6 +21,8 @@
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-cssmin": "^1.0.1",
     "grunt-contrib-uglify": "^1.0.1",
-    "grunt-exec": "^1.0.0"
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-exec": "^1.0.0",
+    "grunt-nodemon": "^0.4.2"
   }
 }
