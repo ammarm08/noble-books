@@ -6,11 +6,7 @@ module.exports = function(grunt) {
         separator: ';'
       },
       dist: {
-        src: [
-        'src/vendor/jquery/dist/jquery.min.js', 
-        'src/vendor/bootstrap/dist/js/bootstrap.min.js',
-        'src/scripts/*.js'
-        ],
+        src: 'src/scripts/*.js',
         dest: 'src/scripts/build.js'
       }
     },
@@ -41,11 +37,7 @@ module.exports = function(grunt) {
 
     watch: {
       javascript: {
-        files: [
-        'src/vendor/jquery/dist/jquery.min.js', 
-        'src/vendor/bootstrap/dist/js/bootstrap.min.js', 
-        'src/scripts/*.js'
-        ],
+        files: 'src/scripts/*.js',
         tasks: ['concat', 'uglify']
       },
       css: {

@@ -15,11 +15,11 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', function (req, res) {
-  res.render('index', {page_name: 'books', data: freq_title.slice(0, 15)});
+  res.render('index', {page_name: 'books'});
 })
 
 app.get('/books', function (req, res) {
-  res.render('index', {page_name: 'books', data: freq_title.slice(0, 15)});
+  res.render('index', {page_name: 'books'});
 })
 
 app.get('/thinkers', function (req, res) {

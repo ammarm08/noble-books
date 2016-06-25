@@ -34,6 +34,7 @@ window.initBooksPage = function () {
     setListeners();
     fetch_books();
 
+
     function initializeTooltips () {
       $ageFilter.tooltip();
       $lengthFilter.tooltip();
