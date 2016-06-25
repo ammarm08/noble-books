@@ -107,6 +107,7 @@ body {
 #app .active, #app .active:hover, #app .active:focus {
   color: white;
   background-color: #ff4742;
+  border: none;
   outline: none;
 }
 

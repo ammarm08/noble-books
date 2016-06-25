@@ -92,6 +92,7 @@ window.initBooksPage = function () {
     }
 
     function applySort (e) {
+      e.preventDefault();
       resetList();
 
       var sort_type = $(this).data('sort');
