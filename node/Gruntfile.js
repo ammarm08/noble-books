@@ -7,7 +7,7 @@ module.exports = function(grunt) {
       },
       dist: {
         src: 'src/scripts/*.js',
-        dest: 'src/scripts/build.js'
+        dest: 'public/dist/build.js'
       }
     },
 
