@@ -28,16 +28,19 @@ window.initBooksPage = function () {
     var $genreFilter = $('.genre_filter');
     var $lengthFilter = $('.filter-by-length button');
     var $sorts = $('.dropdown-item');
+    var $book = $('.book-row');
 
     // INIT
+    background_fetch();
     initializeTooltips();
     setListeners();
-    fetch_books();
-
 
     function initializeTooltips () {
       $ageFilter.tooltip();
       $lengthFilter.tooltip();
+
+      // $('.books-list .img-circle').tooltip();
+      $('.books-list span').tooltip();
     }
 
     function setListeners () {
@@ -52,6 +55,53 @@ window.initBooksPage = function () {
       $advanced.on('click', toggleAdvancedFilters); // show advanced filters
       $search.on('click', applyFilters); // filter results
       $sorts.on('click', applySort);
+
+      // set initial listeners on server-rendered data
+      $book.on('click', updateModal);
+    }
+
+    function background_fetch (q) {
+      q = q || "";
+
+      $.ajax({
+        type: 'GET',
+        url: '/api/books' + '?' + 'sort=' + q,
+        success: function(data) {
+          all_data = data;
+          selected_data = all_data;
+          PAGE++;
+          if ($('#email-signup').length === 0) {
+            append_email_signup();
+          }
+          setDataAttributesForBooks();
+        }
+      })
+    }
+
+    function setDataAttributesForBooks () {
+      $('.book-row').each(function(i) {
+        var $self = $(this);
+
+        $self.data('book-title', selected_data[i].title);
+        $self.data('book-author', selected_data[i].author);
+        $self.data('book-summary', selected_data[i].summary);
+        $self.data('book-link', selected_data[i].link);
+        $self.data('book-year', selected_data[i].year);
+        $self.data('book-genre', selected_data[i].genre);
+        $self.data('book-reviews', selected_data[i].reviews);
+        $self.data('book-recommenders', selected_data[i].recommenders);
+        $self.data('book-length', selected_data[i].length);
+        $self.data('book-thumbnails', selected_data[i].thumbnails);
+
+        // set thumbnail tooltips
+        $self.find('.img-circle').each(function(j) {
+          var review = selected_data[i].reviews[j];
+          var recommender = selected_data[i].recommenders[j];
+          var tooltip_text = review === '""' ? recommender : recommender + ': ' + review; 
+          $(this).attr('title', tooltip_text);
+          $(this).tooltip();
+        })
+      })
     }
 
     function fetch_books(q) {
@@ -285,17 +335,29 @@ window.initBooksPage = function () {
 
     function append_one_to_table (book, i) {
       // CONTAINER
-      var $row = $('<li class="list-group-item" style="display: none"></li>');
+      var $row = $('<li class="list-group-item book-row" style="display: none"></li>');
 
       // TITLE + AUTHOR
       var $book = $('<div class="book" data-toggle="modal" data-target="#bookModal"></div>')
       var $title = $('<div class="book_title"></div>');
       var $author = $('<div class="book_author"></div>');
 
+      // DATA
+      $book.data('book-title', book.title);
+      $book.data('book-author', book.author);
+      $book.data('book-summary', book.summary);
+      $book.data('book-link', book.link);
+      $book.data('book-year', book.year);
+      $book.data('book-genre', book.genre);
+      $book.data('book-reviews', book.reviews);
+      $book.data('book-recommenders', book.recommenders);
+      $book.data('book-length', book.length);
+      $book.data('book-thumbnails', book.thumbnails);
+
       $title.text(formatTitle(book.title));
       $author.text(book.author);
       $book.append($title).append($author);
-      $book.click({book: book}, updateModal);
+      // $book.on('click', updateModal);
 
       // GENRE + LENGTH
       var $data = $('<div class="book_data"></div>')
@@ -363,10 +425,10 @@ window.initBooksPage = function () {
       return review_index;
     }
 
-    function setDefaultReview (book) {
-      var review_index = calculateReviewIndex(book.reviews);
-      var review_text = book.reviews[review_index];
-      var reviewer = book.recommenders[review_index];
+    function setDefaultReview (reviews, recommenders) {
+      var review_index = calculateReviewIndex(reviews);
+      var review_text = reviews[review_index];
+      var reviewer = recommenders[review_index];
 
       var $review = $('<div></div>');
       if (review_text) {
@@ -378,13 +440,13 @@ window.initBooksPage = function () {
       return $review;
     }
 
-    function setModalThumbnails (book) {
-      for (var i = 0; i < book.recommenders.length; i++) {
+    function setModalThumbnails (recommenders, thumbnails) {
+      for (var i = 0; i < recommenders.length; i++) {
         var $thumb = $('<img class="img-circle"/>');
 
         $thumb.data('toggle', 'tooltip');
-        $thumb.attr('title', 'Recommended by ' + book.recommenders[i]);
-        $thumb.attr('src', book.thumbnails[i]);
+        $thumb.attr('title', 'Recommended by ' + recommenders[i]);
+        $thumb.attr('src', thumbnails[i]);
 
         $('.modal-recommenders').append($thumb);
         $thumb.tooltip();
@@ -397,27 +459,27 @@ window.initBooksPage = function () {
       $('.modal-recommenders').empty();
 
       // update values
-      $('.modal-title').text(e.data.book.title);
+      $('.modal-title').text($(this).data('book-title'));
 
-      if (!e.data.book.summary.length) {
+      if (!$(this).data('book-summary').length) {
         $('.modal-about').text("We don't have one yet in our system, but it'll be here soon! Help us out by suggesting an edit :)");
       } else {
-        $('.modal-about').text(e.data.book.summary);
+        $('.modal-about').text($(this).data('book-summary'));
       }
       
-      $('.modal-blurb').text(e.data.book.author);
-      $('.get-book').attr('href', e.data.book.link).attr('target', '_blank');
+      $('.modal-blurb').text($(this).data('book-author'));
+      $('.get-book').attr('href', $(this).data('book-link')).attr('target', '_blank');
       $('.modal-image').attr('src', 'https://images-na.ssl-images-amazon.com/images/I/41YdCQ5bIAL.jpg');
-      $('.modal-year').text(formatYear(e.data.book.year));
-      $('.modal-length').text(e.data.book.length + ' pages');
-      $('.modal-genre').text(e.data.book.genre);
+      $('.modal-year').text(formatYear($(this).data('book-year')));
+      $('.modal-length').text($(this).data('book-length') + ' pages');
+      $('.modal-genre').text($(this).data('book-genre'));
 
       // set default review text
-      var $review = setDefaultReview(e.data.book);
+      var $review = setDefaultReview($(this).data('book-reviews'), $(this).data('book-recommenders'));
       $('.modal-review').append($review);
 
       // set recommender thumbnails
-      setModalThumbnails(e.data.book);
+      setModalThumbnails($(this).data('book-recommenders'), $(this).data('book-thumbnails'));
     }
 
     function setListThumbnails (book, $recommenders) {
