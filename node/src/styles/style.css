@@ -294,6 +294,21 @@ body {
   z-index: 100;
 }
 
+#email-signup {
+  text-align: center;
+  min-height: 40px;
+  background-color: #f5f8fa;
+  border: 1px solid #f5f8fa;
+  border-radius: 8px;
+  text-decoration: underline;
+}
+
+#email-signup:hover {
+  cursor: pointer;
+  text-decoration: underline;
+  color: #337ab7;
+}
+
 /* MODAL */
 
 .modal-dialog {

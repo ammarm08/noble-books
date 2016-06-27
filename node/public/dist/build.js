@@ -255,9 +255,21 @@ window.initBooksPage = function () {
 
     // APPEND A LIST OF BOOKS
     function append_all_to_table(books) {
-      books.forEach(function(book) {
-        append_one_to_table(book);
+      books.forEach(function(book, i) {
+        append_one_to_table(book, i);
       });
+
+      if ($('#email-signup').length === 0) {
+        append_email_signup();
+      }
+    }
+
+    function append_email_signup() {
+      var $email = $('<a id="email-signup" class="list-group-item"> Get early access to the Bookswell Members Club. </a>');
+      $email.attr('href', 'http://eepurl.com/b5XRYX');
+      $email.attr('target', '_blank');
+
+      $('.books-list li:eq(8)').after($email);
     }
 
     function append_pagination(book_data) {
@@ -271,7 +283,7 @@ window.initBooksPage = function () {
       $list.append($next_results);
     }
 
-    function append_one_to_table (book) {
+    function append_one_to_table (book, i) {
       // CONTAINER
       var $row = $('<li class="list-group-item" style="display: none"></li>');
 
