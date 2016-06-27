@@ -31,15 +31,13 @@ window.initBooksPage = function () {
     var $book = $('.book-row');
 
     // INIT
-    background_fetch();
     initializeTooltips();
     setListeners();
+    background_fetch();
 
     function initializeTooltips () {
       $ageFilter.tooltip();
       $lengthFilter.tooltip();
-
-      // $('.books-list .img-circle').tooltip();
       $('.books-list span').tooltip();
     }
 
