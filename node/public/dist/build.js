@@ -82,6 +82,8 @@ window.initBooksPage = function () {
         $('.advanced-filter').show();
         $('.show-advanced').text('Hide Filters')
       }
+
+      $(this).blur();
     }
 
     function applyFilters (e) {
