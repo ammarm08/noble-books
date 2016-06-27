@@ -65,13 +65,21 @@ window.initBooksPage = function () {
         type: 'GET',
         url: '/api/books' + '?' + 'sort=' + q,
         success: function(data) {
+          // set in-browser data
           all_data = data;
           selected_data = all_data;
-          PAGE++;
+
+          // append "More Results" and data attributes
+          append_pagination(selected_data);
+          setDataAttributesForBooks();
+
+          // plug for joining listserve
           if ($('#email-signup').length === 0) {
             append_email_signup();
           }
-          setDataAttributesForBooks();
+
+          // increment global page # tracker
+          PAGE++;
         }
       })
     }
