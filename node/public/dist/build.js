@@ -493,17 +493,22 @@ window.initBooksPage = function () {
 
         $('.recommendations-container').empty();
         rec.recommended_books.forEach(function(b) {
+          var $rec_group = $('<div></div>');
           var $recommendation = $('<a class="list-group-item thumbnail recommendation"></a>');
+          var $rec_src = $('<a class="glyphicon glyphicon-question-sign"></a>');
+
           $recommendation.text(b[0]);
           $recommendation.attr('href', b[1]);
           $recommendation.attr('target', '_blank');
-          $recommendation.data('toggle', 'tooltip');
-          $recommendation.data('placement', 'middle');
-          $recommendation.attr('title', 'Source: ' + b[2]);
 
-          $recommendation.tooltip();
+          $rec_src.attr('title', 'Source');
+          $rec_src.attr('href', b[2]);
+          $rec_src.attr('target', '_blank');
+          $rec_src.data('toggle', 'tooltip');
+          $rec_src.tooltip();
 
-          $('.recommendations-container').append($recommendation);
+          $rec_group.append($recommendation).append($rec_src);
+          $('.recommendations-container').append($rec_group);
         })
       });
 

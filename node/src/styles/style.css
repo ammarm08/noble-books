@@ -500,6 +500,25 @@ footer {
   font-size: 1.2em;
 }
 
+.recommendation, .glyphicon-file {
+  display: inline-block;
+}
+
+.recommendation {
+  width: 90%;
+}
+
+.glyphicon-question-sign {
+  color: #999999;
+  width: 10%;
+}
+
+.glyphicon-question-sign:hover {
+  color: #999999;
+  outline: none;
+  text-decoration: none;
+}
+
 /* VIEWPORTS */
 
 @media screen and (max-width: 1100px) {
