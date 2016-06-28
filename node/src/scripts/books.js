@@ -322,6 +322,7 @@ window.initBooksPage = function () {
 
     function append_email_signup() {
       var $email = $('<a id="email-signup" class="list-group-item"> Get early access to new books and exclusive author interviews. </a>');
+
       $email.attr('href', 'http://eepurl.com/b5XRYX');
       $email.attr('target', '_blank');
 
