@@ -297,8 +297,8 @@ body {
 #email-signup {
   text-align: center;
   min-height: 40px;
-  background-color: #f5f8fa;
-  border: 1px solid #f5f8fa;
+  background-color: #ff4742;
+  color: white;
   border-radius: 8px;
   text-decoration: underline;
 }
@@ -306,7 +306,7 @@ body {
 #email-signup:hover {
   cursor: pointer;
   text-decoration: underline;
-  color: #337ab7;
+  color: white;
 }
 
 /* MODAL */
