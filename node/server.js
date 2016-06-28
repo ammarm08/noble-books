@@ -7,8 +7,8 @@ let http = require('http');
 let fs = require('fs');
 
 let config = {
-    key: fs.readFileSync('../nginx/ssl/private/bookswell.key'),
-    cert: fs.readFileSync('../nginx/ssl/certs/www_bookswell_io.certchain.crt')
+    key: fs.readFileSync('./ssl/private/bookswell.key'),
+    cert: fs.readFileSync('./ssl/certs/www_bookswell_io.certchain.crt')
 };
 
 let httpPort = 8080;

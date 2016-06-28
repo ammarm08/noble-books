@@ -12,5 +12,5 @@ RUN npm install
 COPY . /usr/src/app
 
 # expose port and run npm start
-EXPOSE 8080
+EXPOSE 8443 8000
 CMD ["npm", "start"]

@@ -4,3 +4,4 @@ node/src/vendor
 node/src/scripts/build.js
 
 nginx/ssl
+node/ssl
