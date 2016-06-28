@@ -6,6 +6,8 @@ let https = require('https');
 let http = require('http');
 let fs = require('fs');
 
+const PORT = 8080;
+
 // let config = {
 //     key: fs.readFileSync('./ssl/private/bookswell.key'),
 //     cert: fs.readFileSync('./ssl/certs/www_bookswell_io.certchain.crt')
@@ -25,6 +27,6 @@ let fs = require('fs');
 //   });
 // };
 
-app.listen(8080, function() {
-  console.log('Server listening on ', 8080);
+app.listen(PORT, function() {
+  console.log('Server listening on ', PORT);
 });
