@@ -20,7 +20,7 @@ let recommenders_list = require('./data/recommenders_list.json');
 
 
 /* CONFIGURATION */
-app.all('*', ensureSecure);
+// app.all('*', ensureSecure);
 app.set('views', __dirname + '/public/views');
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
