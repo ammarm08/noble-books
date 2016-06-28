@@ -1,0 +1,24 @@
+<% data.forEach(function(book, i) { %>
+  <li class="list-group-item book-row">
+    <div class="book" data-toggle="modal" data-target="#bookModal">
+      <div class="book_title"><%- book.title %></div>
+      <div class="book_author"><%- book.author %></div>
+    </div>
+    <div class="book_data">
+      <div class="book_genre"><%- book.genre %></div>
+      <div class="book_length"><%- book.length + " pages (" + book.year + ") " %></div>
+    </div>
+    <div class="book_recommenders">
+      <% book.recommenders.forEach(function(person, j) { %>
+        <img class="img-circle" 
+              data-toggle="tooltip"
+              src=<%- JSON.stringify(book.thumbnails[j]) %>
+        />
+      <% }) %>
+      <span class="glyphicon glyphicon-option-vertical" 
+            data-toggle="tooltip" title=<%- JSON.stringify(book.recommenders.join(', ')) %>>
+        <a href="#"></a>
+      </span>
+    </div>
+  </li>
+<% }) %>

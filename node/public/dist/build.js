@@ -33,6 +33,7 @@ window.initBooksPage = function () {
     // INIT
     initializeTooltips();
     setListeners();
+    // fetch_books();
     background_fetch();
 
     function initializeTooltips () {
@@ -360,6 +361,8 @@ window.initBooksPage = function () {
       $book.data('book-recommenders', book.recommenders);
       $book.data('book-length', book.length);
       $book.data('book-thumbnails', book.thumbnails);
+
+      $book.on('click', updateModal);
 
       $title.text(formatTitle(book.title));
       $author.text(book.author);
