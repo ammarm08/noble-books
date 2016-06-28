@@ -14,4 +14,4 @@ COPY ./ssl/certs/www_bookswell_io.certchain.crt /etc/ssl/certs/
 # copy nginx config file
 COPY nginx.conf /etc/nginx/nginx.conf
 
-EXPOSE 80 443
+EXPOSE 80
