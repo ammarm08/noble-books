@@ -1,0 +1,21 @@
+nginx:
+  image: ammarm08/bookswell_nginx
+  links:
+    - node1
+    - node2
+  ports:
+    - "80:80"
+    - "443:443"
+  expose:
+    - "80"
+    - "443"
+
+node1:
+  image: ammarm08/bookswell_node
+  ports:
+    - "8080"
+
+node2:
+  image: ammarm08/bookswell_node
+  ports:
+    - "8080"
