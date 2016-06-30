@@ -490,6 +490,39 @@ window.initBooksPage = function () {
 
       // set recommender thumbnails
       setModalThumbnails($(this).data('book-recommenders'), $(this).data('book-thumbnails'));
+
+      // set GoodReads widget if applicable
+      if ($(this).data('book-link').indexOf('amazon.com') > -1) {
+        append_good_reads_widget($(this).data('book-link'));
+      }
+    }
+
+    function append_good_reads_widget (link) {
+      // clear previous values
+      $('#gr_add_to_books').empty();
+
+      // skeleton DOM elements
+      var $gr_container = $('<div class="gr_custom_each_container_"></div>');
+      var $gr_link = $('<a target="_blank" style="border:none"></a>');
+      var $script = $('<script></script>');
+
+      // data formatting
+      var isbn = link.split('/').pop();
+      var details = '?atmb_widget%5Bbutton%5D=atmb_widget_1.png&amp;atmb_widget%5Bhide_friends%5D=on'; 
+      var widget = 'https://www.goodreads.com/book/add_to_books_widget_frame/' + isbn + details;
+
+      var good_reads_link = 'https://www.goodreads.com/book/isbn/' + isbn;
+
+      // binding data to DOM elements
+      $gr_link.attr('href', good_reads_link);
+      $script.attr('src', widget);
+      $gr_container.append($gr_link);
+      $('#gr_add_to_books').append($gr_container).append($script);
+
+      // <div class="gr_custom_each_container_" style="display:none">
+        // <a target="_blank" style="border:none"></a>
+      // </div>
+      // <script></script>
     }
 
     function setListThumbnails (book, $recommenders) {
