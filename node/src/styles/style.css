@@ -534,6 +534,18 @@ footer {
   text-decoration: none;
 }
 
+/* GOOD READS WIDGET */
+
+#gr_add_to_books {
+  height: 30px;
+  overflow: hidden;
+  margin: 10px;
+}
+
+#gr_add_to_books:hover {
+  height: 110px;
+}
+
 /* VIEWPORTS */
 
 @media screen and (max-width: 1100px) {

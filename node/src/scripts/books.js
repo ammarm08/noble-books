@@ -518,11 +518,6 @@ window.initBooksPage = function () {
       $script.attr('src', widget);
       $gr_container.append($gr_link);
       $('#gr_add_to_books').append($gr_container).append($script);
-
-      // <div class="gr_custom_each_container_" style="display:none">
-        // <a target="_blank" style="border:none"></a>
-      // </div>
-      // <script></script>
     }
 
     function setListThumbnails (book, $recommenders) {
