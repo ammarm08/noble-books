@@ -286,11 +286,11 @@ body {
   color: #ff4742;
 }
 
-.twitter-follow {
+.fb-like {
   position: fixed;
   right: 0;
   bottom: 0;
-  margin: 10px;
+  margin: 0;
   z-index: 100;
 }
 
@@ -556,6 +556,14 @@ footer {
   .recommender-collection img {
     width: 30%;
   }
+
+  .fb-container {
+    width: 65%;
+  }
+
+  .fb-like {
+    position: relative;
+  }
 }
 
 @media screen and (max-width: 768px) {
@@ -591,8 +599,12 @@ footer {
     width: 100%;
   }
 
-  .twitter-follow {
-    display: none;
+  .fb-container {
+    width: 65%;
+  }
+
+  .fb-like {
+    position: relative;
   }
 }
 
@@ -624,5 +636,13 @@ footer {
 
   .recommender-collection img {
     width: 75%;
+  }
+
+  .fb-container {
+    width: 65%;
+  }
+
+  .fb-like {
+    position: relative;
   }
 }
