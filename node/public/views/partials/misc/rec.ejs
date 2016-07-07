@@ -1,0 +1,9 @@
+<% data.forEach(function(rec, i) { %>
+  <div class="recommender-collection">
+    <div class="thumbnail-container" data-toggle="modal" data-target="#recModal">
+      <img class="img-circle" src=<%- JSON.stringify(rec.thumbnail) %>/>
+    </div>
+    <div class="recommender" data-name=<%- JSON.stringify(rec.name) %> 
+    data-toggle="modal" data-target="#recModal"><%- rec.name %></div>
+  </div>
+<% }) %>

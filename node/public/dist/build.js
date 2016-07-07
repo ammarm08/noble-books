@@ -552,37 +552,7 @@ window.initBooksPage = function () {
   $(document).ready(function() {
     // GLOBALS
     var all_data = [];
-    var $books = $('.books');
-    var $loader = $('.loader');
-
-    fetch_books();
-
-    function fetch_books () {
-      $books.append($('<div class="loader"><img src="https://s3.amazonaws.com/bookswell-media/img-assets/default.svg"/></div>'));
-      $loader.fadeIn();
-      $.ajax({
-        type: 'GET',
-        url: '/api/recommenders',
-        success: function(data) {
-          $loader.fadeOut(1500);
-          $books.empty();
-          all_data = data;
-          loadNextRecommenderGroup(all_data);
-        }
-      })
-    }
-
-    // LOAD NEXT 15 results
-    function loadNextRecommenderGroup(data) {
-      append_all_recs_to_table(data);
-    }
-
-    // APPEND A LIST OF RECOMMENDERS
-    function append_all_recs_to_table(recs) {
-      recs.forEach(function(r) {
-        append_one_rec_to_table(r);
-      });
-    }
+    var $books = $('.recs');
 
     // BUILD INDIVIDUAL BOOK ITEM & APPEND IT TO LIST
     function append_one_rec_to_table(rec) {

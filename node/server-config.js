@@ -35,7 +35,7 @@ app.get('/books', function (req, res) {
 })
 
 app.get('/thinkers', function (req, res) {
-  res.render('thinkers', {page_name: 'thinkers'});
+  res.render('thinkers', {page_name: 'thinkers', data: recommenders_list });
 })
 
 app.get('/api/books', function (req, res) {
