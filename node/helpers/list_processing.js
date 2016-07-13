@@ -66,6 +66,16 @@ function process_books () {
   return book_title_frequencies;
 }
 
+function filter_list_by_field (target_field) {
+  let list = process_books();
+  return list.filter(function(book) {
+    return book.recommenders.reduce(function(isInField, rec) {
+      let field = RECS[rec].field;
+      return (field === target_field) || isInField;
+    }, false)
+  })
+}
+
 function process_recommenders () {
   let recommenders_list = Object.keys(RECS).reduce(function(results, rec) {
     var rec_obj = {
@@ -113,35 +123,27 @@ function sortAndFilterList (list, sort_type) {
   return filterIncompleteBooks(sortBookList(list, sort_type));
 }
 
-function writeBookListToFile (list, sort_type) {
+function writeBookListToFile (list, sort_type, dest) {
   var list = sortAndFilterList(list, sort_type);
   var stringifiedJSON = JSON.stringify(list); 
-  var dest;
-
-  if (sort_type === 'freq-title') {
-    dest = './data/frequencies_title.json';
-  } else if (sort_type === 'freq-author') {
-    dest = './data/frequencies_author.json';
-  } else if (sort_type === 'alpha-title') {
-    dest = './data/alphabetized_title.json';
-  } else {
-    dest = './data/alphabetized_author.json';
-  }
 
   fs.writeFile(dest, stringifiedJSON, function(err, data) {
     if (err) {
       console.log(err);
     } else {
-      console.log('DONE', sort_type);
+      console.log('DONE', dest);
     }
   })
 }
 
 function writeAllBooksToFiles () {
-  writeBookListToFile(process_books(), 'freq-title');
-  writeBookListToFile(process_books(), 'freq-author');
-  writeBookListToFile(process_books(), 'alpha-title');
-  writeBookListToFile(process_books(), 'alpha-author');
+  writeBookListToFile(process_books(), 'freq-title', './data/frequencies_title.json');
+  writeBookListToFile(process_books(), 'freq-author', './data/frequencies_author.json');
+  writeBookListToFile(process_books(), 'alpha-title', './data/alphabetized_title.json');
+  writeBookListToFile(process_books(), 'alpha-author', './data/alphabetized_author.json');
+
+  // FIELD-SPECIFIC
+  writeBookListToFile(filter_list_by_field('Technology'), 'freq-title', './data/filter-by-tech.json');
 }
 
 function writeRecommendersListToFile () {

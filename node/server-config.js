@@ -3,57 +3,51 @@
 let express = require('express');
 let app = express();
 
-/* This ensures that we are only working on a secure connection */
-function ensureSecure(req, res, next){
-  if (req.secure) {
-    return next();
-  };
-  res.redirect('https://' + req.hostname + ':' + 8443 + req.url);
-};
-
 /* JSON files */
-let alpha_author = require('./data/alphabetized_author.json');
-let alpha_title = require('./data/alphabetized_title.json');
-let freq_author = require('./data/frequencies_author.json');
-let freq_title = require('./data/frequencies_title.json');
-let recommenders_list = require('./data/recommenders_list.json');
-
+let db = {
+  alphabetized_author : require('./data/alphabetized_author.json'),
+  alphabetized_title : require('./data/alphabetized_title.json'),
+  frequencies_author : require('./data/frequencies_author.json'),
+  frequencies_title : require('./data/frequencies_title.json'),
+  recommenders_list : require('./data/recommenders_list.json'),
+  tech_leaders : require('./data/filter-by-tech.json')
+}
 
 /* CONFIGURATION */
-// app.all('*', ensureSecure);
 app.set('views', __dirname + '/public/views');
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
 
 /* ROUTES */
 app.get('/', function (req, res) {
-  res.render('index', {page_name: 'books', data: freq_title.slice(0, 10)});
+  res.render('index', {page_name: 'books', data: db.frequencies_title.slice(0, 10)});
 })
 
 app.get('/books', function (req, res) {
-  res.render('index', {page_name: 'books', data: freq_title.slice(0, 10)});
+  res.render('index', {page_name: 'books', data: db.frequencies_title.slice(0, 10)});
 })
 
 app.get('/thinkers', function (req, res) {
-  res.render('thinkers', {page_name: 'thinkers', data: recommenders_list });
+  res.render('thinkers', {page_name: 'thinkers', data: db.recommenders_list });
+})
+
+app.get('/leaders-in-tech', function (req, res) {
+  res.render('index', {page_name: 'books', data: db.tech_leaders.slice(0, 10) });
 })
 
 app.get('/api/books', function (req, res) {
   var query = req.query.sort;
 
-  if (query === 'frequencies_author') {
-    res.json(freq_author);
-  } else if (query === 'alphabetized_title') {
-    res.json(alpha_title);
-  } else if (query === 'alphabetized_author') {
-    res.json(alpha_author);
+  if (db[query]) {
+    res.json(db[query]);
   } else {
-    res.json(freq_title);
+    res.json(db['frequencies_title']);
   }
+
 })
 
 app.get('/api/recommenders', function (req, res) {
-  res.json(recommenders_list);
+  res.json(db.recommenders_list);
 })
 
 app.get('/*', function (req, res) {

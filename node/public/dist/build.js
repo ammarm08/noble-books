@@ -60,8 +60,8 @@ window.initBooksPage = function () {
       $book.on('click', updateModal);
     }
 
-    function background_fetch (q) {
-      q = q || "";
+    function background_fetch () {
+      q = window.location.pathname === '/leaders-in-tech' ? 'tech_leaders' : "";
 
       $.ajax({
         type: 'GET',

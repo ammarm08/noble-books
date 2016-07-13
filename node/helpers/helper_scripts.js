@@ -13,14 +13,16 @@ function writeTSVtoJSON () {
       //0- Title
       //1- Author
       //2- Recommender
-      //3- Rec_Source
+      //3- Rec Source
       //4- Amazon_Link
-      //5- Book_Genre
-      //6- Length
-      //7- Publish_Date
-      //8- On_List?
-      //9- Rec_Review
-      //10- Recommender_Genre
+      //5- Summary
+      //6- Book Genre
+      //7- Length
+      //8- Publish Year
+      //9- On List?
+      //10- Rec Review
+      //11- Rec Genre
+      //12- Rec Bio
       
       var books = {};
       var authors = {};
