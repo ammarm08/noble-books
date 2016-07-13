@@ -569,6 +569,7 @@ footer {
 @media screen and (max-width: 768px) {
   .filter-options button {
     width: 100%;
+    margin: 4px auto;
   }
 
   .filter-by-length, .filter-by-age {

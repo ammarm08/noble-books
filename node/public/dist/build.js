@@ -580,6 +580,8 @@ window.initBooksPage = function () {
       $('.modal-title').text($(this).data('name') + "'s Picks");
       $('.modal-about').text($(this).data('name') + ' ' + $(this).data('bio'));
 
+      $('.recommendations-container').empty();
+
       var books = $(this).data('recommended-books');
       for (var i = 0; i < books.length; i++) {
         var $rec_group = $('<div></div>');
