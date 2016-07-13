@@ -2,6 +2,7 @@ window.initBooksPage = function () {
   $(document).ready(function() {
     // PAGINATION STATE
     var PAGE = 0;
+    var page_increment = 10;
 
     // FILTER CATEGORIES
     var genre_list = $('.genre_filter').map(function() { return $(this).text().trim(); }).toArray();
@@ -306,7 +307,7 @@ window.initBooksPage = function () {
 
     // LOAD NEXT 15 results
     function loadNextBooksGroup(p, book_data) {
-      append_all_to_table(book_data.slice(p*15, 15 + p*15)); // only append 15 at a time
+      append_all_to_table(book_data.slice(p*page_increment, page_increment + p*page_increment)); // only append 15 at a time
       append_pagination(book_data);
     }
 
@@ -327,7 +328,7 @@ window.initBooksPage = function () {
       $email.attr('href', 'http://eepurl.com/b5XRYX');
       $email.attr('target', '_blank');
 
-      $('.books-list li:eq(8)').after($email);
+      $('.books-list li:eq(4)').after($email);
     }
 
     function append_pagination(book_data) {
@@ -391,7 +392,7 @@ window.initBooksPage = function () {
     }
 
     function calculateBooksCurrentlyViewed (total) {
-      return total <= 15 + PAGE * 15 ? total : 15 + PAGE * 15; // factor of 15 unless on last page
+      return total <= page_increment + PAGE * page_increment ? total : page_increment + PAGE * page_increment; // factor of 15 unless on last page
     }
 
     function showMoreResults (e) {

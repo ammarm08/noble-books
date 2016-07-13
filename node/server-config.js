@@ -27,11 +27,11 @@ app.use(express.static(__dirname + '/public'));
 
 /* ROUTES */
 app.get('/', function (req, res) {
-  res.render('index', {page_name: 'books', data: freq_title.slice(0, 15)});
+  res.render('index', {page_name: 'books', data: freq_title.slice(0, 10)});
 })
 
 app.get('/books', function (req, res) {
-  res.render('index', {page_name: 'books', data: freq_title.slice(0, 15)});
+  res.render('index', {page_name: 'books', data: freq_title.slice(0, 10)});
 })
 
 app.get('/thinkers', function (req, res) {
