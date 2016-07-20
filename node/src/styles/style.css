@@ -282,6 +282,12 @@ body {
   margin: 10px auto;
 }
 
+.sticky-div .curated {
+  display: inline-block;
+  width: 15%;
+  text-align: left;
+}
+
 .fa-heart {
   color: #ff4742;
 }

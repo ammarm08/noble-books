@@ -66,13 +66,20 @@ function process_books () {
   return book_title_frequencies;
 }
 
-function filter_list_by_field (target_field) {
+function filter_list_by_field (target_fields) {
   let list = process_books();
   return list.filter(function(book) {
-    return book.recommenders.reduce(function(isInField, rec) {
+    book.recommenders = book.recommenders.filter(function(rec) {
       let field = RECS[rec].field;
-      return (field === target_field) || isInField;
-    }, false)
+      return target_fields.indexOf(field) > -1;
+    })
+
+    return !!book.recommenders.length;
+
+    // return book.recommenders.reduce(function(isInField, rec) {
+    //   let field = RECS[rec].field;
+    //   return (target_fields.indexOf(field) > -1) || isInField;
+    // }, false)
   })
 }
 
@@ -143,7 +150,13 @@ function writeAllBooksToFiles () {
   writeBookListToFile(process_books(), 'alpha-author', './data/alphabetized_author.json');
 
   // FIELD-SPECIFIC
-  writeBookListToFile(filter_list_by_field('Technology'), 'freq-title', './data/filter-by-tech.json');
+  writeBookListToFile(filter_list_by_field(['Technology']), 'freq-title', './data/filter-by-tech.json');
+  writeBookListToFile(filter_list_by_field(['Business']), 'freq-title', './data/filter-by-biz.json');
+  writeBookListToFile(filter_list_by_field(['Literature']), 'freq-title', './data/filter-by-lit.json');
+  writeBookListToFile(filter_list_by_field(['Politics', 'Culture & Society', 'Journalism']), 'freq-title', './data/filter-by-history.json');
+  writeBookListToFile(filter_list_by_field(['Finance & Economics', 'Law']), 'freq-title', './data/filter-by-econ.json');
+  writeBookListToFile(filter_list_by_field(['Physics', 'Evolutionary Biology', 'Anthropology', 'Environmental Science']), 'freq-title', './data/filter-by-sci.json');
+  writeBookListToFile(filter_list_by_field(['Philosophy', 'Religion & Spirituality', 'Linguistics', 'Cognitive Science']), 'freq-title', './data/filter-by-phil.json');
 }
 
 function writeRecommendersListToFile () {

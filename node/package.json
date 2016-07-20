@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "grunt build & node server.js",
-    "dev": "grunt dev & nodemon server.js"
+    "start": "grunt build & node app/server.js",
+    "dev": "grunt dev & nodemon app/server.js"
   },
   "author": "",
   "license": "ISC",

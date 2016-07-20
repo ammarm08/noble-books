@@ -34,7 +34,6 @@ window.initBooksPage = function () {
     // INIT
     initializeTooltips();
     setListeners();
-    // fetch_books();
     background_fetch();
 
     function initializeTooltips () {
@@ -61,7 +60,18 @@ window.initBooksPage = function () {
     }
 
     function background_fetch () {
-      q = window.location.pathname === '/leaders-in-tech' ? 'tech_leaders' : "";
+      var paths = {
+        '/recommendations-from-techies': 'techies',
+        '/recommendations-from-writers': 'writers',
+        '/recommendations-from-scientists': 'scientists',
+        '/recommendations-from-history-buffs': 'history_buffs',
+        '/recommendations-from-econ-nerds': 'econ_nerds',
+        '/recommendations-from-philosophers': 'philosophers',
+        '/recommendations-from-entrepreneurs': 'entrepreneurs'
+      };
+
+      var currentPath = window.location.pathname;
+      q = paths[currentPath] || "";
 
       $.ajax({
         type: 'GET',
