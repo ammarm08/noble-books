@@ -318,10 +318,15 @@ body {
 /* MODAL */
 
 .modal-dialog {
-  width: 65%;
-  margin: 50px auto;
+  width: 50%;
   color: #534540;
   border-radius: 2px;
+  float: right;
+  margin: 0;
+}
+
+.modal-content {
+  min-height: 100vh;
 }
 
 .modal-header {
@@ -369,12 +374,12 @@ body {
 
 .modal-about, .modal-blurb, .modal-review, .modal-recommendations {
   width: 90%;
-  margin: 10px;
+  margin: 20px 10px;
   font-size: 1.1em;
 }
 
 .modal-recommendations {
-  max-height: 250px;
+  max-height: 350px;
   overflow: scroll;
 }
 
