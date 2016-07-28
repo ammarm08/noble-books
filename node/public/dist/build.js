@@ -1,62 +1,61 @@
 window.initBooksPage = function () {
   $(document).ready(function() {
     // PAGINATION STATE
+    var config = {
+      genres : $('.genre_filter').map(function() { return $(this).text().trim(); }).toArray(),
+      lengths : $('.filter-by-length button').map(function() { return $(this).data('length'); }).toArray(),
+      ages : $('.filter-by-age button').map(function() { return $(this).data('age'); }).toArray()
+    };
+
+    var store = {
+      all: [],
+      selected: [],
+      lengths: config.lengths,
+      genres: config.genres,
+      ages: config.ages
+    };
+
+    var components = {
+      loader: $('.loader'),
+      books_list: $('.books-list'),
+      book : $('.book-row')
+      advanced_toggle: $('.show-advanced'),
+      search: $('.show-results'),
+      age_filter : $('.filter-by-age button'),
+      genre_filter : $('.genre_filter'),
+      length_filter : $('.filter-by-length button'),
+      sorts : $('.dropdown-item')
+    }
+
     var PAGE = 0;
     var page_increment = 10;
-
-    // FILTER CATEGORIES
-    var genre_list = $('.genre_filter').map(function() { return $(this).text().trim(); }).toArray();
-    var length_list = $('.filter-by-length button').map(function() { return $(this).data('length'); }).toArray();
-    var age_list = $('.filter-by-age button').map(function() { return $(this).data('age'); }).toArray();
-
-    // DATA STORE (ALL v. SELECTED)
-    var all_data = [];
-    var selected_data = [];
-
-    // FILTER STORE
-    var selected_lengths = length_list;
-    var selected_genres = genre_list;
-    var selected_ages = age_list;
-
-    // LOADER
-    var $loader = $('.loader');
-
-    // SELECTORS
-    var $list = $('.books-list');
-    var $advanced = $('.show-advanced');
-    var $search = $('.show-results');
-    var $ageFilter = $('.filter-by-age button');
-    var $genreFilter = $('.genre_filter');
-    var $lengthFilter = $('.filter-by-length button');
-    var $sorts = $('.dropdown-item');
-    var $book = $('.book-row');
-
+    
     // INIT
     initializeTooltips();
     setListeners();
     background_fetch();
 
     function initializeTooltips () {
-      $ageFilter.tooltip();
-      $lengthFilter.tooltip();
+      components.age_filter.tooltip();
+      components.length_filter.tooltip();
       $('.books-list span').tooltip();
     }
 
     function setListeners () {
       // immediately apply appropriate styling on all buttons
-      $search.mouseup(function(e) { $(this).blur(); });
+      components.search.mouseup(function(e) { $(this).blur(); });
       
       // set filters
-      $ageFilter.on('click', updateAgeFilter);
-      $genreFilter.on('click', updateGenreFilter);
-      $lengthFilter.on('click', updateLengthFilter);
+      components.age_filter.on('click', updateAgeFilter);
+      components.genre_filter.on('click', updateGenreFilter);
+      components.length_filter.on('click', updateLengthFilter);
 
-      $advanced.on('click', toggleAdvancedFilters); // show advanced filters
-      $search.on('click', applyFilters); // filter results
-      $sorts.on('click', applySort);
+      components.advanced_toggle.on('click', toggleAdvancedFilters); // show advanced filters
+      components.search.on('click', applyFilters); // filter results
+      components.sorts.on('click', applySort);
 
       // set initial listeners on server-rendered data
-      $book.on('click', updateModal);
+      components.book.on('click', updateModal);
     }
 
     function background_fetch () {
@@ -78,11 +77,11 @@ window.initBooksPage = function () {
         url: '/api/books' + '?' + 'sort=' + q,
         success: function(data) {
           // set in-browser data
-          all_data = data;
-          selected_data = all_data;
+          store.all = data;
+          store.selected = store.all;
 
           // append "More Results" and data attributes
-          append_pagination(selected_data);
+          append_pagination(store.selected);
           setDataAttributesForBooks();
 
           // plug for joining listserve
@@ -100,21 +99,21 @@ window.initBooksPage = function () {
       $('.book-row').each(function(i) {
         var $self = $(this);
 
-        $self.data('book-title', selected_data[i].title);
-        $self.data('book-author', selected_data[i].author);
-        $self.data('book-summary', selected_data[i].summary);
-        $self.data('book-link', selected_data[i].link);
-        $self.data('book-year', selected_data[i].year);
-        $self.data('book-genre', selected_data[i].genre);
-        $self.data('book-reviews', selected_data[i].reviews);
-        $self.data('book-recommenders', selected_data[i].recommenders);
-        $self.data('book-length', selected_data[i].length);
-        $self.data('book-thumbnails', selected_data[i].thumbnails);
+        $self.data('book-title', store.selected[i].title);
+        $self.data('book-author', store.selected[i].author);
+        $self.data('book-summary', store.selected[i].summary);
+        $self.data('book-link', store.selected[i].link);
+        $self.data('book-year', store.selected[i].year);
+        $self.data('book-genre', store.selected[i].genre);
+        $self.data('book-reviews', store.selected[i].reviews);
+        $self.data('book-recommenders', store.selected[i].recommenders);
+        $self.data('book-length', store.selected[i].length);
+        $self.data('book-thumbnails', store.selected[i].thumbnails);
 
         // set thumbnail tooltips
         $self.find('.img-circle').each(function(j) {
-          var review = selected_data[i].reviews[j];
-          var recommender = selected_data[i].recommenders[j];
+          var review = store.selected[i].reviews[j];
+          var recommender = store.selected[i].recommenders[j];
           var tooltip_text = review === '""' ? recommender : recommender + ': ' + review; 
           $(this).attr('title', tooltip_text);
           $(this).tooltip();
@@ -123,19 +122,19 @@ window.initBooksPage = function () {
     }
 
     function fetch_books(q) {
-      $list.append($('<div class="loader"><img src="https://s3.amazonaws.com/bookswell-media/img-assets/default.svg"/></div>'));
-      $loader.fadeIn();
+      components.books_list.append($('<div class="loader"><img src="https://s3.amazonaws.com/bookswell-media/img-assets/default.svg"/></div>'));
+      components.loader.fadeIn();
       q = q || "";
 
       $.ajax({
         type: 'GET',
         url: '/api/books' + '?' + 'sort=' + q,
         success: function(data) {
-          $loader.fadeOut(1500);
-          $list.empty();
-          all_data = data;
-          selected_data = all_data;
-          loadNextBooksGroup(PAGE, selected_data);
+          components.loader.fadeOut(1500);
+          components.books_list.empty();
+          store.all = data;
+          store.selected = store.all;
+          loadNextBooksGroup(PAGE, store.selected);
           PAGE++;
         }
       })
@@ -156,8 +155,8 @@ window.initBooksPage = function () {
 
     function applyFilters (e) {
       resetList();
-      selected_data = filterData();
-      loadNextBooksGroup(PAGE, selected_data);
+      store.selected = filterData();
+      loadNextBooksGroup(PAGE, store.selected);
       removeActiveFromSearch();
       PAGE++;
     }
@@ -174,26 +173,26 @@ window.initBooksPage = function () {
     }
 
     function resetList () {
-      $list.empty();
+      components.books_list.empty();
       PAGE = 0;
     }
 
     function filterData () {
-      return all_data.filter(function(book) {
+      return store.all.filter(function(book) {
         return isSelectedGenre(book.genre) && isSelectedLength(book.length) && isSelectedAge(book.year);
       })
     }
 
     function isSelectedGenre (g) {
-      return selected_genres.indexOf(g) !== -1;
+      return store.genres.indexOf(g) !== -1;
     }
 
     function isSelectedLength (l) {
-      if (selected_lengths.indexOf('short') !== -1 && l < 150) {
+      if (store.lengths.indexOf('short') !== -1 && l < 150) {
         return true;
-      } else if (selected_lengths.indexOf('medium') !== -1 && l > 150 && l < 400) {
+      } else if (store.lengths.indexOf('medium') !== -1 && l > 150 && l < 400) {
         return true;
-      } else if (selected_lengths.indexOf('long') !== -1 && l > 400) {
+      } else if (store.lengths.indexOf('long') !== -1 && l > 400) {
         return true;
       } else {
         return false;
@@ -201,11 +200,11 @@ window.initBooksPage = function () {
     }
 
     function isSelectedAge (a) {
-      if (selected_ages.indexOf(1900) !== -1 && a < 1900) {
+      if (store.ages.indexOf(1900) !== -1 && a < 1900) {
         return true;
-      } else if (selected_ages.indexOf(1901) !== -1 && a >= 1900 && a < 2000) {
+      } else if (store.ages.indexOf(1901) !== -1 && a >= 1900 && a < 2000) {
         return true;
-      } else if (selected_ages.indexOf(2000) !== -1 && a >= 2000) {
+      } else if (store.ages.indexOf(2000) !== -1 && a >= 2000) {
         return true;
       } else {
         return false;
@@ -216,18 +215,18 @@ window.initBooksPage = function () {
       e.preventDefault();
 
       if ($(this).data('length') === 'all') {
-        setAsUniquelyActive($lengthFilter, $(this));
-        selected_lengths = length_list;
+        setAsUniquelyActive(components.length_filter, $(this));
+        store.lengths = config.lengths;
       } else if ($(this).hasClass('active')) {
         removeActiveClass($(this));
-        selected_lengths = updateFilterOptions(selected_lengths, 'length', $(this));
+        store.lengths = updateFilterOptions(store.lengths, 'length', $(this));
       } else if ($('.filter-by-length .active').length >= 2) {
         $('.all_lengths').trigger('click');
       } else {
         $(this).addClass('active');
         $('.all_lengths').removeClass('active');
-        selected_lengths = emptyListOnFirstTimeFilter(selected_lengths, $('.filter-by-length .active'));
-        addFilterToList(selected_lengths, $(this).data('length'));
+        store.lengths = emptyListOnFirstTimeFilter(store.lengths, $('.filter-by-length .active'));
+        addFilterToList(store.lengths, $(this).data('length'));
       }
 
       addActiveToSearch();
@@ -237,18 +236,18 @@ window.initBooksPage = function () {
       e.preventDefault();
 
       if ($(this).data('age') === 'all') {
-        setAsUniquelyActive($ageFilter, $(this));
-        selected_ages = age_list;
+        setAsUniquelyActive(components.age_filter, $(this));
+        store.ages = config.ages;
       } else if ($(this).hasClass('active')) {
         removeActiveClass($(this));
-        selected_ages = updateFilterOptions(selected_ages, 'age', $(this));
+        store.ages = updateFilterOptions(store.ages, 'age', $(this));
       } else if ($('.filter-by-age .active').length >= 2) {
         $('.all_ages').trigger('click');
       } else {
         $(this).addClass('active');
         $('.all_ages').removeClass('active');
-        selected_ages = emptyListOnFirstTimeFilter(selected_ages, $('.filter-by-age .active'));
-        addFilterToList(selected_ages, $(this).data('age'));
+        store.ages = emptyListOnFirstTimeFilter(store.ages, $('.filter-by-age .active'));
+        addFilterToList(store.ages, $(this).data('age'));
       }
 
       addActiveToSearch();
@@ -258,32 +257,32 @@ window.initBooksPage = function () {
       e.preventDefault();
 
       if ($(this).data('genre') === 'All') {
-        setAsUniquelyActive($genreFilter, $(this));
-        selected_genres = genre_list;
+        setAsUniquelyActive(components.genre_filter, $(this));
+        store.genres = config.genres;
       } else if ($(this).hasClass('active')) {
         removeActiveClass($(this));
-        selected_genres = updateFilterOptions(selected_genres, 'genre', $(this));
+        store.genres = updateFilterOptions(store.genres, 'genre', $(this));
       } else if ($('.filter-by-genre .active').length >= 6) {
         $('.all_genres').trigger('click');
       } else {
         $(this).addClass('active');
         $('.all_genres').removeClass('active');
-        selected_genres = emptyListOnFirstTimeFilter(selected_genres, $('.filter-by-genre .active'));
-        addFilterToList(selected_genres, $(this).data('genre'));
+        store.genres = emptyListOnFirstTimeFilter(store.genres, $('.filter-by-genre .active'));
+        addFilterToList(store.genres, $(this).data('genre'));
       }
 
       addActiveToSearch();
     }
 
     function addActiveToSearch () {
-      if (!$search.hasClass('active')) {
-        $search.addClass('active');
+      if (!components.search.hasClass('active')) {
+        components.search.addClass('active');
       }
     }
 
     function removeActiveFromSearch () {
-      if ($search.hasClass('active')) {
-        $search.removeClass('active');
+      if (components.search.hasClass('active')) {
+        components.search.removeClass('active');
       }
     }
 
@@ -349,7 +348,7 @@ window.initBooksPage = function () {
       $next_results.text('More Results (viewing ' + current + ' of ' + total + ')');
       $next_results.click({book_data: book_data}, showMoreResults);
 
-      $list.append($next_results);
+      components.books_list.append($next_results);
     }
 
     function append_one_to_table (book, i) {
@@ -357,28 +356,28 @@ window.initBooksPage = function () {
       var $row = $('<li class="list-group-item book-row" style="display: none"></li>');
 
       // TITLE + AUTHOR
-      var $book = $('<div class="book" data-toggle="modal" data-target="#bookModal"></div>')
+      var components.book = $('<div class="book" data-toggle="modal" data-target="#bookModal"></div>')
       var $title = $('<div class="book_title"></div>');
       var $author = $('<div class="book_author"></div>');
 
       // DATA
-      $book.data('book-title', book.title);
-      $book.data('book-author', book.author);
-      $book.data('book-summary', book.summary);
-      $book.data('book-link', book.link);
-      $book.data('book-year', book.year);
-      $book.data('book-genre', book.genre);
-      $book.data('book-reviews', book.reviews);
-      $book.data('book-recommenders', book.recommenders);
-      $book.data('book-length', book.length);
-      $book.data('book-thumbnails', book.thumbnails);
+      components.book.data('book-title', book.title);
+      components.book.data('book-author', book.author);
+      components.book.data('book-summary', book.summary);
+      components.book.data('book-link', book.link);
+      components.book.data('book-year', book.year);
+      components.book.data('book-genre', book.genre);
+      components.book.data('book-reviews', book.reviews);
+      components.book.data('book-recommenders', book.recommenders);
+      components.book.data('book-length', book.length);
+      components.book.data('book-thumbnails', book.thumbnails);
 
-      $book.on('click', updateModal);
+      components.book.on('click', updateModal);
 
       $title.text(formatTitle(book.title));
       $author.text(book.author);
-      $book.append($title).append($author);
-      // $book.on('click', updateModal);
+      components.book.append($title).append($author);
+      // components.book.on('click', updateModal);
 
       // GENRE + LENGTH
       var $data = $('<div class="book_data"></div>')
@@ -393,11 +392,11 @@ window.initBooksPage = function () {
       setRecommenderChevron(book, $recommenders);
 
       // APPEND ALL
-      $row.append($book)
+      $row.append(components.book)
           .append($data)
           .append($recommenders);
 
-      $list.append($row);
+      components.books_list.append($row);
       $row.fadeIn(1000);
     }
 
