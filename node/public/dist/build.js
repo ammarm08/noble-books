@@ -1,4 +1,4 @@
-window.initBooksPage = function () {
+(function () {
   $(document).ready(function() {
 
     var globals = {
@@ -9,9 +9,7 @@ window.initBooksPage = function () {
       // arrays of all possible filters
       genres : $('.genre_filter').map(function() { return $(this).data('genre'); }).toArray(),
       lengths : $('.filter-by-length button').map(function() { return $(this).data('length'); }).toArray(),
-      ages : $('.filter-by-age button').map(function() { return $(this).data('age'); }).toArray(),
-
-      loader : $('<div class="loader"><img src="https://s3.amazonaws.com/bookswell-media/img-assets/default.svg"/></div>')
+      ages : $('.filter-by-age button').map(function() { return $(this).data('age'); }).toArray()
     };
 
     var state = {
@@ -30,7 +28,6 @@ window.initBooksPage = function () {
     };
 
     var components = {
-      loader: $('.loader'),
       books_list: $('.books-list'),
       book : $('.book-row'),
       advanced_toggle: $('.show-advanced'),
@@ -573,7 +570,7 @@ window.initBooksPage = function () {
       $recommenders.append($span);
     }
   })
-};;window.initThinkersPage = function() {
+})();;window.initThinkersPage = function() {
   $(document).ready(function() {
     // GLOBALS
     var all_data = [];
