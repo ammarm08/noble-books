@@ -112,19 +112,21 @@
     }
 
     function setDataAttributesForOne ($book, index) {
-      var storedBook = state.store.selected[index];
-
-      $book.data('book-title', storedBook.title);
-      $book.data('book-author', storedBook.author);
-      $book.data('book-summary', storedBook.summary);
-      $book.data('book-link', storedBook.link);
-      $book.data('book-year', storedBook.year);
-      $book.data('book-genre', storedBook.genre);
-      $book.data('book-reviews', storedBook.reviews);
-      $book.data('book-recommenders', storedBook.recommenders);
-      $book.data('book-length', storedBook.length);
-      $book.data('book-thumbnails', storedBook.thumbnails);
+      setBookDataAttributes($book, state.store.selected[index]);
     };
+
+    function setBookDataAttributes ($book, bookData) {
+      $book.data('book-title', bookData.title);
+      $book.data('book-author', bookData.author);
+      $book.data('book-summary', bookData.summary);
+      $book.data('book-link', bookData.link);
+      $book.data('book-year', bookData.year);
+      $book.data('book-genre', bookData.genre);
+      $book.data('book-reviews', bookData.reviews);
+      $book.data('book-recommenders', bookData.recommenders);
+      $book.data('book-length', bookData.length);
+      $book.data('book-thumbnails', bookData.thumbnails);
+    }
 
     function setBookRecommenderTooltips ($book, index) {
       var storedBook = state.store.selected[index];
@@ -247,18 +249,19 @@
 
     function applyActiveClassAndUpdateStore (filter, $component) {
       $component.addClass('active');
+
       switch (filter) {
         case 'length':
           $('.all_lengths').removeClass('active');
-          state.store.lengths = filterOutInactiveFilters('length', $('.filter-by-length .active'));
+          state.store.lengths = fetchActiveFilters('length', $('.filter-by-length .active'));
           break;
         case 'age':
           $('.all_ages').removeClass('active');
-          state.store.ages = filterOutInactiveFilters('age', $('.filter-by-age .active'));
+          state.store.ages = fetchActiveFilters('age', $('.filter-by-age .active'));
           break;
         case 'genre':
           $('.all_genres').removeClass('active');
-          state.store.genres = filterOutInactiveFilters('genre', $('.filter-by-genre .active'));
+          state.store.genres = fetchActiveFilters('genre', $('.filter-by-genre .active'));
           break;
         default:
           applyActiveClassAndUpdateStore('length', $component);
@@ -351,14 +354,10 @@
       })
     }
 
-    function filterOutInactiveFilters (filter, $actives) {
+    function fetchActiveFilters (filter, $actives) {
       return $actives.map(function(el, i) {
         return $(this).data(filter);
       }).toArray();
-    }
-
-    function addFilterToList (filter_list, filter) {
-      filter_list.push(filter);
     }
 
     // LOAD NEXT 15 results
@@ -384,10 +383,10 @@
       if ($('#email-signup').length === 0) {
         var $email = $('<a id="email-signup" class="list-group-item"> Get early access to new books and exclusive author interviews. </a>');
 
-        $email.attr('href', 'http://eepurl.com/b5XRYX');
+        $email.attr('href', 'http://eepurl.com/b5XRYX'); // link to Mailchimp signup
         $email.attr('target', '_blank');
 
-        $('.books-list li:eq(4)').after($email);
+        $('.books-list li:eq(4)').after($email); // after 4th book result, append email sign-up nag
       }
     }
 
@@ -397,51 +396,34 @@
 
       var $next_results = $('<a class="next_results"></a>');
       $next_results.text('More Results (viewing ' + current + ' of ' + total + ')');
-      $next_results.click({book_data: book_data}, showMoreResults);
+      $next_results.click({book_data: book_data}, showMoreResults); // on click, show more results
 
       components.books_list.append($next_results);
     }
 
     function append_one_to_table (book, i) {
-      // CONTAINER
+      // prepare DOM elements
       var $row = $('<li class="list-group-item book-row" style="display: none"></li>');
 
-      // TITLE + AUTHOR
-      var $book = $('<div class="book" data-toggle="modal" data-target="#bookModal"></div>')
-      var $title = $('<div class="book_title"></div>');
-      var $author = $('<div class="book_author"></div>');
+      var $book = $('<div class="book" data-toggle="modal" data-target="#bookModal"></div>');
+      var $title = $('<div class="book_title">' + formatTitle(book.title) + '</div>');
+      var $author = $('<div class="book_author">' + book.author + '</div>');
 
-      // DATA
-      $book.data('book-title', book.title);
-      $book.data('book-author', book.author);
-      $book.data('book-summary', book.summary);
-      $book.data('book-link', book.link);
-      $book.data('book-year', book.year);
-      $book.data('book-genre', book.genre);
-      $book.data('book-reviews', book.reviews);
-      $book.data('book-recommenders', book.recommenders);
-      $book.data('book-length', book.length);
-      $book.data('book-thumbnails', book.thumbnails);
-
-      $book.on('click', updateModal);
-
-      $title.text(formatTitle(book.title));
-      $author.text(book.author);
-      $book.append($title).append($author);
-
-      // GENRE + LENGTH
-      var $data = $('<div class="book_data"></div>')
+      var $data = $('<div class="book_data"></div>');
       var $genre = $('<div class="book_genre">' + book.genre + '</div>');
       var $length = $('<div class="book_length">' + book.length + ' pages  (' + formatYear(book.year) + ')</div>');
 
-      $data.append($genre).append($length);
+      var $recommenders = $('<div class="book_recommenders"></div>');
 
-      // RECOMMENDERS
-      var $recommenders = $('<div class="book_recommenders"></div>'); 
+      // book data bindings and recommender thumbnails
+      setBookDataAttributes($book, book);
       setListThumbnails(book, $recommenders);
       setRecommenderChevron(book, $recommenders);
+      $book.on('click', updateModal);
 
-      // APPEND ALL
+      // APPEND TO DOM
+      $book.append($title).append($author);
+      $data.append($genre).append($length);
       $row.append($book)
           .append($data)
           .append($recommenders);
