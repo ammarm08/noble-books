@@ -33,9 +33,9 @@
       advanced_toggle: $('.show-advanced'),
       advanced_filter: $('.advanced-filter'),
       search: $('.show-results'),
-      age_filter : $('.filter-by-age button'),
+      age_filter : $('.age_filter'),
       genre_filter : $('.genre_filter'),
-      length_filter : $('.filter-by-length button'),
+      length_filter : $('.length_filter'),
       sorts : $('.dropdown-item')
     };
 
@@ -112,22 +112,28 @@
     }
 
     function setDataAttributesForOne ($book, index) {
-      $book.data('book-title', state.store.selected[index].title);
-      $book.data('book-author', state.store.selected[index].author);
-      $book.data('book-summary', state.store.selected[index].summary);
-      $book.data('book-link', state.store.selected[index].link);
-      $book.data('book-year', state.store.selected[index].year);
-      $book.data('book-genre', state.store.selected[index].genre);
-      $book.data('book-reviews', state.store.selected[index].reviews);
-      $book.data('book-recommenders', state.store.selected[index].recommenders);
-      $book.data('book-length', state.store.selected[index].length);
-      $book.data('book-thumbnails', state.store.selected[index].thumbnails);
+      var storedBook = state.store.selected[index];
+
+      $book.data('book-title', storedBook.title);
+      $book.data('book-author', storedBook.author);
+      $book.data('book-summary', storedBook.summary);
+      $book.data('book-link', storedBook.link);
+      $book.data('book-year', storedBook.year);
+      $book.data('book-genre', storedBook.genre);
+      $book.data('book-reviews', storedBook.reviews);
+      $book.data('book-recommenders', storedBook.recommenders);
+      $book.data('book-length', storedBook.length);
+      $book.data('book-thumbnails', storedBook.thumbnails);
     };
 
-    function setBookRecommenderTooltips ($book, book_index) {
+    function setBookRecommenderTooltips ($book, index) {
+      var storedBook = state.store.selected[index];
+
       $book.find('.img-circle').each(function(i) {
-        var review = state.store.selected[book_index].reviews[i];
-        var recommender = state.store.selected[book_index].recommenders[i];
+        var review = storedBook.reviews[i];
+        var recommender = storedBook.recommenders[i];
+
+        // only show review if a review exists
         var tooltip_text = review === '""' ? recommender : recommender + ': ' + review;
 
         $(this).attr('title', tooltip_text);
@@ -146,7 +152,7 @@
         components.advanced_toggle.text('Hide Filters')
       }
 
-      blurComponent();
+      blurComponent(); // force CSS (prevents user hover)
     }
 
     function applyFilters (e) {
@@ -215,72 +221,106 @@
 
     function blurComponent (e) {
       $(this).blur();
-    };
-
-    function updateLengthFilter (e) {
-      e.preventDefault();
-
-      if ($(this).data('length') === 'all') {
-        setAsUniquelyActive(components.length_filter, $(this));
-        state.store.lengths = config.lengths;
-      } else if ($(this).hasClass('active')) {
-        removeActiveClass($(this));
-        state.store.lengths = updateFilterOptions(state.store.lengths, 'length', $(this));
-      } else if ($('.filter-by-length .active').length >= 2) {
-        $('.all_lengths').trigger('click');
-      } else {
-        $(this).addClass('active');
-        $('.all_lengths').removeClass('active');
-        state.store.lengths = emptyListOnFirstTimeFilter(state.store.lengths, $('.filter-by-length .active'));
-        addFilterToList(state.store.lengths, $(this).data('length'));
-      }
-
-      addActiveToSearch();
     }
 
-    // TO-DO CLEAN UP FILTER UPDATING CODE LOGIC. IT IS SLOPPY!!!
-    // - modularize (there's a lot of code repetition)
-    // - stick to modifying components previously declared
-    function updateAgeFilter (e) {
-      e.preventDefault();
+    function updateFilter (filter, $component) {
+      return function (e) {
+        e.preventDefault();
 
-      if ($(this).data('age') === 'all') {
-        setAsUniquelyActive(components.age_filter, $(this));
-        state.store.ages = config.ages;
-      } else if ($(this).hasClass('active')) {
-        removeActiveClass($(this));
-        state.store.ages = updateFilterOptions(state.store.ages, 'age', $(this));
-      } else if ($('.filter-by-age .active').length >= 2) {
-        $('.all_ages').trigger('click');
-      } else {
-        $(this).addClass('active');
-        $('.all_ages').removeClass('active');
-        state.store.ages = emptyListOnFirstTimeFilter(state.store.ages, $('.filter-by-age .active'));
-        addFilterToList(state.store.ages, $(this).data('age'));
+        if ($component.data(filter).toString().toLowerCase() === 'all') {
+          setAllAsSelected(filter, $component);
+        } else if ($component.hasClass('active')) {
+          deselectFilter(filter, $component);
+        } else if (userSelectedMany(filter)) {
+          triggerClick(filter);
+        } else {
+          applyActiveClassAndUpdateStore(filter, $component);
+        }
+
+        addActiveToSearch();
       }
-
-      addActiveToSearch();
     }
 
-    function updateGenreFilter (e) {
-      e.preventDefault();
+    function updateLengthFilter (e) { updateFilter('length', $(this))(e) };
+    function updateAgeFilter (e) { updateFilter('age', $(this))(e) };
+    function updateGenreFilter (e) { updateFilter('genre', $(this))(e) };
 
-      if ($(this).data('genre') === 'All') {
-        setAsUniquelyActive(components.genre_filter, $(this));
-        state.store.genres = config.genres;
-      } else if ($(this).hasClass('active')) {
-        removeActiveClass($(this));
-        state.store.genres = updateFilterOptions(state.store.genres, 'genre', $(this));
-      } else if ($('.filter-by-genre .active').length >= 6) {
-        $('.all_genres').trigger('click');
-      } else {
-        $(this).addClass('active');
-        $('.all_genres').removeClass('active');
-        state.store.genres = emptyListOnFirstTimeFilter(state.store.genres, $('.filter-by-genre .active'));
-        addFilterToList(state.store.genres, $(this).data('genre'));
+    function applyActiveClassAndUpdateStore (filter, $component) {
+      $component.addClass('active');
+      switch (filter) {
+        case 'length':
+          $('.all_lengths').removeClass('active');
+          state.store.lengths = filterOutInactiveFilters('length', $('.filter-by-length .active'));
+          break;
+        case 'age':
+          $('.all_ages').removeClass('active');
+          state.store.ages = filterOutInactiveFilters('age', $('.filter-by-age .active'));
+          break;
+        case 'genre':
+          $('.all_genres').removeClass('active');
+          state.store.genres = filterOutInactiveFilters('genre', $('.filter-by-genre .active'));
+          break;
+        default:
+          applyActiveClassAndUpdateStore('length', $component);
       }
+    }
 
-      addActiveToSearch();
+    function setAllAsSelected (filter, $component) {
+      switch (filter) {
+        case 'length':
+          setAsUniquelyActive(components.length_filter, $component);
+          state.store.lengths = config.lengths;
+          break;
+        case 'age':
+          setAsUniquelyActive(components.age_filter, $component);
+          state.store.ages = config.ages;
+          break;
+        case 'genre':
+          setAsUniquelyActive(components.genre_filter, $component);
+          state.store.genres = config.genres;
+          break;
+        default:
+          setAllAsSelected('length', $component);
+      }
+    }
+
+    function deselectFilter (filter, $component) {
+      removeActiveClass($component);
+
+      switch (filter) {
+        case 'length':
+          state.store.lengths = updateFilterOptions(state.store.lengths, 'length', $component);
+          break;
+        case 'age':
+          state.store.ages = updateFilterOptions(state.store.ages, 'age', $component);
+          break;
+        case 'genre':
+          state.store.genres = updateFilterOptions(state.store.genres, 'genre', $component);
+          break;
+        default:
+          deselectFilter('length', $component);
+      }
+    }
+
+    function userSelectedMany (filter) {
+      switch (filter) {
+        case 'length':
+          return $('.filter-by-length .active').length >= 2;
+          break;
+        case 'age':
+          return $('.filter-by-age .active').length >= 2;
+          break;
+        case 'genre':
+          return $('.filter-by-genre .active').length >= 6;
+          break;
+        default:
+          userSelectedMany('length');
+      }
+    }
+
+    function triggerClick (filter) {
+      var selector = '.all_' + filter + 's';
+      $(selector).trigger('click');
     }
 
     function addActiveToSearch () {
@@ -311,12 +351,10 @@
       })
     }
 
-    function emptyListOnFirstTimeFilter (filter_list, $target) {
-      if ($target.length === 1) {
-        return [];
-      } else {
-        return filter_list;
-      }
+    function filterOutInactiveFilters (filter, $actives) {
+      return $actives.map(function(el, i) {
+        return $(this).data(filter);
+      }).toArray();
     }
 
     function addFilterToList (filter_list, filter) {
