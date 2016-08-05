@@ -6,19 +6,15 @@
     };
 
     var config = {
-      // arrays of all possible filters
       genres : $('.genre_filter').map(function() { return $(this).data('genre'); }).toArray(),
       lengths : $('.filter-by-length button').map(function() { return $(this).data('length'); }).toArray(),
       ages : $('.filter-by-age button').map(function() { return $(this).data('age'); }).toArray()
     };
 
     var state = {
-      store: {
-        // will be populated w/ books
+      store: { // book data + filters active
         all: [],
         selected: [],
-
-        // defaults: all filters are selected
         lengths: config.lengths,
         genres: config.genres,
         ages: config.ages
@@ -39,10 +35,32 @@
       sorts : $('.dropdown-item')
     };
 
+    var controller = {
+      initializeTooltips : initializeTooltips,
+      setListeners : setListeners,
+      fetchBooks : fetch_books
+    };
+
+    var listeners = {
+      updateAgeFilter : updateAgeFilter,
+      updateGenreFilter : updateGenreFilter,
+      updateLengthFilter : updateLengthFilter,
+      toggleAdvancedFilters : toggleAdvancedFilters,
+      applyFilters : applyFilters,
+      applySort : applySort,
+      updateModal : updateModal
+    };
+
     // INIT
-    initializeTooltips();
-    setListeners();
-    fetch_books(setInitialBooksData);
+    controller.initializeTooltips();
+    controller.setListeners();
+    controller.fetchBooks(setInitialBooksData);
+
+    // ---------------------------
+    // ---------------------------
+    // -----HELPER FUNCTIONS------
+    // ---------------------------
+    // ---------------------------
 
     function initializeTooltips () {
       components.age_filter.tooltip();
@@ -55,13 +73,13 @@
       components.search.mouseup(blurComponent);
 
       // on click, (de)select filters and update state
-      components.age_filter.on('click', updateAgeFilter);
-      components.genre_filter.on('click', updateGenreFilter);
-      components.length_filter.on('click', updateLengthFilter);
-      components.advanced_toggle.on('click', toggleAdvancedFilters); 
-      components.search.on('click', applyFilters);
-      components.sorts.on('click', applySort);
-      components.book.on('click', updateModal);
+      components.age_filter.on('click', listeners.updateAgeFilter);
+      components.genre_filter.on('click', listeners.updateGenreFilter);
+      components.length_filter.on('click', listeners.updateLengthFilter);
+      components.advanced_toggle.on('click', listeners.toggleAdvancedFilters); 
+      components.search.on('click', listeners.applyFilters);
+      components.sorts.on('click', listeners.applySort);
+      components.book.on('click', listeners.updateModal);
     }
 
     function fetch_books (callback) {
