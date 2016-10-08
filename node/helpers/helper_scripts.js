@@ -1,110 +1,143 @@
-var fs = require('fs');
+'use strict'
 
-function writeTSVtoJSON () {
-  fs.readFile('./data/test_data.tsv', 'utf8', function(err, data) {
+const fs = require('fs')
+
+const writeTSVtoJSON = (path) => {
+  const books = removeHeaders(tsvToArray(path))
+  const collections = gatherAllBooksToJSON(books)
+
+  fs.writeFile('./data/authors.json', JSON.stringify(collections.authors))
+  fs.writeFile('./data/books.json', JSON.stringify(collections.books))
+  fs.writeFile('./data/recommenders.json', JSON.stringify(collections.recommenders))
+  console.log('DONE')
+}
+
+// Given a spreadsheet file, return an array of arrays
+const tsvToArray = (path) => {
+  fs.readFile(path, 'utf8', (err, data) => {
     if (err) {
-      console.error(err);
-    } else {
-      var entries = data.split('\r\n').map(function(entry) {
-        return entry.split('\t');
-      })
-      entries.shift();
-
-      //0- Title
-      //1- Author
-      //2- Recommender
-      //3- Rec Source
-      //4- Amazon_Link
-      //5- Summary
-      //6- Book Genre
-      //7- Length
-      //8- Publish Year
-      //9- On List?
-      //10- Rec Review
-      //11- Rec Genre
-      //12- Rec Bio
-      
-      var books = {};
-      var authors = {};
-      var recommenders = {};
-
-      entries.forEach(function(entry) {
-        var title = entry[0];
-        var author = entry[1];
-        var recommender = entry[2];
-        var slug = title + '\t' + author;
-        var source = entry[3];
-        var amazon_link = entry[4];
-        var summary = entry[5];
-        var book_genre = entry[6];
-        var length = entry[7]
-        var publish_year = entry[8];
-        var on_list = entry[9];
-        var review_excerpt = entry[10];
-        var rec_genre = entry[11];
-        var rec_bio = entry[12];
-
-        // BOOK
-        if (books[slug]) {
-          books[slug].recommenders.push(recommender);
-          books[slug].reviews.push(review_excerpt);
-        } else {
-          books[slug] = { 
-            title: title, 
-            author: author, 
-            recommenders: [recommender],
-            amazon_link: amazon_link,
-            genre: book_genre,
-            length: length,
-            year: publish_year,
-            summary: summary,
-            reviews: [review_excerpt] 
-          };
-        }
-
-        // AUTHOR
-        if (authors[author]) {
-          if (authors[author].recommenders.indexOf(recommender) === -1) {
-            authors[author].recommenders.push(recommender);
-          }
-
-          if (authors[author].titles.indexOf(title) === -1) {
-            authors[author].titles.push(title);
-          }
-
-        } else {
-          authors[author] = { 
-            titles: [title], 
-            recommenders: [recommender],
-            on_list: on_list
-          };
-        }
-
-        // RECOMMENDER
-        if (recommenders[recommender]) {
-          recommenders[recommender].recommended_books.push([title, amazon_link, source]);
-          if (recommenders[recommender].recommended_authors.indexOf(author) === -1) {
-            recommenders[recommender].recommended_authors.push(author);
-            recommenders[recommender].reviews.push(review_excerpt);
-          }
-        } else {
-          recommenders[recommender] = { 
-            recommended_books: [[title, amazon_link, source]], 
-            recommended_authors: [author],
-            reviews: [review_excerpt],
-            field: rec_genre,
-            bio: rec_bio
-          };
-        }
-
-      })
-
-      fs.writeFile('./data/authors.json', JSON.stringify(authors));
-      fs.writeFile('./data/books.json', JSON.stringify(books));
-      fs.writeFile('./data/recommenders.json', JSON.stringify(recommenders));
-      console.log('DONE');
+      return console.error(err)
     }
+
+    const entries = data.split('\r\n').map(entry => entry.split('\t'))
+    return entries
   })
 }
 
-writeTSVtoJSON();
+const removeHeaders = (tsvArray) => {
+  return tsvArray.slice(1)
+}
+
+const gatherAllBooksToJSON = (formattedTSV) => {
+  let memo = { books: {}, authors: {}, recommenders: {} }
+  return formattedTSV.reduce(gatherOneToJSON, memo)
+}
+
+const gatherOneToJSON = (acc, book) => {
+  let meta = {
+    title: book[0],
+    author: book[1],
+    recommender: book[2],
+    source: book[3],
+    amazon_link: book[4],
+    summary: book[5],
+    book_genre: book[6],
+    length: book[7],
+    publish_year: book[8],
+    on_list: book[9],
+    review_excerpt: book[10],
+    rec_genre: book[11],
+    rec_bio: book[12]
+  }
+
+  meta.slug = meta.title + '\t' + meta.author
+
+  acc.books[meta.slug] = formatBookCollection(acc, meta)
+  acc.authors[meta.author] = formatAuthorCollection(acc, meta)
+  acc.recommenders[meta.recommender] = formatRecommenderCollection(acc, meta)
+
+  return acc
+}
+
+const formatRecommenderCollection = (collections, metadata) => {
+  const recommender = metadata.recommender
+  const recommenderEntry = collections.recommenders[recommender]
+
+  if (recommenderEntry) {
+    // if author isn't yet in recommender's list of recommender authors, add her
+    if (recommenderEntry.recommended_authors.indexOf(metadata.author) === -1) {
+      recommenderEntry.recommended_authors.push(metadata.author)
+      recommenderEntry.reviews.push(metadata.review_excerpt)
+    }
+
+    recommenderEntry.recommended_books.push([metadata.title, metadata.amazon_link, metadata.source])
+    return recommenderEntry
+  }
+
+  // otherwise, build out entry
+  const entry = {
+    recommended_books: [[metadata.title, metadata.amazon_link, metadata.source]], 
+    recommended_authors: [metadata.author],
+    reviews: [metadata.review_excerpt],
+    field: metadata.rec_genre,
+    bio: metadata.rec_bio
+  }
+
+  return entry
+}
+
+const formatAuthorCollection = (collections, metadata) => {
+  const author = metadata.author
+  let authorEntry = collections.authors[author]
+
+  if (authorEntry) {
+    // if recommender isn't already in list, add him
+    if (authorEntry.recommenders.indexOf(metadata.recommender) === -1) {
+      authorEntry.recommenders.push(metadata.recommender)
+    }
+
+    // if book isn't already in list, add it
+    if (authorEntry.titles.indexOf(metadata.title) === -1) {
+      authorEntry.titles.push(metadata.title)
+    }
+
+    return authorEntry
+  }
+
+  // otherwise, build entry
+  const entry = {
+    titles: [metadata.title],
+    recommenders: [metadata.recommender],
+    on_list: metadata.on_list
+  }
+
+  return entry
+}
+
+const formatBookCollection = (collections, metadata) => {
+  const bookEntry = collections.books[metadata.slug]
+
+  // if book already exists, then add recommender and her review to that book's entry
+  if (bookEntry) {
+    bookEntry.recommenders.push(metadata.recommender)
+    bookEntry.reviews.push(metadata.review_excerpt)
+    return bookEntry
+  }
+
+  // otherwise, build the book in the collection
+  const entry = {
+    title: metadata.title,
+    author: metadata.author,
+    recommenders: [metadata.recommender],
+    amazon_link: metadata.amazon_link,
+    genre: metadata.book_genre,
+    length: metadata.length,
+    year: metadata.publish_year,
+    summary: metadata.summary,
+    reviews: [metadata.review_excerpt]
+  }
+
+  return entry
+}
+
+writeTSVtoJSON()
