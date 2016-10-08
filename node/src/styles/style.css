@@ -292,14 +292,6 @@ body {
   color: #ff4742;
 }
 
-.fb-like {
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  margin: 0;
-  z-index: 100;
-}
-
 #email-signup {
   text-align: center;
   min-height: 40px;
@@ -567,14 +559,6 @@ footer {
   .recommender-collection img {
     width: 30%;
   }
-
-  .fb-container {
-    width: 65%;
-  }
-
-  .fb-like {
-    position: relative;
-  }
 }
 
 @media screen and (max-width: 768px) {
@@ -610,14 +594,6 @@ footer {
   #link-collapse {
     width: 100%;
   }
-
-  .fb-container {
-    width: 65%;
-  }
-
-  .fb-like {
-    position: relative;
-  }
 }
 
 @media screen and (max-width: 550px) {
@@ -648,13 +624,5 @@ footer {
 
   .recommender-collection img {
     width: 75%;
-  }
-
-  .fb-container {
-    width: 65%;
-  }
-
-  .fb-like {
-    position: relative;
   }
 }
