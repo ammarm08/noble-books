@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 
-let express = require('express');
-let app = express();
+let express = require('express')
+let app = express()
 
 /* JSON files */
 let db = {
@@ -20,21 +20,21 @@ let db = {
 }
 
 /* CONFIGURATION */
-app.set('views', __dirname + '/../public/views');
-app.set('view engine', 'ejs');
-app.use(express.static(__dirname + '/../public'));
+app.set('views', __dirname + '/../public/views')
+app.set('view engine', 'ejs')
+app.use(express.static(__dirname + '/../public'))
 
 /* ROUTES */
 app.get('/', (req, res) => {
-  res.render('index', {page_name: 'books', data: db.frequencies_title.slice(0, 10)});
+  res.render('index', {page_name: 'books', data: db.frequencies_title.slice(0, 10)})
 })
 
 app.get('/books', (req, res) => {
-  res.render('index', {page_name: 'books', data: db.frequencies_title.slice(0, 10)});
+  res.render('index', {page_name: 'books', data: db.frequencies_title.slice(0, 10)})
 })
 
 app.get('/thinkers', (req, res) => {
-  res.render('thinkers', {page_name: 'thinkers', data: db.recommenders_list });
+  res.render('thinkers', {page_name: 'thinkers', data: db.recommenders_list })
 })
 
 app.get('/api/books', (req, res) => {
@@ -55,4 +55,4 @@ app.get('/*', (req, res) => {
   res.redirect('/')
 })
 
-module.exports = app;
+module.exports = app
