@@ -1,9 +1,11 @@
-'use strict';
-let fs = require('fs');
-let BOOKS = require('../data/books.json');
-let AUTHORS = require('../data/authors.json');
-let RECS = require('../data/recommenders.json');
-let GENRE_LOOKUP = {
+'use strict'
+
+const fs = require('fs')
+const BOOKS = require('../data/books.json')
+const AUTHORS = require('../data/authors.json')
+const RECS = require('../data/recommenders.json')
+
+const GENRE_LOOKUP = {
   'Evolutionary Biology': 'Math / Science',
   'Physics': 'Math / Science',
   'Anthropology': 'Math / Science',
@@ -22,155 +24,155 @@ let GENRE_LOOKUP = {
   'Religion & Spirituality': 'Faith'
 }
 
-function formatThumbLink (person) {
-  return 'https://s3.amazonaws.com/bookswell-media/thinker-thumbnails/' + person + '.png';
+const process_books = () => {
+  return Object.keys(BOOKS).reduce(calculateFrequencies, [])
 }
 
-function process_books () {
-  let book_title_frequencies = Object.keys(BOOKS).reduce(function(frequencies, book) {
-    let title = BOOKS[book].title;
-    let author = BOOKS[book].author;
-    let summary = BOOKS[book].summary;
-    let on_list = AUTHORS[author].on_list === 'TRUE' ? 1 : 0;
-    let recommenders = BOOKS[book].recommenders;
-    let reviews = BOOKS[book].reviews;
-    let length = BOOKS[book].length > 0 ? BOOKS[book].length : 150;
-    let year = BOOKS[book].year;
-    let genre = GENRE_LOOKUP[BOOKS[book].genre] ? GENRE_LOOKUP[BOOKS[book].genre] : BOOKS[book].genre || 'Misc';
-    let link = BOOKS[book].amazon_link;
-    let thumbnails = recommenders.map(function(person) { return formatThumbLink(person); });
+const calculateFrequencies = (acc, book) => {
+  // build all metadata for book
+  let book_obj = {
+    title: BOOKS[book].title,
+    author: BOOKS[book].author,
+    summary: BOOKS[book].summary,
+    recommenders: BOOKS[book].recommenders,
+    reviews: BOOKS[book].reviews,
+    length: BOOKS[book].length > 0 ? BOOKS[book].length : 150,
+    year: BOOKS[book].year,
+    genre: GENRE_LOOKUP[BOOKS[book].genre] || BOOKS[book].genre || 'Misc',
+    link: BOOKS[book].amazon_link
+  }
 
-    // calculate score
-    let score = (recommenders.length * 5) + (AUTHORS[author].recommenders.length * 0.5) + (100/year) + (10/length);
+  book_obj.on_list = AUTHORS[book_obj.author].on_list === 'TRUE' ? 1 : 0
+  book_obj.thumbnails = book_obj.recommenders.map(person => formatThumbLink(person))
 
-    var book_obj = {
-      title: title,
-      author: author,
-      link: link,
-      on_list: on_list,
-      recommenders: recommenders,
-      author_recs: AUTHORS[author].recommenders,
-      summary: summary,
-      reviews: reviews,
-      length: length,
-      year: year,
-      genre: genre,
-      score: score,
-      thumbnails: thumbnails
-    };
+  // calculate book "score"
+  const bookRecs = book_obj.recommenders.length
+  const authorRecs = AUTHORS[book_obj.author].recommenders.length
+  book_obj.score = calculateScore(bookRecs, authorRecs, book_obj.year, book_obj.length)
 
-    frequencies.push(book_obj);
-    return frequencies;
-  }, []);
-
-  return book_title_frequencies;
+  acc.push(book_obj)
+  return acc
 }
 
-function filter_list_by_field (target_fields) {
-  let list = process_books();
-  return list.filter(function(book) {
-    book.recommenders = book.recommenders.filter(function(rec) {
-      let field = RECS[rec].field;
-      return target_fields.indexOf(field) > -1;
-    })
+// Score is the weighted sum of book rec freq, author rec freq, age of book, and length of book
+const calculateScore = (bookRecs, authorRecs, bookYear, bookLength) => {
+  return (bookRecs * 5) + (authorRecs * 0.5) + (bookLength * 0.1) + (bookYear * 0.01)
+}
 
-    return !!book.recommenders.length;
+const formatThumbLink = (person) => {
+  return 'https://s3.amazonaws.com/bookswell-media/thinker-thumbnails/' + person + '.png'
+}
 
-    // return book.recommenders.reduce(function(isInField, rec) {
-    //   let field = RECS[rec].field;
-    //   return (target_fields.indexOf(field) > -1) || isInField;
-    // }, false)
+// given a list of books, filter out those which do not belong to target fields list
+const filter_list_by_field = (list, target_fields) => {
+  return list.filter(book => {
+    // if a book recommender is not in the field of study that we're looking for, filter him out
+    const remainingRecommenders = book.recommenders.filter(rec => target_fields.indexOf(RECS[rec].field) > -1)
+
+    // if there are NONE remaining, that means this book should be filtered out
+    return !!remainingRecommenders.length
   })
 }
 
-function process_recommenders () {
-  let recommenders_list = Object.keys(RECS).reduce(function(results, rec) {
-    var rec_obj = {
+const process_recommenders = () => {
+  return Object.keys(RECS).reduce((results, rec) => {
+    const rec_obj = {
       name: rec,
       bio: RECS[rec].bio,
       recommended_books: RECS[rec].recommended_books,
       thumbnail: formatThumbLink(rec)
     }
-    results.push(rec_obj);
-    return results;
-  }, []);
-
-  return recommenders_list.sort(function(a,b) {
-    return a.recommended_books.length - b.recommended_books.length;
-  });
+    results.push(rec_obj)
+    return results
+  }, [])
 }
 
-function sortBookList (list, sort_type) {
-  if (sort_type === 'freq-title') {
-    return list.sort(function(a,b) {
-      return b.recommenders.length - a.recommenders.length;
-    })
-  } else if (sort_type === 'freq-author') {
-    return list.sort(function(a,b) {
-      return b.author_recs.length - a.author_recs.length;
-    })
-  } else if (sort_type === 'alpha-title') {
-    return list.sort(function(a,b) {
-      return a.title.toLowerCase().charCodeAt(0) - b.title.toLowerCase().charCodeAt(0);
-    })
-  } else {
-    return list.sort(function(a,b) {
-      return a.author.toLowerCase().charCodeAt(0) - b.author.toLowerCase().charCodeAt(0);
-    });
+const sortRecommendersByFrequency = (recommendersList) => {
+  return recommendersList.sort((a, b) => a.recommended_books.length - b.recommended_books.length)
+}
+
+// sort list as indicated, then filter out books with Misc genre
+const sortAndFilterList = (list, sort_type) => {
+  return filterIncompleteBooks(sortBookList(list, sort_type))
+}
+
+const sortBookList = (list, sort_type) => {
+  let sortPredicate
+
+  switch (sort_type) {
+    case 'freq-title':
+      sortPredicate = (a, b) => b.recommenders.length - a.recommenders.length
+      break
+    case 'freq-author':
+      sortPredicate = (a, b) => b.author_recs.length - a.author_recs.length
+      break
+    case 'alpha-title':
+      sortPredicate = (a, b) => a.title.toLowerCase().charCodeAt(0) - b.title.toLowerCase().charCodeAt(0)
+      break
+    default:
+      sortPredicate = (a, b) => a.author.toLowerCase().charCodeAt(0) - b.author.toLowerCase().charCodeAt(0)
   }
+
+  return list.sort(sortPredicate)
 }
 
-function filterIncompleteBooks (list) {
-  return list.filter(function(item) {
-    return item.genre !== 'Misc';
-  });
+// Only keep books that have valid genres
+const filterIncompleteBooks = (list) => {
+  return list.filter(book => book.genre !== 'Misc')
 }
 
-function sortAndFilterList (list, sort_type) {
-  return filterIncompleteBooks(sortBookList(list, sort_type));
-}
+const writeBookListToFile = (list, sort_type, dest) => {
+  const sorted = sortAndFilterList(list, sort_type)
+  const stringifiedJSON = JSON.stringify(sorted)
 
-function writeBookListToFile (list, sort_type, dest) {
-  var list = sortAndFilterList(list, sort_type);
-  var stringifiedJSON = JSON.stringify(list); 
-
-  fs.writeFile(dest, stringifiedJSON, function(err, data) {
+  fs.writeFile(dest, stringifiedJSON, (err, data) => {
     if (err) {
-      console.log(err);
-    } else {
-      console.log('DONE', dest);
+      return console.log(err)
     }
+
+    console.log('DONE', dest)
   })
 }
 
-function writeAllBooksToFiles () {
-  writeBookListToFile(process_books(), 'freq-title', './data/frequencies_title.json');
-  writeBookListToFile(process_books(), 'freq-author', './data/frequencies_author.json');
-  writeBookListToFile(process_books(), 'alpha-title', './data/alphabetized_title.json');
-  writeBookListToFile(process_books(), 'alpha-author', './data/alphabetized_author.json');
+const writeAllBooksToFiles = () => {
+  const booksSortedByFrequency = process_books()
+
+  // SORTED BOOK LISTS
+  writeBookListToFile(booksSortedByFrequency, 'freq-title', './data/frequencies_title.json')
+  writeBookListToFile(booksSortedByFrequency, 'freq-author', './data/frequencies_author.json')
+  writeBookListToFile(booksSortedByFrequency, 'alpha-title', './data/alphabetized_title.json')
+  writeBookListToFile(booksSortedByFrequency, 'alpha-author', './data/alphabetized_author.json')
 
   // FIELD-SPECIFIC
-  writeBookListToFile(filter_list_by_field(['Technology']), 'freq-title', './data/filter-by-tech.json');
-  writeBookListToFile(filter_list_by_field(['Business']), 'freq-title', './data/filter-by-biz.json');
-  writeBookListToFile(filter_list_by_field(['Literature']), 'freq-title', './data/filter-by-lit.json');
-  writeBookListToFile(filter_list_by_field(['Politics', 'Culture & Society', 'Journalism']), 'freq-title', './data/filter-by-history.json');
-  writeBookListToFile(filter_list_by_field(['Finance & Economics', 'Law']), 'freq-title', './data/filter-by-econ.json');
-  writeBookListToFile(filter_list_by_field(['Physics', 'Evolutionary Biology', 'Anthropology', 'Environmental Science']), 'freq-title', './data/filter-by-sci.json');
-  writeBookListToFile(filter_list_by_field(['Philosophy', 'Religion & Spirituality', 'Linguistics', 'Cognitive Science']), 'freq-title', './data/filter-by-phil.json');
+  const technologyBooks = filter_list_by_field(booksSortedByFrequency, ['Technology'])
+  const bizBooks = filter_list_by_field(booksSortedByFrequency, ['Business'])
+  const litBooks = filter_list_by_field(booksSortedByFrequency, ['Literature'])
+  const historyBooks = filter_list_by_field(booksSortedByFrequency, ['Politics', 'Culture & Society', 'Journalism'])
+  const econBooks = filter_list_by_field(booksSortedByFrequency, ['Finance & Economics', 'Law'])
+  const sciBooks = filter_list_by_field(booksSortedByFrequency, ['Physics', 'Evolutionary Biology', 'Anthropology', 'Environmental Science'])
+  const philBooks = filter_list_by_field(booksSortedByFrequency, ['Philosophy', 'Religion & Spirituality', 'Linguistics', 'Cognitive Science'])
+
+  writeBookListToFile(technologyBooks, 'freq-title', './data/filter-by-tech.json')
+  writeBookListToFile(bizBooks, 'freq-title', './data/filter-by-biz.json')
+  writeBookListToFile(litBooks, 'freq-title', './data/filter-by-lit.json')
+  writeBookListToFile(historyBooks, 'freq-title', './data/filter-by-history.json')
+  writeBookListToFile(econBooks, 'freq-title', './data/filter-by-econ.json')
+  writeBookListToFile(sciBooks, 'freq-title', './data/filter-by-sci.json')
+  writeBookListToFile(philBooks, 'freq-title', './data/filter-by-phil.json')
 }
 
-function writeRecommendersListToFile () {
-  var list = process_recommenders();
-  list = JSON.stringify(list);
+const writeRecommendersListToFile = () => {
+  const recommendersList = sortRecommendersByFrequency(process_recommenders())
+  const stringifiedJSON = JSON.stringify(recommendersList)
 
-  fs.writeFile('./data/recommenders_list.json', list, function(err, data) {
+  fs.writeFile('./data/recommenders_list.json', stringifiedJSON, (err, data) => {
     if (err) {
-      console.log(err);
-    } else {
-      console.log('DONE', 'recommenders-list');
+      return console.log(err)
     }
+
+    console.log('DONE', 'recommenders-list')
   })
 }
 
-writeAllBooksToFiles();
-writeRecommendersListToFile();
+writeAllBooksToFiles()
+writeRecommendersListToFile()
