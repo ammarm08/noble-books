@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 const app = require('./server-config.js')
 const cluster = require('cluster')
