@@ -76,7 +76,7 @@ const formatRecommenderCollection = (collections, metadata) => {
 
   // otherwise, build out entry
   const entry = {
-    recommended_books: [[metadata.title, metadata.amazon_link, metadata.source]], 
+    recommended_books: [[metadata.title, metadata.amazon_link, metadata.source]],
     recommended_authors: [metadata.author],
     reviews: [metadata.review_excerpt],
     field: metadata.rec_genre,

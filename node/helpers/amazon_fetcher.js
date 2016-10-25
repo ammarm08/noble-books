@@ -3,7 +3,7 @@
 const SITE = 'amazon.com'
 const fs = require('fs')
 
-let Google = require('google')
+const Google = require('google')
 Google.resultsPerPage = 3
 
 // search for a book on google and limit results to those from amazon.
