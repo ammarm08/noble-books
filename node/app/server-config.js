@@ -1,10 +1,10 @@
 'use strict'
 
-let express = require('express')
-let app = express()
+const express = require('express')
+const app = express()
 
 /* JSON files */
-let db = {
+const db = {
   alphabetized_author: require('./data/alphabetized_author.json'),
   alphabetized_title: require('./data/alphabetized_title.json'),
   frequencies_author: require('./data/frequencies_author.json'),

@@ -1,32 +1,32 @@
 'use strict';
 
-let app = require('./server-config.js');
-let cluster = require('cluster');
-const PORT = 8080;
+const app = require('./server-config.js')
+const cluster = require('cluster')
+const PORT = 8080
 
 function launchCluster () {
   if (cluster.isMaster) {
-    let numWorkers = require('os').cpus().length;
-    console.log('Master cluster setting up ' + numWorkers + ' workers...');
-    createWorkers(numWorkers);
+    const numWorkers = require('os').cpus().length
+    console.log('Master cluster setting up ' + numWorkers + ' workers...')
+    createWorkers(numWorkers)
   } else {
-    app.listen(PORT, function () { console.log('Listening on port', PORT); });
+    app.listen(PORT, function () { console.log('Listening on port', PORT) })
   }
 }
 
 function createWorkers (n) {
   for (let i = 0; i < n; i++) {
-    createWorker();
+    createWorker()
   }
 }
 
 function createWorker () {
-  let worker = cluster.fork();
+  const worker = cluster.fork()
   worker.on('exit', function (w, code, sig) {
-    console.log('Worker ' + w.process.pid + ' died with code: ' + code + ', and signal: ' + sig);
-    console.log('Spinning up new worker');
-    createWorker(); // respawn on exit
+    console.log('Worker ' + w.process.pid + ' died with code: ' + code + ', and signal: ' + sig)
+    console.log('Spinning up new worker')
+    createWorker() // respawn on exit
   })
 }
 
-launchCluster();
+launchCluster()
